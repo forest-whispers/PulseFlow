@@ -1,0 +1,43 @@
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import helmet from "helmet";
+import mongoSanitize from "express-mongo-sanitize";
+import cookieParser from "cookie-parser";
+import morgan from "morgan";
+
+import { globalRateLimiter } from "./middleware/rateLimiter.js";
+import errorHandler from './utils/error.js'
+import indexRouter from "./routes/index.js";
+
+dotenv.config();
+
+const app = express();
+
+app.use(globalRateLimiter);
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+app.use(
+    cors({
+        origin: process.env.CLIENT_URL,
+        credentials: true,
+    }),
+);
+app.use(helmet());
+
+app.use(mongoSanitize());
+
+app.use(morgan("dev"));
+
+app.get("/", (req, res) => {
+    res.send("API Running");
+});
+
+app.use("/api", indexRouter);
+
+app.use(errorHandler);
+
+export default app;

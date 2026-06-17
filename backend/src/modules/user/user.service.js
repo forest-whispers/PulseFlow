@@ -1,0 +1,47 @@
+import bcrypt from 'bcrypt'
+
+import User from "./user.model.js";
+import PatientProfile from '../patientProfile/patientProfile.model.js'
+import DoctorProfile from '../doctorProfile/doctorProfile.model.js'
+import { ConflictError } from '../../utils/error.js'
+
+export const createUserService = async ({ name, email, password, role, age, gender,}) =>
+{
+    const alreadyRegistered=await findUserByEmailService(email);
+    if(alreadyRegistered)
+    {
+        throw new ConflictError("User already exists!")
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ name, email, password : hashedPassword, role, age, gender,});
+    (role == "patient") ? await PatientProfile.create({ user: user._id, }) : await DoctorProfile.create({ user: user._id, });
+    return user;
+};
+
+export const loginUserService = async (email, password) =>
+{
+    const user = await findUserByEmailService(email);
+    if (!user) {
+        throw new UnauthorizedError("Invalid email or password");
+    }
+    const isPasswordMatched = await bcrypt.compare( password, user.password,);
+    if (!isPasswordMatched) {
+        throw new UnauthorizedError("Invalid email or password");
+    }
+    return user;
+  };
+
+export const findUserByEmailService = async (email) =>
+{
+    const user = await User.findOne({ email });
+    return user;
+};
+
+export const getUserByIdService = async (id, currUser) =>
+{
+    if (currUser.id !== id && currUser.role === "patient") {
+        throw new ForbiddenError("Access Denied")
+      }
+    const user = await User.findById(id);
+    return user;
+};
