@@ -1,5 +1,5 @@
 import Appointment from "../modules/appointment/appointment.model.js";
-import DoctorAvailability from "../modules/availability/availability.model.js";
+import DoctorAvailability from "../modules/doctorAvailability/doctorAvailability.model.js";
 import AvailabilityException from "../modules/availabilityException/availabilityException.model.js";
 import { BadRequestError, ConflictError } from "./error.js";
 

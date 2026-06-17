@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
 import cookieParser from "cookie-parser";
@@ -9,8 +8,6 @@ import morgan from "morgan";
 import { globalRateLimiter } from "./middleware/rateLimiter.js";
 import errorHandler from './utils/error.js'
 import indexRouter from "./routes/index.js";
-
-dotenv.config();
 
 const app = express();
 

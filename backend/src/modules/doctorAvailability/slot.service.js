@@ -1,4 +1,4 @@
-import DoctorAvailability from "./doctorAvailability.model"
+import DoctorAvailability from "./doctorAvailability.model.js"
 import Appointment from "../appointment/appointment.model.js"
 import { NotFoundError } from '../../utils/error.js'
 

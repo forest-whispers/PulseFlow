@@ -1,5 +1,5 @@
 import Appointment from "./appointment.model.js";
-import DoctorAvailability from "../availability/availability.model.js";
+import DoctorAvailability from "../doctorAvailability/doctorAvailability.model.js";
 import { createAuditLogService } from "../auditLog/auditLog.service.js";
 import { validateAppointmentSlot } from '../../utils/validateAppointmentSlot.js'
 import { BadRequestError, ConflictError, NotFoundError, UnauthorizedError } from '../../utils/error.js'

@@ -17,8 +17,8 @@ export const getNotificationsService = async (recipient) => {
     return notifications;
 };
 
-export const markNotificationReadService = async (notification) => {
-    const notification = await Notification.findById(notification);
+export const markNotificationReadService = async (alert) => {
+    const notification = await Notification.findById(alert);
     if (!notification) {
         throw new NotFoundError("Notification not found");
     }

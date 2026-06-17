@@ -1,4 +1,4 @@
-import DoctorAvailability from "./doctorAvailability.model"
+import DoctorAvailability from "./doctorAvailability.model.js"
 import { ConflictError, NotFoundError, } from '../../utils/error.js'
 
 export const createAvailabilityService=async (doctor, availableDays, startTime, endTime, slotDuration)=>

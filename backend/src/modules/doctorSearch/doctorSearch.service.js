@@ -1,4 +1,4 @@
-import DoctorProfile from "../doctor/doctorProfile.model.js";
+import DoctorProfile from "../doctorProfile/doctorProfile.model.js";
 
 export const searchDoctorsService = async (queryParams) => {
     const { specialization, minFee, maxFee, } = queryParams;

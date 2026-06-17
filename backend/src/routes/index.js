@@ -14,6 +14,6 @@ router.get("/", (req, res) => {
 
 router.use("/appointments", appointmentRoutes);
 router.use("/users", userRoutes);
-app.use("/doctors", doctorSearchRoutes);
+router.use("/doctors", doctorSearchRoutes);
 
 export default router;
