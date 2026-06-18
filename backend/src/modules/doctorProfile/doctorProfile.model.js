@@ -30,6 +30,16 @@ const doctorProfileSchema = new mongoose.Schema(
             trim: true,
         },
 
+        profilePicture: {
+            url: {
+                type: String,
+            },
+
+            publicId: {
+                type: String,
+            },
+        },
+
         bio: {
             type: String,
             trim: true,

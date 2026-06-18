@@ -1,6 +1,7 @@
 import cron from "node-cron";
 
 import Appointment from "../modules/appointment/appointment.model.js";
+import { addReminderJob } from "../jobs";
 import { createNotificationService } from "../modules/notification/notification.service.js";
 import logger from "../utils/logger.js";
 
@@ -18,9 +19,7 @@ export const startAppointmentReminderCron = () => {
                     return (appointmentDateTime >= now && appointmentDateTime <= nextHour);
                 },);
                 for (const appointment of filteredAppointments) {
-                    await createNotificationService(appointment.patient, "Appointment Reminder", "You have an appointment within the next hour.",);
-                    appointment.reminderSent = true;
-                    await appointment.save();
+                    await addReminderJob(appointment._id,appointment.patient,);
                 }
                 logger.info(`Processed ${filteredAppointments.length} appointment reminders`,);
             } catch (error) {

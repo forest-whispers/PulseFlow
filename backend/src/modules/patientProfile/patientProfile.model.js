@@ -9,6 +9,16 @@ const patientProfileSchema = new mongoose.Schema(
             unique: true,
         },
 
+        profilePicture: {
+            url: {
+                type: String,
+            },
+
+            publicId: {
+                type: String,
+            },
+        },
+
         bloodGroup: {
             type: String,
             trim: true,

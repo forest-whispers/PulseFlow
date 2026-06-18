@@ -1,5 +1,7 @@
 import User from "../user/user.model.js";
-import { NotFoundError } from "../../utils/error.js";
+import PatientProfile from "./patientProfile.model.js";
+import { updateProfilePicture } from "../../utils/updateProfilePicture.js"
+import { NotFoundError, BadRequestError } from "../../utils/error.js";
 
 export const getPatientProfileService = async (patient) => {
     const profile = await User.findOne({  _id: patient, role: "patient", });
@@ -29,4 +31,15 @@ export const updatePatientProfileService = async (patient, updatePayload) => {
         throw new NotFoundError("Patient profile not found");
     }
     return updatedProfile;
+};
+
+export const updatePatientProfilePictureService = async ( patient, file ) => {
+    const patientProfile = await PatientProfile.findOne({ user: patient, });
+    if (!patientProfile) {
+        throw new NotFoundError("Patient profile not found");
+    }
+    if (!file) {
+        throw new BadRequestError("Profile picture is required");
+    }
+    return await updateProfilePicture( patientProfile, file, "patient-profile-pictures",);
 };

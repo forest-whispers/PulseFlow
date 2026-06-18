@@ -1,4 +1,4 @@
-import { getDoctorProfileService, updateDoctorProfileService } from "./doctorProfile.service.js";
+import { getDoctorProfileService, updateDoctorProfileService, updateDoctorProfilePictureController } from "./doctorProfile.service.js";
 
 export const getDoctorProfileController = async (req, res, next) => {
     try {
@@ -25,4 +25,10 @@ export const updateDoctorProfileController = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
+};
+
+export const updateDoctorProfilePictureController = async (req, res) => {
+        const doctor = req.user.id;
+        const updatedProfile = await updateDoctorProfilePictureService( doctor, req.file, );
+        res.status(200).json(updatedProfile);
 };

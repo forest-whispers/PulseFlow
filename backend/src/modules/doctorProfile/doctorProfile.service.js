@@ -1,5 +1,7 @@
 import DoctorProfile from "./doctorProfile.model.js";
-import { NotFoundError } from "../../utils/error.js";
+import { uploadFile } from "../../utils/uploadFile.js";
+import { deleteFile } from "../../utils/deleteFile.js";
+import { NotFoundError, BadRequestError } from "../../utils/error.js";
 
 export const getDoctorProfileService = async (doctor) => {
     const profile = await DoctorProfile.findOne({ user: doctor }).populate("user", "name email age gender");
@@ -15,4 +17,15 @@ export const updateDoctorProfileService = async (doctor, updatePayload) => {
         throw new NotFoundError("Doctor profile not found");
     }
     return updatedProfile;
+};
+
+export const updateDoctorProfilePictureService = async ( doctor, file ) => {
+    const doctorProfile = await DoctorProfile.findOne({ user: doctor, });
+    if (!doctorProfile) {
+        throw new NotFoundError("Doctor profile not found");
+    }
+    if (!file) {
+        throw new BadRequestError("Profile picture is required");
+    }
+    return await updateProfilePicture( doctorProfile, file, "doctor-profile-pictures",);
 };
