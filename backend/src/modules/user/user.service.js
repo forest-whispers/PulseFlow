@@ -3,9 +3,9 @@ import bcrypt from 'bcrypt'
 import User from "./user.model.js";
 import PatientProfile from '../patientProfile/patientProfile.model.js'
 import DoctorProfile from '../doctorProfile/doctorProfile.model.js'
-import { ConflictError } from '../../utils/error.js'
+import { ConflictError, UnauthorizedError, ForbiddenError } from '../../utils/error.js'
 
-export const createUserService = async ({ name, email, password, role, age, gender,}) =>
+export const createUserService = async ({ name, email, password, role="patient", age, gender,}) =>
 {
     const alreadyRegistered=await findUserByEmailService(email);
     if(alreadyRegistered)
@@ -14,7 +14,7 @@ export const createUserService = async ({ name, email, password, role, age, gend
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({ name, email, password : hashedPassword, role, age, gender,});
-    (role == "patient") ? await PatientProfile.create({ user: user._id, }) : await DoctorProfile.create({ user: user._id, });
+    (role == "patient") ? await PatientProfile.create({ user: user._id, }) : await DoctorProfile.create({ user: user._id, specialization: "doctor" });
     return user;
 };
 

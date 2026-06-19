@@ -4,7 +4,10 @@ export const createCheckoutSessionController = async (req, res, next) => {
     try {
         const { invoiceId } = req.body;
         const checkoutSession = await createCheckoutSessionService( req.user, invoiceId, );
-        res.status(200).json(checkoutSession);
+        res.status(200).json({
+            success: true,
+            data: checkoutSession,
+        });
     }
     catch (error) {
         next(error);

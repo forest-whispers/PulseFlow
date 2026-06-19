@@ -23,12 +23,12 @@ app.use(cookieParser());
 app.use(
     cors({
         origin: process.env.CLIENT_URL,
-        credentials: true,
+        credentials: true
     }),
 );
 app.use(helmet());
 
-app.use(mongoSanitize());
+// app.use(mongoSanitize());
 
 app.use(morgan("dev"));
 

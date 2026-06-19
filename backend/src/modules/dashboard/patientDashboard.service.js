@@ -2,13 +2,13 @@ import mongoose from "mongoose";
 
 import Appointment from "../appointment/appointment.model.js";
 
-export const getPatientDashboardService = async (patient) => {
+export const getPatientDashboardService = async (patientId) => {
     const today = new Date().toISOString().split("T")[0];
-    const upcomingAppointments = await Appointment.find({ patient, appointmentDate: { $gte: today }, status: { $ne: "cancelled" }, }).populate("doctor", "name email");
+    const upcomingAppointments = await Appointment.find({ patient: patientId, appointmentDate: { $gte: today }, status: { $ne: "cancelled" }, }).populate("doctor", "name email");
     const appointmentStats = await Appointment.aggregate([
         {
             $match: {
-                patient: new mongoose.Types.ObjectId(patient),
+                patient: new mongoose.Types.ObjectId(patientId),
             },
         },
         {

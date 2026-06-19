@@ -4,7 +4,7 @@ import { deleteFile } from "../../utils/deleteFile.js";
 import { createAuditLogService } from "../auditLog/auditLog.service.js";
 import { NotFoundError, ForbiddenError } from '../../utils/error.js'
 
-export const createMedicalRecordService = async ( doctor, body, files ) => {
+export const createMedicalRecordService = async ( currUser, body, files ) => {
     const uploadedAttachments = [];
     if (files?.length) {
         for (const file of files) {
@@ -16,8 +16,8 @@ export const createMedicalRecordService = async ( doctor, body, files ) => {
             });
         }
     }
-    const medicalRecord = await MedicalRecord.create({ ...body, doctor, attachments: uploadedAttachments, });
-    await createAuditLogService( doctor, "medical_record_created", "medical_record", medicalRecord._id, {}, );
+    const medicalRecord = await MedicalRecord.create({ ...body, doctor: currUser.id, attachments: uploadedAttachments, });
+    await createAuditLogService( currUser.id, "medical_record_created", "medical_record", medicalRecord._id, {}, );
     return medicalRecord;
 };
 
@@ -35,8 +35,8 @@ export const getMedicalRecordService = async ( currUser, medicalRecordId ) => {
     return medicalRecord;
 };
 
-export const getMyMedicalRecordsService = async ( patient ) => {
-    return await MedicalRecord.find({ patient, }).populate("doctor", "name email").sort({ createdAt: -1, });
+export const getMyMedicalRecordsService = async ( currUser ) => {
+    return await MedicalRecord.find({ patient: currUser, }).populate("doctor", "name email").sort({ createdAt: -1, });
 };
 
 export const updateMedicalRecordService = async ( currUser, medicalRecordId, body ) => {
@@ -49,6 +49,7 @@ export const updateMedicalRecordService = async ( currUser, medicalRecordId, bod
     }
     Object.assign(medicalRecord, body);
     await medicalRecord.save();
+    await createAuditLogService(currUser.id, "medical_record_updated", "medical_record", medicalRecord._id, {},);
     return medicalRecord;
 };
 
@@ -64,4 +65,5 @@ export const deleteMedicalRecordService = async ( currUser, medicalRecordId ) =>
         await deleteFile( attachment.publicId, );
     }
     await medicalRecord.deleteOne();
+    await createAuditLogService(currUser.id, "medical_record_deleted", "medical_record", medicalRecord._id, {},);
 };

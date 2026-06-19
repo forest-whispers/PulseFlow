@@ -3,7 +3,7 @@ import DoctorAvailability from "../modules/doctorAvailability/doctorAvailability
 import AvailabilityException from "../modules/availabilityException/availabilityException.model.js";
 import { BadRequestError, ConflictError } from "./error.js";
 
-export const validateAppointmentSlot = async ({ doctor, appointmentDate, bookedSlot, ignoredAppointmentId }) =>
+export const validateAppointmentSlot = async ({ doctorId, appointmentDate, bookedSlot, ignoredAppointmentId, allowInactiveDoctor = false, }) =>
 {
     const currentDate = new Date();
     const requestedDate = new Date(appointmentDate);
@@ -22,9 +22,12 @@ export const validateAppointmentSlot = async ({ doctor, appointmentDate, bookedS
             throw new BadRequestError("Cannot book past slot");
         }
     }
-    const doctorAvailability = await DoctorAvailability.findOne({ doctor, });
+    const doctorAvailability = await DoctorAvailability.findOne({ doctor: doctorId, });
     if (!doctorAvailability) {
         throw new BadRequestError("Doctor availability not configured");
+    }
+    if (!allowInactiveDoctor && !doctorAvailability.isActive) {
+        throw new ConflictError("Doctor is currently not accepting appointments", );
     }
     const appointmentDay = new Date(appointmentDate).toLocaleDateString("en-US", { weekday: "long", }).toLowerCase();
     if (!doctorAvailability.availableDays.includes(appointmentDay)) {
@@ -39,11 +42,11 @@ export const validateAppointmentSlot = async ({ doctor, appointmentDate, bookedS
     if (slotTotalMinutes < startTotalMinutes || slotTotalMinutes >= endTotalMinutes) {
         throw new BadRequestError("Slot outside doctor availability");
     }
-    const blockedDateExists = await AvailabilityException.findOne({ doctor, blockedDate: appointmentDate, });
+    const blockedDateExists = await AvailabilityException.findOne({ doctor: doctorId, blockedDate: appointmentDate, });
     if (blockedDateExists) {
         throw new BadRequestError(`Doctor unavailable on selected date due to ${blockedDateExists.reason}`,);
     }
-    const existingAppointment = await Appointment.findOne({ doctor, appointmentDate, bookedSlot, status: { $ne: "cancelled" }, ...(ignoredAppointmentId && { _id: { $ne: ignoredAppointmentId }, }), });
+    const existingAppointment = await Appointment.findOne({ doctor: doctorId, appointmentDate, bookedSlot, status: { $ne: "cancelled" }, ...(ignoredAppointmentId && { _id: { $ne: ignoredAppointmentId }, }), });
     if (existingAppointment) {
         throw new ConflictError("Slot already booked. Try a different slot.", );
     }

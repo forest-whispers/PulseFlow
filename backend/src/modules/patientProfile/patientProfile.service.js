@@ -3,15 +3,19 @@ import PatientProfile from "./patientProfile.model.js";
 import { updateProfilePicture } from "../../utils/updateProfilePicture.js"
 import { NotFoundError, BadRequestError } from "../../utils/error.js";
 
-export const getPatientProfileService = async (patient) => {
-    const profile = await User.findOne({  _id: patient, role: "patient", });
+export const getPatientProfileService = async (currUser) => {
+    const profile = await User.findOne({  _id: currUser.id, role: "patient", });
     if (!profile) {
         throw new NotFoundError("Patient profile not found");
     }
     return profile;
 };
 
-export const updatePatientProfileService = async (patient, updatePayload) => {
+export const updatePatientProfileService = async (currUser, updatePayload) => {
+    if(Array.from(updatePayload).length === 0)
+    {
+        throw new BadRequestError("No changes detected");
+    }
     const allowedUpdates = ["name", "age", "gender"];
     const filteredPayload = {};
     allowedUpdates.forEach((field) => {
@@ -21,7 +25,7 @@ export const updatePatientProfileService = async (patient, updatePayload) => {
     });
     const updatedProfile = await User.findOneAndUpdate(
         {
-            _id: patient,
+            _id: currUser.id,
             role: "patient",
         },
         filteredPayload,
@@ -33,8 +37,8 @@ export const updatePatientProfileService = async (patient, updatePayload) => {
     return updatedProfile;
 };
 
-export const updatePatientProfilePictureService = async ( patient, file ) => {
-    const patientProfile = await PatientProfile.findOne({ user: patient, });
+export const updatePatientProfilePictureService = async ( currUser, file ) => {
+    const patientProfile = await PatientProfile.findOne({ user: currUser.id, });
     if (!patientProfile) {
         throw new NotFoundError("Patient profile not found");
     }

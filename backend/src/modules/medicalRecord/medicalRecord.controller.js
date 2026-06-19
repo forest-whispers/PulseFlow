@@ -2,8 +2,12 @@ import { createMedicalRecordService, getMedicalRecordService, getMyMedicalRecord
 
 export const createMedicalRecordController =async (req, res, next) => {
         try {
-            const medicalRecord = await createMedicalRecordService( req.user.id, req.body, req.files, );
-            res.status(201).json(medicalRecord);
+            const medicalRecord = await createMedicalRecordService( req.user, req.body, req.files, );
+            res.status(201).json({
+                success: true,
+                message: "record created",
+                data: medicalRecord,
+            });
         } catch {
             next(error);
         }
@@ -12,7 +16,10 @@ export const createMedicalRecordController =async (req, res, next) => {
 export const getMedicalRecordController = async (req, res, next) => {
         try {
             const medicalRecord = await getMedicalRecordService( req.user, req.params.id, );
-            res.status(200).json(medicalRecord);
+            res.status(200).json({
+                success: true,
+                data: medicalRecord,
+            });
         } catch {
             next(error);
         }
@@ -20,8 +27,11 @@ export const getMedicalRecordController = async (req, res, next) => {
 
 export const getMyMedicalRecordsController = async (req, res, next) => {
         try {
-            const medicalRecords = await getMyMedicalRecordsService( req.user.id, );
-            res.status(200).json(medicalRecords);
+            const medicalRecords = await getMyMedicalRecordsService( req.user, );
+            res.status(200).json({
+                success: true,
+                data: medicalRecords,
+            });
         } catch {
             next(error);
         }
@@ -30,7 +40,11 @@ export const getMyMedicalRecordsController = async (req, res, next) => {
 export const updateMedicalRecordController = async (req, res, next) => {
         try {
             const medicalRecord = await updateMedicalRecordService( req.user, req.params.id, req.body, );
-            res.status(200).json(medicalRecord);
+            res.status(200).json({
+                success: true,
+                message: "record updated",
+                data: medicalRecord,
+            });
         } catch {
             next(error);
         }
@@ -39,7 +53,10 @@ export const updateMedicalRecordController = async (req, res, next) => {
 export const deleteMedicalRecordController = async (req, res, next) => {
         try {
             await deleteMedicalRecordService( req.user, req.params.id, );
-            res.status(204).send();
+            res.status(204).send({
+                success: false,
+                message: "record deleted",
+            });
         } catch {
             next(error);
         }

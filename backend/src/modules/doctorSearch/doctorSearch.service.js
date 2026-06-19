@@ -34,6 +34,5 @@ export const searchDoctorsService = async (queryParams) => {
             select: "name email",
             match: search ? { name: { $regex: search, $options: "i", }, } : {}, }).sort(sortQuery).skip(skip).limit(limit);
     const filteredDoctors = requiredDoctors.filter((doctor) => doctor.user,);
-
     return filteredDoctors;
 };

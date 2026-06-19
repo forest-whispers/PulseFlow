@@ -10,7 +10,6 @@ export const getAvailableSlotsController = async ( req, res, next,
             throw new BadRequestError("Date query parameter is required", );
         }
         const availableSlots = await getAvailableSlotsService( doctorId, date, );
-
         res.status(200).json({
             success: true,
             data: availableSlots,

@@ -20,8 +20,8 @@ export const generateSlotsService = ( startTime, endTime, slotDuration,) =>
     return slots;
 };
 
-export const getAvailableSlotsService = async ( doctor, selectedDate ) => {
-    const doctorAvailability = await DoctorAvailability.findOne({ doctor });
+export const getAvailableSlotsService = async ( doctorId, selectedDate ) => {
+    const doctorAvailability = await DoctorAvailability.findOne({ doctor: doctorId });
     if (!doctorAvailability) {
         throw new NotFoundError( "Doctor availability not found", );
     }
@@ -30,8 +30,8 @@ export const getAvailableSlotsService = async ( doctor, selectedDate ) => {
         throw new NotFoundError("Doctor unavailable on selected day",);
     }
     const slots = generateSlotsService( doctorAvailability.startTime, doctorAvailability.endTime, doctorAvailability.slotDuration, );
-    const bookedAppointments = await Appointment.find( { doctor, appointmentDate: selectedDate, status: { $ne: "cancelled" }, }, { bookedSlot: 1, _id: 0, }, );
+    const bookedAppointments = await Appointment.find( { doctor: doctorId, appointmentDate: selectedDate, status: { $ne: "cancelled" }, }, { bookedSlot: 1, _id: 0, }, );
     const bookedSlots = bookedAppointments.map( (appointment) => appointment.bookedSlot, );
     const availableSlots = slots.filter( (slot) => !bookedSlots.includes(slot), );
     return availableSlots;
-  };
+};

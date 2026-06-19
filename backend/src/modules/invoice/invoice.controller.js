@@ -3,7 +3,11 @@ import { createInvoiceService, getInvoiceService, getMyInvoicesService, updateIn
 export const createInvoiceController = async (req, res, next) => {
     try {
         const invoice = await createInvoiceService(req.user, req.body);
-        res.status(201).json(invoice);
+        res.status(201).json({
+            success: true,
+            message: "invoice generated",
+            data: invoice,
+        });
     } catch (error) {
         next(error);
     }
@@ -12,7 +16,10 @@ export const createInvoiceController = async (req, res, next) => {
 export const getInvoiceController = async (req, res, next) => {
     try {
         const invoice = await getInvoiceService(req.user, req.params.id);
-        res.status(200).json(invoice);
+        res.status(200).json({
+            success: true,
+            data: invoice,
+        });
     } catch (error) {
         next(error);
     }
@@ -21,7 +28,10 @@ export const getInvoiceController = async (req, res, next) => {
 export const getMyInvoicesController = async (req, res, next) => {
     try {
         const invoices = await getMyInvoicesService(req.user);
-        res.status(200).json(invoices);
+        res.status(200).json({
+            success: true,
+            data: invoices,
+        });
     } catch (error) {
         next(error);
     }
@@ -30,7 +40,11 @@ export const getMyInvoicesController = async (req, res, next) => {
 export const updateInvoiceController = async (req, res, next) => {
     try {
         const invoice = await updateInvoiceService(req.user, req.params.id, req.body);
-        res.status(200).json(invoice);
+        res.status(200).json({
+            success: true,
+            message: "invoice update successful",
+            data: invoice,
+        });
     } catch (error) {
         next(error);
     }
@@ -39,7 +53,10 @@ export const updateInvoiceController = async (req, res, next) => {
 export const deleteInvoiceController = async (req, res, next) => {
     try {
         await deleteInvoiceService(req.user, req.params.id);
-        res.status(204).send();
+        res.status(204).send({
+            success: false,
+            message: "invoice deleted",
+        });
     } catch (error) {
         next(error);
     }
