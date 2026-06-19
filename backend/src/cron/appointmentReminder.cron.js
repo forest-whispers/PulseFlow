@@ -1,7 +1,7 @@
 import cron from "node-cron";
 
 import Appointment from "../modules/appointment/appointment.model.js";
-import { addReminderJob } from "../jobs";
+import { addReminderJob } from "../jobs/index.js";
 import { createNotificationService } from "../modules/notification/notification.service.js";
 import logger from "../utils/logger.js";
 

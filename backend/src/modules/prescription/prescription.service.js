@@ -3,7 +3,7 @@ import MedicalRecord from "../medicalRecord/medicalRecord.model.js";
 import { createAuditLogService } from "../auditLog/auditLog.service.js";
 import { NotFoundError, ForbiddenError, ConflictError } from "../../utils/error.js";
 
-export const getPrescriptionService = async (currUser, body) => {
+export const createPrescriptionService = async (currUser, body) => {
     const medicalRecord = await MedicalRecord.findById(body.medicalRecord);
     if (!medicalRecord) {
         throw new NotFoundError("Medical record not found");

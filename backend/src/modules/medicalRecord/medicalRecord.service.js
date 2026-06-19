@@ -2,7 +2,7 @@ import MedicalRecord from './medicalRecord.model.js';
 import { uploadFile } from "../../utils/uploadFile.js";
 import { deleteFile } from "../../utils/deleteFile.js";
 import { createAuditLogService } from "../auditLog/auditLog.service.js";
-import { NotFoundError, ForbideenError } from '../../utils/error.js'
+import { NotFoundError, ForbiddenError } from '../../utils/error.js'
 
 export const createMedicalRecordService = async ( doctor, body, files ) => {
     const uploadedAttachments = [];
@@ -19,10 +19,6 @@ export const createMedicalRecordService = async ( doctor, body, files ) => {
     const medicalRecord = await MedicalRecord.create({ ...body, doctor, attachments: uploadedAttachments, });
     await createAuditLogService( doctor, "medical_record_created", "medical_record", medicalRecord._id, {}, );
     return medicalRecord;
-};
-
-export const getMedicalRecordService = async ( medicalRecordId ) => {
-    return await MedicalRecord.findById( medicalRecordId, ).populate("patient", "name email").populate("doctor", "name email");
 };
 
 export const getMedicalRecordService = async ( currUser, medicalRecordId ) => {
@@ -54,11 +50,6 @@ export const updateMedicalRecordService = async ( currUser, medicalRecordId, bod
     Object.assign(medicalRecord, body);
     await medicalRecord.save();
     return medicalRecord;
-    const updatedMedicalRecord = await MedicalRecord.findByIdAndUpdate( medicalRecordId, body, { new: true, runValidators: true, }, );
-    if (!updatedMedicalRecord) {
-        throw new NotFoundError( "Medical record not found", );
-    }
-    return updatedMedicalRecord;
 };
 
 export const deleteMedicalRecordService = async ( currUser, medicalRecordId ) => {

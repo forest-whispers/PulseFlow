@@ -1,4 +1,4 @@
-import { getDoctorProfileService, updateDoctorProfileService, updateDoctorProfilePictureController } from "./doctorProfile.service.js";
+import { getDoctorProfileService, updateDoctorProfileService, updateDoctorProfilePictureService } from "./doctorProfile.service.js";
 
 export const getDoctorProfileController = async (req, res, next) => {
     try {
