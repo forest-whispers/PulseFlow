@@ -27,7 +27,7 @@ export const createPrescriptionService = async (currUser, body) => {
 }
 
 export const getPrescriptionService = async (currUser, prescriptionId) => {
-    const prescription = await Prescription.findById(prescriptionId).populate("patient", "name email").populate("doctor", "name email").populate("medicalRecord");
+    const prescription = await Prescription.findById(prescriptionId).populate("patient", "name").populate("doctor", "name").populate({ path: "medicalRecord", select: "visitDate chiefComplaint", }).lean();
     if (!prescription) {
         throw new NotFoundError("Prescription not found");
     }
@@ -40,11 +40,30 @@ export const getPrescriptionService = async (currUser, prescriptionId) => {
     return prescription;
 };
 
-export const getMyPrescriptionsService = async (currUser) => {
-    if (currUser.role === "patient") {
-        return Prescription.find({ patient: currUser.id }).populate("doctor", "name email").populate("medicalRecord").sort({ createdAt: -1 });;
-    }
-    return Prescription.find({ doctor: currUser.id }).populate("doctor", "name email").populate("medicalRecord").sort({ createdAt: -1 });;
+export const getMyPrescriptionsService = async ( currUser, queryParams ) => {
+    const page = Number(queryParams.page) || 1;
+    const limit = Number(queryParams.limit) || 10;
+    const skip = (page - 1) * limit;
+    const query = currUser.role === "patient" ? { patient: currUser.id } : { doctor: currUser.id };
+    const [prescriptions, totalPrescriptions] = await Promise.all([
+            Prescription.find(query).select("doctor medicalRecord medications createdAt").populate("doctor", "name").populate({ path: "medicalRecord", select: "visitDate chiefComplaint", }) .sort({ createdAt: -1, }).skip(skip).limit(limit).lean(),
+            Prescription.countDocuments(query),
+        ]);
+    const formattedPrescriptions = prescriptions.map(
+        ({ medications, ...prescription }) => ({
+            ...prescription,
+            medicineCount: medications.length,
+        }),
+    );
+    return {
+        prescriptions: formattedPrescriptions,
+        pagination: {
+            page,
+            limit,
+            total: totalPrescriptions,
+            totalPages: Math.ceil(totalPrescriptions / limit),
+        },
+    };
 };
 
 export const updatePrescriptionService = async (currUser, prescriptionId, body) => {

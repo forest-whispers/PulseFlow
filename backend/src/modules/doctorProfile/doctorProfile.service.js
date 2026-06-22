@@ -4,11 +4,20 @@ import { deleteFile } from "../../utils/deleteFile.js";
 import { NotFoundError, BadRequestError } from "../../utils/error.js";
 
 export const getDoctorProfileService = async (currUser) => {
-    const profile = await DoctorProfile.findOne({ user: currUser.id }).populate("user", "name email age gender");
+    const profile = await DoctorProfile.findOne({ user: currUser.id }).populate("user", "name age gender");
     if (!profile) {
         throw new NotFoundError("Doctor profile not found");
     }
-    return profile;
+    const flattenedProfile = {
+        ...profile.user,
+        specialization: profile.specialization,
+        experience: profile.experience,
+        consultationFee: profile.consultationFee,
+        clinicAddress: profile.clinicAddress,
+        profilePicture: profile.profilePicture,
+        bio: profile.bio,
+      };
+    return flattenedProfile;
 };
 
 export const updateDoctorProfileService = async (currUser, updatePayload) => {

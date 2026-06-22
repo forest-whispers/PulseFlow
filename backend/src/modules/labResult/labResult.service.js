@@ -32,25 +32,51 @@ export const createLabResultService = async (currUser, body, file) => {
     return labResult;
 };
 
-export const getLabResultService = async (currUser, labResultId) => {
-    const labResult = await LabResult.findById(labResultId).populate("patient", "name email").populate("doctor", "name email").populate("medicalRecord");
+export const getLabResultService = async ( currUser, labResultId,) => {
+    const labResult = await LabResult.findById(labResultId).populate("patient", "name").populate("doctor", "name").populate({ path: "medicalRecord", select: "visitDate chiefComplaint", }).lean();
     if (!labResult) {
         throw new NotFoundError("Lab result not found");
     }
-    if (currUser.role === "doctor" && labResult.doctor._id.toString() !== currUser.id) {
-        throw new ForbiddenError("You cannot access this lab result");
+    if (currUser.role === "doctor" &&labResult.doctor._id.toString() !== currUser.id) {
+        throw new ForbiddenError(
+            "You cannot access this lab result",
+        );
     }
-    if (currUser.role === "patient" && labResult.patient._id.toString() !== currUser.id) {
-        throw new ForbiddenError("You cannot access this lab result");
+    if (currUser.role === "patient" &&labResult.patient._id.toString() !== currUser.id) {
+        throw new ForbiddenError(
+            "You cannot access this lab result",
+        );
     }
     return labResult;
 };
 
-export const getMyLabResultsService = async (currUser) => {
-    if (currUser.role === "patient") {
-        return await LabResult.find({ patient: currUser.id }).populate("doctor", "name email").populate("medicalRecord").sort({ createdAt: -1 });
-    }
-    return await LabResult.find({ doctor: currUser.id }).populate("patient", "name email").populate("medicalRecord").sort({ createdAt: -1 });
+export const getMyLabResultsService = async ( currUser, queryParams,) => {
+    const page = Number(queryParams.page) || 1;
+    const limit = Number(queryParams.limit) || 10;
+    const skip = (page - 1) * limit;
+    const query = currUser.role === "patient" ? { patient: currUser.id } : { doctor: currUser.id };
+    const [labResults, totalLabResults] = await Promise.all([
+        LabResult.find(query).select("doctor patient medicalRecord testName resultSummary report createdAt").populate("doctor", "name").populate("patient", "name").populate({ path: "medicalRecord", select: "visitDate chiefComplaint", }).sort({ createdAt: -1, }).skip(skip).limit(limit).lean(),
+        LabResult.countDocuments(query),
+    ]);
+    const formattedLabResults = labResults.map((labResult) => ({
+        ...labResult,
+        report: {
+            url: labResult.report.url,
+            originalName: labResult.report.originalName,
+        },
+    }));
+    return {
+        labResults: formattedLabResults,
+        pagination: {
+            page,
+            limit,
+            total: totalLabResults,
+            totalPages: Math.ceil(
+                totalLabResults / limit,
+            ),
+        },
+    };
 };
 
 export const updateLabResultService = async (currUser, labResultId, body, file) => {

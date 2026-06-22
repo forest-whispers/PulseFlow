@@ -17,24 +17,42 @@ export const createAppointmentService = async (currUser, {doctor, appointmentDat
     return appointment;
 };
 
-export const getAppointmentsService = async (currUser) =>
+export const getAppointmentsService = async (currUser, queryParams) =>
 {
-    let query = {};
+    const query = {};
     let role=currUser.role;
     if(role==="patient")
     {
-        query={patient:currUser.id}
+        query.patient = currUser.id
     }
     else if(role==="doctor")
     {
-        query={doctor:currUser.id}
+        query.doctor = currUser.id
     }
-    const appointments = await Appointment.find(query).populate("patient", "name email").populate("doctor", "name email");
-    return appointments;
+    if (queryParams.status) {
+        query.status = queryParams.status;
+    }
+    const page = Number(queryParams.page) || 1;
+    const limit = Number(queryParams.limit) || 10;
+    const skip = (page - 1) * limit;
+    const [appointments, totalAppointments] = await Promise.all([
+        Appointment.find(query)
+            .select("patient doctor appointmentDate bookedSlot status reason").populate("patient", "name").populate("doctor", "name").sort({ appointmentDate: -1, bookedSlot: -1, }).skip(skip).limit(limit).lean(),
+        Appointment.countDocuments(query),
+    ]);
+    return {
+        appointments,
+        pagination: {
+            page,
+            limit,
+            total: totalAppointments,
+            totalPages: Math.ceil(totalAppointments / limit),
+        },
+    };
 };
 
 export const getAppointmentService = async (currUser, appointmentId) => {
-    const appointment = await Appointment.findById(appointmentId).populate("patient", "name email").populate("doctor", "name email");
+    const appointment = await Appointment.findById(appointmentId).populate("patient", "name").populate("doctor", "name").lean();
     if (!appointment) {
         throw new NotFoundError("Appointment not found");
     }

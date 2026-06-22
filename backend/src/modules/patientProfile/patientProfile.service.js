@@ -4,9 +4,15 @@ import { updateProfilePicture } from "../../utils/updateProfilePicture.js"
 import { NotFoundError, BadRequestError } from "../../utils/error.js";
 
 export const getPatientProfileService = async (currUser) => {
-    const profile = await User.findOne({  _id: currUser.id, role: "patient", });
-    if (!profile) {
+    let profile = {};
+    const basicProfile = await User.findOne({ _id: currUser.id, role: "patient", }).select("user", "name age gender");
+    if (!basicProfile) {
         throw new NotFoundError("Patient profile not found");
+    }
+    const specifics = await PatientProfile.findById(currUser._id).select("bloodGroup allergies medicalHistory emergencyContact");
+    if(specifics)
+    {
+        profile = { ...basicProfile, ...specifics };
     }
     return profile;
 };

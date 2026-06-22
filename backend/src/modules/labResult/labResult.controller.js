@@ -27,7 +27,7 @@ export const getLabResultController = async (req, res, next) => {
 
 export const getMyLabResultsController = async (req, res, next) => {
     try {
-        const labResults = await getMyLabResultsService(req.user);
+        const labResults = await getMyLabResultsService(req.user, req.query);
         res.status(200).json({
             success: true,
             data: labResults,

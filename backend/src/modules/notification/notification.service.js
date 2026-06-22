@@ -12,17 +12,43 @@ export const createNotificationService = async (recipient, title, message) => {
     return notification;
 };
 
-export const getNotificationsService = async (recipient) => {
-    const notifications = await Notification.find({ recipient }).sort({ createdAt: -1 });
-    return notifications;
+export const getNotificationsService = async ( recipient, queryParams ) => {
+    const page = Number(queryParams.page) || 1;
+    const limit = Number(queryParams.limit) || 10;
+    const skip = (page - 1) * limit;
+    const query = { recipient };
+    if (queryParams.isRead !== undefined) {
+        query.isRead = queryParams.isRead === "true";
+    }
+    const [notifications, totalNotifications] = await Promise.all([
+            Notification.find(query).select("title message isRead createdAt").sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+            Notification.countDocuments(query),
+        ]);
+    return {
+        notifications,
+        pagination: {
+            page,
+            limit,
+            total: totalNotifications,
+            totalPages: Math.ceil(totalNotifications / limit),
+        },
+    };
 };
 
-export const markNotificationReadService = async (alert) => {
-    const notification = await Notification.findById(alert);
+export const markNotificationReadService = async (userId, alert) => {
+    const notification = await Notification.findOneAndUpdate( { _id: userId, recipient: currUser.id, }, { isRead: true, }, { new: true, }, ).lean();
     if (!notification) {
         throw new NotFoundError("Notification not found");
     }
-    notification.isRead = true;
-    await notification.save();
     return notification;
+};
+
+export const getUnreadNotificationCountService = async ( recipient ) => {
+    const count = await Notification.countDocuments({ recipient, isRead: false, });
+    return { count };
+};
+
+export const markAllNotificationsReadService = async (userId) => {
+    await Notification.updateMany( { recipient: currUser.id, isRead: false, }, { isRead: true, }, );
+    return { status: complete };
 };

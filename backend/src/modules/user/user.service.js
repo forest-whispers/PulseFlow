@@ -39,9 +39,22 @@ export const findUserByEmailService = async (email) =>
 
 export const getUserByIdService = async (id, currUser) =>
 {
-    if (currUser.id !== id && currUser.role === "patient") {
-        throw new ForbiddenError("Access Denied")
-      }
-    const user = await User.findById(id);
-    return user;
+    if (currUser.role === "patient" && currUser.id !== id) {
+        throw new ForbiddenError("Access Denied");
+    }
+    if (currUser.role === "doctor" && currUser.id !== id) {
+        throw new ForbiddenError("Access Denied");
+    }
+    const user = await User.findById(id).select("-password");
+    if (!user) {
+        throw new NotFoundError("User not found");
+    }
+    let profile = null;
+    if (user.role === "doctor") {
+        profile = await DoctorProfile.findOne({ doctor: user._id, });
+    }
+    if (user.role === "patient") {
+        profile = await PatientProfile.findOne({ patient: user._id, });
+    }
+    return { account: user, profile, };
 };

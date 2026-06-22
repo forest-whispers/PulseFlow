@@ -27,7 +27,7 @@ export const getPrescriptionController = async (req, res, next) => {
 
 export const getMyPrescriptionsController = async (req, res, next) => {
     try {
-        const prescriptions = await getMyPrescriptionsService(req.user);
+        const prescriptions = await getMyPrescriptionsService(req.user, req.query);
         res.status(200).json({
             success: true,
             data: prescriptions,

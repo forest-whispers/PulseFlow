@@ -27,7 +27,7 @@ export const getMedicalRecordController = async (req, res, next) => {
 
 export const getMyMedicalRecordsController = async (req, res, next) => {
         try {
-            const medicalRecords = await getMyMedicalRecordsService( req.user, );
+            const medicalRecords = await getMyMedicalRecordsService( req.user, req.query, );
             res.status(200).json({
                 success: true,
                 data: medicalRecords,

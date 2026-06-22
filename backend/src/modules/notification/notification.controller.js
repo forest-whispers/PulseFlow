@@ -1,8 +1,8 @@
-import { getNotificationsService, markNotificationReadService } from "./notification.service.js";
+import { getNotificationsService, markNotificationReadService, getUnreadNotificationCountService, markAllNotificationsReadService } from "./notification.service.js";
 
 export const getNotificationsController = async (req, res, next) => {
     try {
-        const notifications = await getNotificationsService(req.user.id);
+        const notifications = await getNotificationsService(req.user.id, req.query);
         res.status(200).json({
             success: true,
             data: notifications,
@@ -14,11 +14,34 @@ export const getNotificationsController = async (req, res, next) => {
 
 export const markNotificationReadController = async (req, res, next) => {
     try {
-        const { id } = req.params;
-        const notification = await markNotificationReadService(id);
+        const notification = await markNotificationReadService(req.user.id, req.params.id);
         res.status(200).json({
             success: true,
             data: notification,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getUnreadNotificationCountController = async (req, res, next) => {
+    try {
+        const count = await getUnreadNotificationCountService(req.user.id);
+        res.status(200).json({
+            success: true,
+            data: count,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const markAllNotificationsReadController = async (req, res, next) => {
+    try {
+        const result = await markAllNotificationsReadService(req.user.id);
+        res.status(200).json({
+            success: true,
+            data: result,
         });
     } catch (error) {
         next(error);

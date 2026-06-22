@@ -30,25 +30,44 @@ export const createInvoiceService = async (currUser, body) => {
     return invoice;
 };
 
-export const getInvoiceService = async (currUser, invoiceId) => {
-    const invoice = await Invoice.findById(invoiceId).populate("appointment", "appointmentDate bookedSlot status").populate("patient", "name email").populate("doctor", "name email");
+export const getInvoiceService = async (currUser,invoiceId) => {
+    const invoice = await Invoice.findById(invoiceId).select( "-stripeSessionId -stripePaymentIntentId" ).populate({ path: "appointment", select: "appointmentDate bookedSlot status", }).populate("patient", "name").populate("doctor", "name").lean();
     if (!invoice) {
         throw new NotFoundError("Invoice not found");
     }
-    if (currUser.role === "doctor" && invoice.doctor._id.toString() !== currUser.id) {
-        throw new ForbiddenError("You cannot access this invoice");
+    if (currUser.role === "doctor" &&invoice.doctor._id.toString() !== currUser.id) {
+        throw new ForbiddenError(
+            "You cannot access this invoice",
+        );
     }
-    if (currUser.role === "patient" && invoice.patient._id.toString() !== currUser.id) {
-        throw new ForbiddenError("You cannot access this invoice");
+    if (currUser.role === "patient" &&invoice.patient._id.toString() !== currUser.id) {
+        throw new ForbiddenError(
+            "You cannot access this invoice",
+        );
     }
     return invoice;
 };
 
-export const getMyInvoicesService = async (currUser) => {
-    if (currUser.role === "patient") {
-        return await Invoice.find({ patient: currUser.id }).populate("appointment", "appointmentDate bookedSlot status").populate("doctor", "name email").sort({ createdAt: -1 });
-    }
-    return await Invoice.find({ doctor: currUser.id }).populate("appointment", "appointmentDate bookedSlot status").populate("patient", "name email").sort({ createdAt: -1 });
+export const getMyInvoicesService = async ( currUser, queryParams, ) => {
+    const page = Number(queryParams.page) || 1;
+    const limit = Number(queryParams.limit) || 10;
+    const skip = (page - 1) * limit;
+    const query = currUser.role === "patient" ? { patient: currUser.id } : { doctor: currUser.id };
+    const [invoices, totalInvoices] = await Promise.all([
+            Invoice.find(query).select( "appointment amount status paymentMethod paidAt createdAt" ).populate({ path: "appointment", select: "appointmentDate bookedSlot status", }).populate("doctor", "name").populate("patient", "name").sort({ createdAt: -1, }).skip(skip).limit(limit).lean(),
+            Invoice.countDocuments(query),
+        ]);
+    return {
+        invoices,
+        pagination: {
+            page,
+            limit,
+            total: totalInvoices,
+            totalPages: Math.ceil(
+                totalInvoices / limit,
+            ),
+        },
+    };
 };
 
 export const updateInvoiceService = async (currUser, invoiceId, body) => {

@@ -27,7 +27,7 @@ export const getInvoiceController = async (req, res, next) => {
 
 export const getMyInvoicesController = async (req, res, next) => {
     try {
-        const invoices = await getMyInvoicesService(req.user);
+        const invoices = await getMyInvoicesService(req.user, req.query);
         res.status(200).json({
             success: true,
             data: invoices,

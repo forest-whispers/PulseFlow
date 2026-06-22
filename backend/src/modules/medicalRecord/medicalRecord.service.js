@@ -1,4 +1,7 @@
 import MedicalRecord from './medicalRecord.model.js';
+import Prescription from "../prescription/prescription.model.js";
+import LabResult from "../labResult/labResult.model.js";
+import Invoice from "../invoice/invoice.model.js";
 import { uploadFile } from "../../utils/uploadFile.js";
 import { deleteFile } from "../../utils/deleteFile.js";
 import { createAuditLogService } from "../auditLog/auditLog.service.js";
@@ -22,7 +25,12 @@ export const createMedicalRecordService = async ( currUser, body, files ) => {
 };
 
 export const getMedicalRecordService = async ( currUser, medicalRecordId ) => {
-    const medicalRecord = await MedicalRecord.findById( medicalRecordId, ).populate("patient", "name email").populate("doctor", "name email");
+    const medicalRecord = await MedicalRecord.findById( medicalRecordId, ).populate("patient", "name").populate("doctor", "name").lean();
+    const [prescription, labResult, invoice] = await Promise.all([
+        Prescription.findOne({ medicalRecord: medicalRecordId, }).select("_id").lean(),
+        LabResult.findOne({ medicalRecord: medicalRecordId, }).select("_id testName").lean(),
+        Invoice.findOne({ medicalRecord: medicalRecordId, }).select("_id amount status").lean(),
+    ]);
     if (!medicalRecord) {
         throw new NotFoundError("Medical record not found");
     }
@@ -32,11 +40,35 @@ export const getMedicalRecordService = async ( currUser, medicalRecordId ) => {
     if ( currUser.role === "patient" && medicalRecord.patient._id.toString() !== currUser.id ) {
         throw new ForbiddenError( "You cannot access this medical record", );
     }
-    return medicalRecord;
+    return {
+        medicalRecord,
+        related: {
+            prescription,
+            labResult,
+            invoice,
+        },
+    };
 };
 
-export const getMyMedicalRecordsService = async ( currUser ) => {
-    return await MedicalRecord.find({ patient: currUser, }).populate("doctor", "name email").sort({ createdAt: -1, });
+export const getMyMedicalRecordsService = async (currUser,queryParams,) => {
+    const page = Number(queryParams.page) || 1;
+    const limit = Number(queryParams.limit) || 10;
+    const skip = (page - 1) * limit;
+    const [medicalRecords, totalMedicalRecords] = await Promise.all([
+            MedicalRecord.find({ patient: currUser._id, }).select("visitDate chiefComplaint diagnosis treatment").populate("doctor", "name").sort({ visitDate: -1, }).skip(skip).limit(limit).lean(),
+            MedicalRecord.countDocuments(query),
+        ]);
+    return {
+        medicalRecords,
+        pagination: {
+            page,
+            limit,
+            total: totalMedicalRecords,
+            totalPages: Math.ceil(
+                totalMedicalRecords / limit,
+            ),
+        },
+    };
 };
 
 export const updateMedicalRecordService = async ( currUser, medicalRecordId, body ) => {
