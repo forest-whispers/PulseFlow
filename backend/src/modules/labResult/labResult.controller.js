@@ -6,7 +6,7 @@ export const createLabResultController = async (req, res, next) => {
         res.status(201).json({
             success: true,
             message: "lab result generated",
-            data: labResult,
+            data: labResult._id,
         });
     } catch (error) {
         next(error);
@@ -56,6 +56,7 @@ export const deleteLabResultController = async (req, res, next) => {
         res.status(204).send({
             success: false,
             message: "lab result deleted",
+            data: null
         });
     } catch (error) {
         next(error);

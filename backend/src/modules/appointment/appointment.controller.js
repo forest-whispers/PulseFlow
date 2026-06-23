@@ -8,7 +8,7 @@ export const createAppointmentController = async (req, res, next) =>
         res.status(201).json({
             success: true,
             message: "appointment acknowledged",
-            data: appointment,
+            data: null,
         });
     } catch (error) {
         next(error);
@@ -65,8 +65,8 @@ export const cancelAppointmentController = async ( req, res, next,) =>
       const appointment = await cancelAppointmentService(req.user, id);
       res.status(200).json({
         success: true,
-          message: "appointment cancellation successful",
-        data: appointment,
+        message: "appointment cancellation successful",
+        data: null,
       });
     } catch (error) {
       next(error);

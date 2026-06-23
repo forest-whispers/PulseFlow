@@ -6,7 +6,7 @@ export const createInvoiceController = async (req, res, next) => {
         res.status(201).json({
             success: true,
             message: "invoice generated",
-            data: invoice,
+            data: invoice._id,
         });
     } catch (error) {
         next(error);
@@ -56,6 +56,7 @@ export const deleteInvoiceController = async (req, res, next) => {
         res.status(204).send({
             success: false,
             message: "invoice deleted",
+            data: null
         });
     } catch (error) {
         next(error);

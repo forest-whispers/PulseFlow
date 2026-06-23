@@ -17,7 +17,7 @@ export const markNotificationReadController = async (req, res, next) => {
         const notification = await markNotificationReadService(req.user.id, req.params.id);
         res.status(200).json({
             success: true,
-            data: notification,
+            data: null,
         });
     } catch (error) {
         next(error);
@@ -41,7 +41,7 @@ export const markAllNotificationsReadController = async (req, res, next) => {
         const result = await markAllNotificationsReadService(req.user.id);
         res.status(200).json({
             success: true,
-            data: result,
+            data: null,
         });
     } catch (error) {
         next(error);

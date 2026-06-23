@@ -6,7 +6,7 @@ export const createMedicalRecordController =async (req, res, next) => {
             res.status(201).json({
                 success: true,
                 message: "record created",
-                data: medicalRecord,
+                data: medicalRecord._id,
             });
         } catch {
             next(error);
@@ -56,6 +56,7 @@ export const deleteMedicalRecordController = async (req, res, next) => {
             res.status(204).send({
                 success: false,
                 message: "record deleted",
+                data: null
             });
         } catch {
             next(error);

@@ -28,12 +28,19 @@ export const loginUserService = async (email, password) =>
     if (!isPasswordMatched) {
         throw new UnauthorizedError("Invalid email or password");
     }
-    return user;
+    const verifiedUser = {
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        age: user?.age,
+        gender: user?.gender
+    }
+    return verifiedUser;
   };
 
 export const findUserByEmailService = async (email) =>
 {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select('+password');
     return user;
 };
 

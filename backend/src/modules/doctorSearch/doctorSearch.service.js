@@ -34,7 +34,7 @@ export const searchDoctorsService = async (queryParams) => {
         sortQuery[sortBy] = order === "asc" ? 1 : -1;
     }
     const search = queryParams.search;
-    const requiredDoctors = await DoctorProfile.find(query).select("user specialization experience consultationFee profilePicture",).populate({
+    const requiredDoctors = await DoctorProfile.find(query).select("user specialization experience consultationFee profilePicture clinicAddress",).populate({
             path: "user",
             select: "name",
             match: search ? { name: { $regex: search, $options: "i", }, } : {}, }).sort(sortQuery).skip(skip).limit(limit).lean();
