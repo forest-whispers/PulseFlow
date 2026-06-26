@@ -1,19 +1,4 @@
-import { createAvailabilityService, updateAvailabilityService, getAvailabilityService,} from "./doctorAvailability.service.js";
-
-export const createAvailabilityController = async ( req, res, next,) =>
-{
-    try {
-        const { availableDays, startTime, endTime, slotDuration,} = req.body;
-        const schedule = await createAvailabilityService( req.user, availableDays, startTime, endTime, slotDuration,);
-        res.status(201).json({
-            success: true,
-            message: "schedule added",
-            data: schedule,
-        });
-    } catch (error) {
-        next(error);
-    }
-};
+import { updateAvailabilityService, getAvailabilityService,} from "./doctorAvailability.service.js";
 
 export const updateAvailabilityController = async (req,res,next,) => {
     try {

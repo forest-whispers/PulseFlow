@@ -54,7 +54,7 @@ export const deleteInvoiceController = async (req, res, next) => {
     try {
         await deleteInvoiceService(req.user, req.params.id);
         res.status(204).send({
-            success: false,
+            success: true,
             message: "invoice deleted",
             data: null
         });

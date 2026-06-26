@@ -7,14 +7,16 @@ const availabilityExceptionSchema = new mongoose.Schema(
             ref: "User",
             required: true,
         },
-        blockedDate: {
-            type: String,
-            required: true,
-        },
-        reason: {
-            type: String,
-            trim: true,
-        },
+        blockedDates: [{
+            blockedDate: {
+                type: String,
+                required: true,
+            },
+            reason: {
+                type: String,
+                trim: true,
+            }
+        }],
     },
     {
         timestamps: true,

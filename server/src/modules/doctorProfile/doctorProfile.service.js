@@ -1,3 +1,4 @@
+import User from "../user/user.model.js";
 import DoctorProfile from "./doctorProfile.model.js";
 import { uploadFile } from "../../utils/uploadFile.js";
 import { deleteFile } from "../../utils/deleteFile.js";
@@ -21,11 +22,46 @@ export const getDoctorProfileService = async (currUser) => {
 };
 
 export const updateDoctorProfileService = async (currUser, updatePayload) => {
-    const updatedProfile = await DoctorProfile.findOneAndUpdate( { user: currUser.id }, updatePayload, { new: true, runValidators: true }, ).populate("user", "name email age gender");
-    if (!updatedProfile) {
+    if (Object.keys(updatePayload).length === 0) {
+        throw new BadRequestError("No changes detected");
+    }
+    const allowedBasicsUpdate = ["name", "age", "gender"];
+    const allowedSpecificsUpdate = ["specialization", "experience", "consultationFee", "clinicAddress", "bio"];
+    let filteredPayload = {};
+    allowedBasicsUpdate.forEach((field) => {
+        if (updatePayload[field] !== undefined) {
+            filteredPayload[field] = updatePayload[field];
+        }
+    });
+    const basicProfile = await User.findOneAndUpdate(
+        {
+            _id: currUser.id,
+            role: "doctor",
+        },
+        filteredPayload,
+        { new: true, runValidators: true },
+    );
+    if (!basicProfile) {
+        throw new NotFoundError("Something went wrong");
+    }
+    filteredPayload={};
+    allowedSpecificsUpdate.forEach((field) => {
+        if (updatePayload[field] !== undefined) {
+            filteredPayload[field] = updatePayload[field];
+        }
+    });
+    const specifics = await DoctorProfile.findOneAndUpdate(
+        {
+            user: currUser.id,
+        },
+        filteredPayload,
+        { new: true, runValidators: true },
+    );
+    if (!specifics) {
         throw new NotFoundError("Doctor profile not found");
     }
-    return updatedProfile;
+    const profile = { ...basicProfile, ...specifics };
+    return profile;
 };
 
 export const updateDoctorProfilePictureService = async ( currUser, file ) => {

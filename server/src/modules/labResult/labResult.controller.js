@@ -54,7 +54,7 @@ export const deleteLabResultController = async (req, res, next) => {
     try {
         await deleteLabResultService(req.user, req.params.id);
         res.status(204).send({
-            success: false,
+            success: true,
             message: "lab result deleted",
             data: null
         });

@@ -1,4 +1,4 @@
-import { createAppointmentService, getAppointmentsService, getAppointmentService, updateAppointmentStatusService, cancelAppointmentService } from "./appointment.service.js";
+import { createAppointmentService, getAppointmentsService, getAppointmentService, updateAppointmentStatusService, cancelAppointmentService, rescheduleAppointmentService } from "./appointment.service.js";
 
 export const createAppointmentController = async (req, res, next) =>
 {
@@ -51,7 +51,7 @@ export const updateAppointmentStatusController=async (req, res, next)=>
         res.status(200).json({
             success: true,
             message: "status update successful",
-            data: appointment,
+            data: { status: appointment.status },
         });
     } catch (error) {
         next(error);

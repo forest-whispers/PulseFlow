@@ -19,24 +19,24 @@ export const registerUserController = async (req, res, next) =>
         );
 
         // api testing
-        console.log(token);
-        res.status(201).json({
-            success: true,
-            message: "registeration successful",
-            data: user,
-        });
-
-        // res.cookie("token", token,
-        //     {
-        //         httpOnly: true,
-        //         secure: false,
-        //         sameSite: "lax",
-        //         maxAge: 7 * 24 * 60 * 60 * 1000,
-        //     }).status(201).json({
+        // console.log(token);
+        // res.status(201).json({
         //     success: true,
-        //     message: "registeration successful"
+        //     message: "registeration successful",
         //     data: user,
         // });
+
+        res.cookie("token", token,
+            {
+                httpOnly: true,
+                secure: false,
+                sameSite: "lax",
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+            }).status(201).json({
+            success: true,
+            message: "registeration successful",
+            data: { role: user.role },
+        });
     } catch (error) {
         next(error);
     }
@@ -58,25 +58,25 @@ export const loginUserController = async (req, res, next) => {
         );
 
         // api testing
-        console.log(token);
-        res.status(201).json({
-            success: true,
-            message: "login successful",
-            data: user,
-        });
+        // console.log(token);
+        // res.status(201).json({
+        //     success: true,
+        //     message: "login successful",
+        //     data: user,
+        // });
 
-        // res.cookie("token", token,
-        //     {
-        //         httpOnly: true,
-        //         secure: false,
-        //         sameSite: "lax",
-        //         maxAge: 7 * 24 * 60 * 60 * 1000,
-        //     }).status(200).json(
-        //     {
-        //         success: true,
-        //         message: "login successful",
-        //         user,
-        //     });
+        res.cookie("token", token,
+            {
+                httpOnly: true,
+                secure: false,
+                sameSite: "lax",
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+            }).status(200).json(
+            {
+                success: true,
+                message: "login successful",
+                data: { role: user.role },
+            });
     } catch (error) {
         next(error);
     }

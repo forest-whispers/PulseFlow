@@ -36,7 +36,7 @@ export const getNotificationsService = async ( recipient, queryParams ) => {
 };
 
 export const markNotificationReadService = async (userId, alert) => {
-    const notification = await Notification.findOneAndUpdate( { _id: userId, recipient: currUser.id, }, { isRead: true, }, { new: true, }, ).lean();
+    const notification = await Notification.findOneAndUpdate( { _id: alert, recipient: userId, }, { isRead: true, }, { new: true, }, ).lean();
     if (!notification) {
         throw new NotFoundError("Notification not found");
     }
@@ -49,6 +49,6 @@ export const getUnreadNotificationCountService = async ( recipient ) => {
 };
 
 export const markAllNotificationsReadService = async (userId) => {
-    await Notification.updateMany( { recipient: currUser.id, isRead: false, }, { isRead: true, }, );
-    return { status: complete };
+    await Notification.updateMany( { recipient: userId, isRead: false, }, { isRead: true, }, );
+    return { status: "complete" };
 };

@@ -58,7 +58,7 @@ export const searchDoctorsService = async (queryParams) => {
 
 export const getDoctorDetailsService = async (doctorId) => {
     const [doctorProfile, availability] = await Promise.all([
-        DoctorProfile.findOne({ doctor: doctorId,}).select("doctor specialization experience consultationFee clinicAddress bio profilePicture").populate({ path: "doctor", select: "name", }).lean(),
+        DoctorProfile.findOne({ user: doctorId,}).select("user specialization experience consultationFee clinicAddress bio profilePicture").populate({ path: "user", select: "name", }).lean(),
         DoctorAvailability.findOne({ doctor: doctorId, }).select("availableDays slotDuration").lean(),]);
     if (!doctorProfile) {
         throw new NotFoundError("Doctor not found");
@@ -108,12 +108,12 @@ export const getAvailableSlotsService = async (doctorId, selectedDate) => {
             availableSlots: [],
         };
     }
-    const blockedDate = await AvailabilityException.findOne({ doctor: doctorId, blockedDate: selectedDate, });
+    const blockedDate = await AvailabilityException.findOne( { doctor: doctorId, "blockedDates.blockedDate": selectedDate, }, { "blockedDates.$": 1, } );
     if (blockedDate) {
         return {
             date: selectedDate,
             isBookable: false,
-            reason: blockedDate.reason,
+            reason: blockedDate.blockedDates[0].reason,
             availableSlots: [],
         };
     }

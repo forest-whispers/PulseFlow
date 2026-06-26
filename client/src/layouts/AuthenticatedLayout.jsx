@@ -1,12 +1,36 @@
 import { useState } from "react"
-import { Outlet } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { useMutation } from "@tanstack/react-query"
 import { useTheme } from "../providers/ThemeProvider"
 import { Button } from "@/components/ui/button"
-import { Sun, Moon, Menu, X, Activity } from "lucide-react"
+import { Sun, Moon, Menu, X, Activity, LogOut, Loader2 } from "lucide-react"
+import { authApi } from "../features/auth/api/authApi"
+import { clearAuth } from "../store/authSlice"
+import { toast } from "sonner"
+import NotificationBell from "../features/notifications/components/NotificationBell"
 
 export default function AuthenticatedLayout() {
   const { theme, setTheme } = useTheme()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const logoutMutation = useMutation({
+    mutationFn: authApi.logout,
+    onSuccess: () => {
+      dispatch(clearAuth())
+      toast.success("Successfully logged out")
+      navigate("/login", { replace: true })
+    },
+    onError: (error) => {
+      // Clear local state anyway to prevent locking the user out
+      dispatch(clearAuth())
+      const errMsg = error.response?.data?.message || "Session cleared locally"
+      toast.error(`Signed out: ${errMsg}`)
+      navigate("/login", { replace: true })
+    },
+  })
 
   return (
     <div className="min-h-screen flex bg-background text-foreground transition-colors duration-200">
@@ -50,8 +74,23 @@ export default function AuthenticatedLayout() {
             </div>
           </div>
 
-          <div className="text-xs text-muted-foreground border-t pt-4">
-            Authenticated Shell v1.0
+          <div className="space-y-4 border-t pt-4">
+            <Button
+              variant="outline"
+              className="w-full justify-start text-destructive hover:bg-destructive/10 hover:text-destructive transition-colors"
+              onClick={() => logoutMutation.mutate()}
+              disabled={logoutMutation.isPending}
+            >
+              {logoutMutation.isPending ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <LogOut className="mr-2 h-4 w-4" />
+              )}
+              Logout
+            </Button>
+            <div className="text-xs text-muted-foreground">
+              Authenticated Shell v1.0
+            </div>
           </div>
         </div>
       </aside>
@@ -89,6 +128,9 @@ export default function AuthenticatedLayout() {
                 <Moon className="h-5 w-5 text-primary" />
               )}
             </Button>
+
+            {/* Notification Bell Dropdown */}
+            <NotificationBell />
 
             {/* Profile Placeholder (Generic) */}
             <div className="h-8 w-8 rounded-full bg-primary/10 border flex items-center justify-center text-xs font-medium text-primary">

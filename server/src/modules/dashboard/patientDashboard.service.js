@@ -25,17 +25,12 @@ export const getPatientDashboardService = async (patientId) => {
     ]);
     const stats = {
         upcomingAppointments: 0,
-        completedAppointments: 0,
         pendingReschedules: 0,
         pendingInvoices: pendingInvoiceCount,
     };
     appointmentStats.forEach((stat) => {
         switch (stat._id) {
             case "completed":
-                {
-                stats.completedAppointments = stat.count;
-                break;
-                }
             case "pending_reschedule":
                 {
                 stats.pendingReschedules = stat.count;

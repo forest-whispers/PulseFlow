@@ -42,9 +42,14 @@ export const validateAppointmentSlot = async ({ doctorId, appointmentDate, booke
     if (slotTotalMinutes < startTotalMinutes || slotTotalMinutes >= endTotalMinutes) {
         throw new BadRequestError("Slot outside doctor availability");
     }
-    const blockedDateExists = await AvailabilityException.findOne({ doctor: doctorId, blockedDate: appointmentDate, });
-    if (blockedDateExists) {
-        throw new BadRequestError(`Doctor unavailable on selected date due to ${blockedDateExists.reason}`,);
+    const blockedDate = await AvailabilityException.findOne({ doctor: doctorId, blockedDate: appointmentDate, });
+    if (blockedDate) {
+        throw new BadRequestError(`Doctor unavailable on selected date due to ${blockedDate.reason}`,);
+    }
+    const blockedDateExists = await AvailabilityException.findOne( { doctor: doctorId, "blockedDates.blockedDate": appointmentDate, }, { "blockedDates.$": 1, } );
+    if (blockedDateExists && blockedDateExists.blockedDates.length > 0) {
+        const reason = blockedDateExists.blockedDates[0].reason;
+        throw new BadRequestError(`Doctor unavailable on selected date due to ${reason}`);
     }
     const existingAppointment = await Appointment.findOne({ doctor: doctorId, appointmentDate, bookedSlot, status: { $ne: "cancelled" }, ...(ignoredAppointmentId && { _id: { $ne: ignoredAppointmentId }, }), });
     if (existingAppointment) {

@@ -54,7 +54,7 @@ export const deletePrescriptionController = async (req, res, next) => {
     try {
         await deletePrescriptionService(req.user, req.params.id);
         res.status(204).send({
-            success: false,
+            success: true,
             message: "prescription deleted",
             data: null
         });

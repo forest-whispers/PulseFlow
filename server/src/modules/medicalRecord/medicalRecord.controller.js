@@ -54,7 +54,7 @@ export const deleteMedicalRecordController = async (req, res, next) => {
         try {
             await deleteMedicalRecordService( req.user, req.params.id, );
             res.status(204).send({
-                success: false,
+                success: true,
                 message: "record deleted",
                 data: null
             });

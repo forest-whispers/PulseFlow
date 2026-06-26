@@ -1,16 +1,5 @@
 import DoctorAvailability from "./doctorAvailability.model.js"
-import { ConflictError, NotFoundError, } from '../../utils/error.js'
-
-export const createAvailabilityService=async (currUser, availableDays, startTime, endTime, slotDuration)=>
-{
-    const existingSchedule=await DoctorAvailability.findOne({doctor: currUser.id });
-    if(existingSchedule)
-    {
-        throw new ConflictError("Schedule already exists");
-    }
-    const schedule = await DoctorAvailability.create({ doctor: currUser.id, availableDays, startTime, endTime, slotDuration });
-    return schedule;
-}
+import { NotFoundError, } from '../../utils/error.js'
 
 export const updateAvailabilityService=async (currUser, updatePayload)=>
 {

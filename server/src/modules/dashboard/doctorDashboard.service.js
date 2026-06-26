@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 import Appointment from "../appointment/appointment.model.js";
 
 export const getDoctorDashboardService = async (doctorId) => {

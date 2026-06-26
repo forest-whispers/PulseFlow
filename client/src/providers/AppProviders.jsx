@@ -3,6 +3,7 @@ import { QueryClientProvider } from "@tanstack/react-query"
 import { store } from "../store"
 import { queryClient } from "../lib/queryClient"
 import { ThemeProvider } from "./ThemeProvider"
+import { AuthProvider } from "./AuthProvider"
 import { Toaster } from "sonner"
 
 export function AppProviders({ children }) {
@@ -10,7 +11,9 @@ export function AppProviders({ children }) {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider defaultTheme="light" storageKey="hms-ui-theme">
-          {children}
+          <AuthProvider>
+            {children}
+          </AuthProvider>
           <Toaster richColors position="top-right" closeButton />
         </ThemeProvider>
       </QueryClientProvider>

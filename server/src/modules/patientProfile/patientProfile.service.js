@@ -5,31 +5,35 @@ import { NotFoundError, BadRequestError } from "../../utils/error.js";
 
 export const getPatientProfileService = async (currUser) => {
     let profile = {};
-    const basicProfile = await User.findOne({ _id: currUser.id, role: "patient", }).select("user", "name age gender");
+    const basicProfile = await User.findOne({ _id: currUser.id, role: "patient", }).select("name age gender");
     if (!basicProfile) {
         throw new NotFoundError("Patient profile not found");
     }
-    const specifics = await PatientProfile.findById(currUser._id).select("bloodGroup allergies medicalHistory emergencyContact");
+    const specifics = await PatientProfile.findOne({ user: currUser._id }).select("bloodGroup allergies medicalHistory emergencyContact");
     if(specifics)
     {
         profile = { ...basicProfile, ...specifics };
+    }
+    else
+    {
+        profile = basicProfile;
     }
     return profile;
 };
 
 export const updatePatientProfileService = async (currUser, updatePayload) => {
-    if(Array.from(updatePayload).length === 0)
-    {
+    if (Object.keys(updatePayload).length === 0) {
         throw new BadRequestError("No changes detected");
     }
-    const allowedUpdates = ["name", "age", "gender"];
-    const filteredPayload = {};
-    allowedUpdates.forEach((field) => {
+    const allowedBasicsUpdate = ["name", "age", "gender"];
+    const allowedSpecificsUpdate = ["bloodGroup", "allergies", "medicalHistory", "emergencyContact"];
+    let filteredPayload = {};
+    allowedBasicsUpdate.forEach((field) => {
         if (updatePayload[field] !== undefined) {
             filteredPayload[field] = updatePayload[field];
         }
     });
-    const updatedProfile = await User.findOneAndUpdate(
+    const basicProfile = await User.findOneAndUpdate(
         {
             _id: currUser.id,
             role: "patient",
@@ -37,10 +41,31 @@ export const updatePatientProfileService = async (currUser, updatePayload) => {
         filteredPayload,
         { new: true, runValidators: true },
     );
-    if (!updatedProfile) {
+    if (!basicProfile) {
         throw new NotFoundError("Patient profile not found");
     }
-    return updatedProfile;
+    filteredPayload={};
+    allowedSpecificsUpdate.forEach((field) => {
+        if (updatePayload[field] !== undefined) {
+            filteredPayload[field] = updatePayload[field];
+        }
+    });
+    const specifics = await PatientProfile.findOneAndUpdate(
+        {
+            user: currUser.id,
+        },
+        filteredPayload,
+        { new: true, runValidators: true },
+    );
+    let profile={};
+    if (specifics) {
+        profile = { ...basicProfile, ...specifics };
+    }
+    else
+    {
+        profile = basicProfile;
+    }
+    return profile;
 };
 
 export const updatePatientProfilePictureService = async ( currUser, file ) => {
