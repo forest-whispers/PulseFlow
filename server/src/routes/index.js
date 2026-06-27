@@ -18,6 +18,7 @@ import adminDashboardRoutes from "../modules/dashboard/adminDashboard.routes.js"
 import doctorDashboardRoutes from "../modules/dashboard/doctorDashboard.routes.js";
 import patientDashboardRoutes from "../modules/dashboard/patientDashboard.routes.js";
 import auditLogRoutes from "../modules/auditLog/auditLog.routes.js";
+import analyticsRoutes from "../modules/analytics/analytics.routes.js";
 
 router.get("/", (req, res) => {
     res.json({
@@ -43,5 +44,6 @@ router.use("/dashboard/admin", adminDashboardRoutes);
 router.use("/dashboard/doctor", doctorDashboardRoutes);
 router.use("/dashboard/patient", patientDashboardRoutes);
 router.use("/audit-logs", auditLogRoutes);
+router.use("/analytics", analyticsRoutes);
 
 export default router;

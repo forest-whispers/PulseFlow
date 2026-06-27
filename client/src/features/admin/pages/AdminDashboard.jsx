@@ -156,6 +156,7 @@ export default function AdminDashboard() {
     { title: "Appointments", route: "/admin/appointments", icon: Calendar, color: "text-emerald-500 bg-emerald-500/10" },
     { title: "Notifications", route: "/admin/notifications", icon: Bell, color: "text-indigo-500 bg-indigo-500/10" },
     { title: "Audit Logs", route: "/admin/audit-logs", icon: Activity, color: "text-violet-500 bg-violet-500/10" },
+    { title: "Analytics", route: "/admin/analytics", icon: BarChart3, color: "text-sky-500 bg-sky-500/10" },
   ]
 
   // KPI metadata list mapping
@@ -216,7 +217,7 @@ export default function AdminDashboard() {
           <TrendingUp className="h-4.5 w-4.5 text-primary" />
           Quick Actions
         </h3>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
           {quickActions.map((action, idx) => {
             const ActionIcon = action.icon
             return (
