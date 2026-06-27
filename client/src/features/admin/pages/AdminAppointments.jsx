@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Calendar, RefreshCw, AlertCircle } from "lucide-react"
-import { Card } from "@/components/ui/card"
+import { Calendar, RefreshCw, AlertCircle, FileText, Pill, Beaker, Receipt } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { useAdminAppointments } from "../hooks/useAdminAppointments"
 import AppointmentCard from "../../patient/components/AppointmentCard"
@@ -31,6 +31,37 @@ export default function AdminAppointments() {
   const handleViewDetails = (id) => {
     navigate(`/admin/appointments/${id}`)
   }
+
+  const kpiCards = [
+    {
+      title: "Medical Records",
+      description: "Access patient clinical logs & visit files.",
+      path: "/admin/medical-records",
+      icon: FileText,
+      color: "bg-indigo-500/10 text-indigo-500",
+    },
+    {
+      title: "Prescriptions",
+      description: "Review current medications & prescriptions.",
+      path: "/admin/prescriptions",
+      icon: Pill,
+      color: "bg-violet-500/10 text-violet-500",
+    },
+    {
+      title: "Lab Results",
+      description: "Inspect clinical diagnosis & laboratory reports.",
+      path: "/admin/lab-results",
+      icon: Beaker,
+      color: "bg-cyan-500/10 text-cyan-500",
+    },
+    {
+      title: "Invoices",
+      description: "Track billing records & payment ledgers.",
+      path: "/admin/invoices",
+      icon: Receipt,
+      color: "bg-amber-500/10 text-amber-500",
+    },
+  ]
 
   // Loading skeleton state
   if (isLoading) {
@@ -77,6 +108,34 @@ export default function AdminAppointments() {
         <p className="text-xs text-muted-foreground">
           Review and manage all patient doctor appointments across the hospital.
         </p>
+      </div>
+
+      {/* Clinical Workflow Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {kpiCards.map((card, index) => {
+          const Icon = card.icon
+          return (
+            <Card
+              key={index}
+              onClick={() => navigate(card.path)}
+              className="group border shadow-2xs hover:shadow-xs hover:border-primary/20 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+            >
+              <CardContent className="p-5 flex flex-col justify-between h-full gap-4">
+                <div className={`h-10 w-10 rounded-lg flex items-center justify-center shrink-0 border border-transparent group-hover:border-primary/10 transition-colors ${card.color}`}>
+                  <Icon className="h-5 w-5" />
+                </div>
+                <div className="space-y-1">
+                  <h3 className="font-bold text-sm text-foreground group-hover:text-primary transition-colors">
+                    {card.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    {card.description}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          )
+        })}
       </div>
 
       {appointments.length === 0 ? (

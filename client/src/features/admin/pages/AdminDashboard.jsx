@@ -131,8 +131,8 @@ export default function AdminDashboard() {
 
   // Quick Action Navigation Card details
   const quickActions = [
-    { title: "Doctors", route: "/admin/doctors", icon: Stethoscope, color: "text-blue-500 bg-blue-500/10" },
-    { title: "Patients", route: "/admin/patients", icon: Heart, color: "text-rose-500 bg-rose-500/10" },
+    { title: "Doctors", route: "/admin/users?role=doctor&page=1", icon: Stethoscope, color: "text-blue-500 bg-blue-500/10" },
+    { title: "Patients", route: "/admin/users?role=patient&page=1", icon: Heart, color: "text-rose-500 bg-rose-500/10" },
     { title: "Users", route: "/admin/users", icon: Users, color: "text-amber-500 bg-amber-500/10" },
     { title: "Appointments", route: "/admin/appointments", icon: Calendar, color: "text-emerald-500 bg-emerald-500/10" },
     { title: "Notifications", route: "/admin/notifications", icon: Bell, color: "text-indigo-500 bg-indigo-500/10" },

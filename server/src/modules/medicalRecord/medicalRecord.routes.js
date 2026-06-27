@@ -11,7 +11,7 @@ import { createMedicalRecordSchema, updateMedicalRecordSchema } from "./medicalR
 
 router.post( "/", requireAuth, requireRole("doctor"), upload.array("attachments", 5), validate(createMedicalRecordSchema), createMedicalRecordController );
 
-router.get( "/", requireAuth, requireRole("patient"), getMyMedicalRecordsController );
+router.get( "/", requireAuth, requireRole("patient", "admin"), getMyMedicalRecordsController );
 
 router.get( "/:id", requireAuth, getMedicalRecordController );
 

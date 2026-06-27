@@ -319,22 +319,6 @@ export default function AppRoutes() {
             }
           />
           <Route
-            path="/admin/doctors"
-            element={
-              <ProtectedRoute allowedRoles={["admin"]}>
-                <AdminPlaceholder />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/patients"
-            element={
-              <ProtectedRoute allowedRoles={["admin"]}>
-                <AdminPlaceholder />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="/admin/users"
             element={
               <ProtectedRoute allowedRoles={["admin"]}>
