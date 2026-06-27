@@ -54,6 +54,25 @@ function formatRelativeTime(dateStr) {
   }
 }
 
+function getEntityPath(entityType, entityId) {
+  if (!entityType || !entityId) return null
+  switch (entityType) {
+    case "medical_record":
+      return `/admin/medical-records/${entityId}`
+    case "prescription":
+      return `/admin/prescriptions/${entityId}`
+    case "lab_result":
+      return `/admin/lab-results/${entityId}`
+    case "invoice":
+      return `/admin/invoices/${entityId}`
+    case "appointment":
+      return `/admin/appointments/${entityId}`
+    default:
+      return null
+  }
+}
+
+
 export default function AdminDashboard() {
   const navigate = useNavigate()
   const { data, isLoading, isError, error, refetch } = useAdminDashboard()
@@ -136,7 +155,7 @@ export default function AdminDashboard() {
     { title: "Users", route: "/admin/users", icon: Users, color: "text-amber-500 bg-amber-500/10" },
     { title: "Appointments", route: "/admin/appointments", icon: Calendar, color: "text-emerald-500 bg-emerald-500/10" },
     { title: "Notifications", route: "/admin/notifications", icon: Bell, color: "text-indigo-500 bg-indigo-500/10" },
-    { title: "Analytics", route: "/admin/analytics", icon: BarChart3, color: "text-violet-500 bg-violet-500/10" },
+    { title: "Audit Logs", route: "/admin/audit-logs", icon: Activity, color: "text-violet-500 bg-violet-500/10" },
   ]
 
   // KPI metadata list mapping
@@ -191,152 +210,167 @@ export default function AdminDashboard() {
         })}
       </div>
 
-      {/* Details Lists & Activity Logs columns */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Upcoming appointments list */}
-        <div className="lg:col-span-2 space-y-4">
-          <div className="flex items-center justify-between border-b border-border/15 pb-2">
-            <h3 className="text-sm font-extrabold text-foreground uppercase tracking-wider flex items-center gap-2">
-              <Calendar className="h-4.5 w-4.5 text-primary" />
-              Upcoming consultations
-            </h3>
-            <Badge variant="secondary" className="font-bold text-[10px]">
-              {upcomingAppointments.length} Booked
-            </Badge>
-          </div>
+      {/* Quick Actions Panel */}
+      <div className="space-y-4">
+        <h3 className="text-sm font-extrabold text-foreground uppercase tracking-wider flex items-center gap-2 border-b border-border/15 pb-2">
+          <TrendingUp className="h-4.5 w-4.5 text-primary" />
+          Quick Actions
+        </h3>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          {quickActions.map((action, idx) => {
+            const ActionIcon = action.icon
+            return (
+              <Link
+                key={idx}
+                to={action.route}
+                className="border border-border/30 hover:border-primary/20 hover:shadow-2xs p-4 rounded-xl bg-card hover:bg-muted/5 transition-all duration-300 flex flex-col gap-2.5 items-start group cursor-pointer"
+              >
+                <div className={`h-8 w-8 rounded-lg flex items-center justify-center shrink-0 border border-border/5 ${action.color}`}>
+                  <ActionIcon className="h-4 w-4" />
+                </div>
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">
+                    {action.title}
+                  </span>
+                  <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </Link>
+            )
+          })}
+        </div>
+      </div>
 
-          {upcomingAppointments.length === 0 ? (
-            <Card className="border border-dashed border-border/40 shadow-2xs bg-card p-12 text-center rounded-2xl">
-              <div className="h-10 w-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-3">
-                <Calendar className="h-5 w-5" />
-              </div>
-              <h4 className="text-xs font-bold text-foreground mb-1">No Upcoming Appointments</h4>
-              <p className="text-[11px] text-muted-foreground max-w-xs mx-auto">
-                No upcoming doctor consultations are registered in the queue yet.
-              </p>
-            </Card>
-          ) : (
-            <div className="space-y-4">
-              {upcomingAppointments.map((apt) => {
-                const isConfirmed = apt.status === "confirmed"
-                return (
-                  <Card
-                    key={apt._id}
-                    onClick={() => navigate(`/admin/appointments/${apt._id}`)}
-                    className="border border-border/40 shadow-2xs bg-card hover:shadow-xs hover:border-primary/20 transition-all duration-300 cursor-pointer overflow-hidden rounded-2xl"
-                  >
-                    <CardContent className="p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                      <div className="space-y-2.5 flex-1 min-w-0">
-                        {/* Status badge */}
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <Badge
-                            className={
-                              isConfirmed
-                                ? "bg-emerald-500/10 text-emerald-600 border-emerald-200/35 font-bold text-[10px] rounded-md shadow-2xs"
-                                : "bg-amber-500/10 text-amber-600 border-amber-200/35 font-bold text-[10px] rounded-md shadow-2xs"
-                            }
-                          >
-                            {apt.status.toUpperCase()}
-                          </Badge>
-                          <span className="text-[10px] text-muted-foreground font-medium">
-                            {formatDate(apt.appointmentDate)}
-                          </span>
-                        </div>
-
-                        {/* Details */}
-                        <div className="grid grid-cols-2 gap-4 text-xs">
-                          <div>
-                            <span className="text-[9px] text-muted-foreground uppercase font-bold tracking-wider">Patient</span>
-                            <p className="font-extrabold text-foreground mt-0.5 truncate">{apt.patient?.name}</p>
-                          </div>
-                          <div>
-                            <span className="text-[9px] text-muted-foreground uppercase font-bold tracking-wider">Consultant</span>
-                            <p className="font-extrabold text-foreground mt-0.5 truncate">
-                              {apt.doctor?.name?.startsWith("Dr.") ? apt.doctor.name : `Dr. ${apt.doctor?.name}`}
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Slot details */}
-                        <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                          <Clock className="h-3.5 w-3.5" />
-                          <span>Slot: {apt.bookedSlot}</span>
-                        </div>
-                      </div>
-
-                      <div className="hidden sm:flex h-8 w-8 rounded-lg border bg-muted/5 items-center justify-center shrink-0 hover:bg-primary/5 transition-colors">
-                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                )
-              })}
-            </div>
-          )}
+      {/* Upcoming Consultations Panel */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between border-b border-border/15 pb-2">
+          <h3 className="text-sm font-extrabold text-foreground uppercase tracking-wider flex items-center gap-2">
+            <Calendar className="h-4.5 w-4.5 text-primary" />
+            Upcoming consultations
+          </h3>
+          <Badge variant="secondary" className="font-bold text-[10px]">
+            {upcomingAppointments.length} Booked
+          </Badge>
         </div>
 
-        {/* Sidebar Activity & Quick actions */}
-        <div className="space-y-8">
-          {/* Quick Actions Grid */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-extrabold text-foreground uppercase tracking-wider flex items-center gap-2 border-b border-border/15 pb-2">
-              <TrendingUp className="h-4.5 w-4.5 text-primary" />
-              Quick Actions
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              {quickActions.map((action, idx) => {
-                const ActionIcon = action.icon
+        {upcomingAppointments.length === 0 ? (
+          <Card className="border border-dashed border-border/40 shadow-2xs bg-card p-12 text-center rounded-2xl">
+            <div className="h-10 w-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-3">
+              <Calendar className="h-5 w-5" />
+            </div>
+            <h4 className="text-xs font-bold text-foreground mb-1">No Upcoming Appointments</h4>
+            <p className="text-[11px] text-muted-foreground max-w-xs mx-auto">
+              No upcoming doctor consultations are registered in the queue yet.
+            </p>
+          </Card>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {upcomingAppointments.map((apt) => {
+              const isConfirmed = apt.status === "confirmed"
+              return (
+                <Card
+                  key={apt._id}
+                  onClick={() => navigate(`/admin/appointments/${apt._id}`)}
+                  className="border border-border/40 shadow-2xs bg-card hover:shadow-xs hover:border-primary/20 transition-all duration-300 cursor-pointer overflow-hidden rounded-2xl flex flex-col justify-between group"
+                >
+                  <CardContent className="p-5 flex flex-col justify-between h-full gap-4">
+                    {/* Status badge */}
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <Badge
+                        className={
+                          isConfirmed
+                            ? "bg-emerald-500/10 text-emerald-600 border-emerald-200/35 font-bold text-[10px] rounded-md shadow-2xs"
+                            : "bg-amber-500/10 text-amber-600 border-amber-200/35 font-bold text-[10px] rounded-md shadow-2xs"
+                        }
+                      >
+                        {apt.status.toUpperCase()}
+                      </Badge>
+                      <span className="text-[10px] text-muted-foreground font-medium">
+                        {formatDate(apt.appointmentDate)}
+                      </span>
+                    </div>
+
+                    {/* Details */}
+                    <div className="grid grid-cols-2 gap-4 text-xs">
+                      <div>
+                        <span className="text-[9px] text-muted-foreground uppercase font-bold tracking-wider">Patient</span>
+                        <p className="font-extrabold text-foreground mt-0.5 truncate">{apt.patient?.name}</p>
+                      </div>
+                      <div>
+                        <span className="text-[9px] text-muted-foreground uppercase font-bold tracking-wider">Consultant</span>
+                        <p className="font-extrabold text-foreground mt-0.5 truncate">
+                          {apt.doctor?.name?.startsWith("Dr.") ? apt.doctor.name : `Dr. ${apt.doctor?.name}`}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Slot details */}
+                    <div className="flex items-center justify-between border-t border-border/5 pt-3 mt-1 text-[11px] text-muted-foreground">
+                      <span className="flex items-center gap-1">
+                        <Clock className="h-3.5 w-3.5 text-primary" />
+                        Slot: {apt.bookedSlot}
+                      </span>
+                      <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Recent activities logs */}
+      <div className="space-y-4">
+        <h3 className="text-sm font-extrabold text-foreground uppercase tracking-wider flex items-center gap-2 border-b border-border/15 pb-2">
+          <Activity className="h-4.5 w-4.5 text-primary" />
+          Recent Operations Logs
+        </h3>
+
+        {recentActivity.length === 0 ? (
+          <p className="text-xs text-muted-foreground italic bg-muted/15 p-4 rounded-xl border border-border/5 text-center leading-relaxed">
+            No Recent Activity
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {recentActivity.map((activity, idx) => {
+              const entityPath = getEntityPath(activity.entityType, activity.entityId)
+              const content = (
+                <>
+                  <div className="h-2 w-2 rounded-full bg-primary mt-1.5 shrink-0" />
+                  <div className="space-y-1 min-w-0 flex-1">
+                    <p className="font-semibold text-foreground leading-relaxed group-hover:text-primary transition-colors">
+                      {activity.description || activity.desc}
+                    </p>
+                    <span className="text-[10px] text-muted-foreground block">
+                      {formatRelativeTime(activity.timestamp)}
+                    </span>
+                  </div>
+                </>
+              )
+
+              if (entityPath) {
                 return (
                   <Link
                     key={idx}
-                    to={action.route}
-                    className="border border-border/30 hover:border-primary/20 hover:shadow-2xs p-4 rounded-xl bg-card hover:bg-muted/5 transition-all duration-300 flex flex-col gap-2.5 items-start group"
+                    to={entityPath}
+                    className="flex items-start gap-3 p-3.5 border border-border/20 rounded-xl bg-card hover:bg-muted/5 hover:border-primary/20 hover:shadow-2xs transition-all duration-300 text-xs relative overflow-hidden group cursor-pointer"
                   >
-                    <div className={`h-8 w-8 rounded-lg flex items-center justify-center shrink-0 border border-border/5 ${action.color}`}>
-                      <ActionIcon className="h-4 w-4" />
-                    </div>
-                    <div className="flex items-center justify-between w-full">
-                      <span className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">
-                        {action.title}
-                      </span>
-                      <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
-                    </div>
+                    {content}
                   </Link>
                 )
-              })}
-            </div>
-          </div>
+              }
 
-          {/* Recent activities logs */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-extrabold text-foreground uppercase tracking-wider flex items-center gap-2 border-b border-border/15 pb-2">
-              <Activity className="h-4.5 w-4.5 text-primary" />
-              Recent Operations Logs
-            </h3>
-
-            {recentActivity.length === 0 ? (
-              <p className="text-xs text-muted-foreground italic bg-muted/15 p-4 rounded-xl border border-border/5 text-center leading-relaxed">
-                No Recent Activity
-              </p>
-            ) : (
-              <div className="space-y-3.5">
-                {recentActivity.map((activity, idx) => (
-                  <div key={idx} className="flex items-start gap-3 p-3.5 border border-border/20 rounded-xl bg-muted/5 text-xs relative overflow-hidden">
-                    <div className="h-2 w-2 rounded-full bg-primary mt-1.5 shrink-0" />
-                    <div className="space-y-1 min-w-0 flex-1">
-                      <p className="font-semibold text-foreground leading-relaxed">
-                        {activity.desc}
-                      </p>
-                      <span className="text-[10px] text-muted-foreground block">
-                        {formatRelativeTime(activity.timestamp)}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+              return (
+                <div
+                  key={idx}
+                  className="flex items-start gap-3 p-3.5 border border-border/20 rounded-xl bg-muted/5 text-xs relative overflow-hidden"
+                >
+                  {content}
+                </div>
+              )
+            })}
           </div>
-        </div>
+        )}
       </div>
     </div>
   )

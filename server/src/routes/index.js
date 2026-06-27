@@ -17,6 +17,7 @@ import notificationRoutes from "../modules/notification/notification.routes.js";
 import adminDashboardRoutes from "../modules/dashboard/adminDashboard.routes.js";
 import doctorDashboardRoutes from "../modules/dashboard/doctorDashboard.routes.js";
 import patientDashboardRoutes from "../modules/dashboard/patientDashboard.routes.js";
+import auditLogRoutes from "../modules/auditLog/auditLog.routes.js";
 
 router.get("/", (req, res) => {
     res.json({
@@ -41,5 +42,6 @@ router.use("/notifications", notificationRoutes);
 router.use("/dashboard/admin", adminDashboardRoutes);
 router.use("/dashboard/doctor", doctorDashboardRoutes);
 router.use("/dashboard/patient", patientDashboardRoutes);
+router.use("/audit-logs", auditLogRoutes);
 
 export default router;

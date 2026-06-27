@@ -1,10 +1,11 @@
 import Appointment from "../appointment/appointment.model.js";
 import User from "../user/user.model.js";
 import Invoice from "../invoice/invoice.model.js";
+import { getRecentActivityService } from "../auditLog/auditLog.service.js";
 
 export const getAdminDashboardService = async () => {
     const today = new Date().toISOString().split("T")[0];
-    const [userStats, appointmentStats, todayAppointments, upcomingAppointments, pendingInvoices] = await Promise.all([
+    const [userStats, appointmentStats, todayAppointments, upcomingAppointments, pendingInvoices, recentActivity] = await Promise.all([
             User.aggregate([
                 {
                     $group: {
@@ -27,7 +28,8 @@ export const getAdminDashboardService = async () => {
             ]),
             Appointment.countDocuments({ appointmentDate: today }),
             Appointment.find( { status: { $in: ["pending", "confirmed", "pending_reschedule"] }, appointmentDate: { $gte: today }} ).select("patient doctor appointmentDate bookedSlot status").populate("patient", "name").populate("doctor", "name").sort({ appointmentDate: 1, bookedSlot: 1 }).limit(5).lean(),
-            Invoice.countDocuments({ status: "pending" })
+            Invoice.countDocuments({ status: "pending" }),
+            getRecentActivityService(),
             ]);
     const users = {
         doctors: 0,
@@ -56,6 +58,6 @@ export const getAdminDashboardService = async () => {
         revenue: 0,
         invoices: { pendingInvoices },
         upcomingAppointments,
-        recentActivity: [],
+        recentActivity,
     }
 };

@@ -29,6 +29,7 @@ import AdminUserDetails from "../features/admin/pages/AdminUserDetails"
 import AdminMedicalRecords from "../features/admin/pages/AdminMedicalRecords"
 import AdminPrescriptions from "../features/admin/pages/AdminPrescriptions"
 import AdminLabResults from "../features/admin/pages/AdminLabResults"
+import AdminAuditLogs from "../features/admin/pages/AdminAuditLogs"
 import CreateMedicalRecord from "../features/doctor/pages/CreateMedicalRecord"
 import CreatePrescription from "../features/doctor/pages/CreatePrescription"
 import CreateLabResult from "../features/doctor/pages/CreateLabResult"
@@ -427,6 +428,14 @@ export default function AppRoutes() {
             element={
               <ProtectedRoute allowedRoles={["admin"]}>
                 <Notifications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/audit-logs"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminAuditLogs />
               </ProtectedRoute>
             }
           />
