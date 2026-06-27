@@ -44,8 +44,8 @@ export const createMedicalRecordService = async ( currUser, body, files ) => {
 export const getMedicalRecordService = async ( currUser, medicalRecordId ) => {
     const medicalRecord = await MedicalRecord.findById(medicalRecordId).populate("patient", "name").populate("doctor", "name").populate("appointment", "appointmentDate bookedSlot status").lean();
     const [prescription, labResult, invoice] = await Promise.all([
-        Prescription.findOne({ medicalRecord: medicalRecordId, }).select("_id").lean(),
-        LabResult.findOne({ medicalRecord: medicalRecordId, }).select("_id testName").lean(),
+        Prescription.findOne({ medicalRecord: medicalRecordId, }).select("_id createdAt").lean(),
+        LabResult.findOne({ medicalRecord: medicalRecordId, }).select("_id testName resultSummary").lean(),
         Invoice.findOne({ medicalRecord: medicalRecordId, }).select("_id amount status").lean(),
     ]);
     if (!medicalRecord) {
@@ -60,9 +60,9 @@ export const getMedicalRecordService = async ( currUser, medicalRecordId ) => {
     return {
         medicalRecord,
         related: {
-            prescription,
-            labResult,
-            invoice,
+            prescription: prescription ? { _id: prescription._id, issuedAt: prescription.createdAt, } : null,
+            labResult: labResult ? { _id: labResult._id, testName: labResult.testName, resultSummary: labResult.resultSummary, } : null,
+            invoice: invoice ? { _id: invoice._id, amount: invoice.amount, status: invoice.status, } : null,
         },
     };
 };

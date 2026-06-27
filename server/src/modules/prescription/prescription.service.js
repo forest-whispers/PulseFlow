@@ -48,12 +48,10 @@ export const getMyPrescriptionsService = async ( currUser, queryParams ) => {
         Prescription.find(query).select("patient doctor medicalRecord medications createdAt").populate("patient", "name").populate("doctor", "name").populate({ path: "medicalRecord", select: "visitDate chiefComplaint", }) .sort({ createdAt: -1, }).skip(skip).limit(limit).lean(),
             Prescription.countDocuments(query),
         ]);
-    const formattedPrescriptions = prescriptions.map(
-        ({ medications, ...prescription }) => ({
-            ...prescription,
-            medicineCount: medications.length,
-        }),
-    );
+    const formattedPrescriptions = prescriptions.map((prescription) =>
+        {
+        return { ...prescription, medicineCount: prescription.medications ? prescription.medications.length : 0 }
+        });
     return {
         prescriptions: formattedPrescriptions,
         pagination: {

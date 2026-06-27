@@ -25,6 +25,8 @@ import CreateMedicalRecord from "../features/doctor/pages/CreateMedicalRecord"
 import CreatePrescription from "../features/doctor/pages/CreatePrescription"
 import CreateLabResult from "../features/doctor/pages/CreateLabResult"
 import ResourceDetailsPlaceholder from "../features/doctor/pages/ResourceDetailsPlaceholder"
+import PatientMedicalRecords from "../features/patient/pages/PatientMedicalRecords"
+import MedicalRecordDetails from "../features/patient/pages/MedicalRecordDetails"
 
 export default function AppRoutes() {
   return (
@@ -110,10 +112,18 @@ export default function AppRoutes() {
             }
           />
           <Route
+            path="/patient/medical-records"
+            element={
+              <ProtectedRoute allowedRoles={["patient"]}>
+                <PatientMedicalRecords />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/patient/medical-records/:id"
             element={
               <ProtectedRoute allowedRoles={["patient"]}>
-                <ResourceDetailsPlaceholder />
+                <MedicalRecordDetails />
               </ProtectedRoute>
             }
           />
@@ -209,7 +219,7 @@ export default function AppRoutes() {
             path="/doctor/medical-records/:id"
             element={
               <ProtectedRoute allowedRoles={["doctor"]}>
-                <ResourceDetailsPlaceholder />
+                <MedicalRecordDetails />
               </ProtectedRoute>
             }
           />
