@@ -216,7 +216,13 @@ export default function MedicalRecordDetails() {
     if (appointmentId) {
       navigate(`/${currentRole}/appointments/${appointmentId}`)
     } else {
-      navigate(currentRole === "doctor" ? "/doctor/appointments" : "/patient/medical-records")
+      navigate(
+        currentRole === "doctor"
+          ? "/doctor/appointments"
+          : currentRole === "admin"
+          ? "/admin/medical-records"
+          : "/patient/medical-records"
+      )
     }
   }
 

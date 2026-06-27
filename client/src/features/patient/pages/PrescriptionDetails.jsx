@@ -158,7 +158,13 @@ export default function PrescriptionDetails() {
     } else if (appointmentId) {
       navigate(`/${currentRole}/appointments/${appointmentId}`)
     } else {
-      navigate(currentRole === "doctor" ? "/doctor/appointments" : "/patient/prescriptions")
+      navigate(
+        currentRole === "doctor"
+          ? "/doctor/appointments"
+          : currentRole === "admin"
+          ? "/admin/prescriptions"
+          : "/patient/prescriptions"
+      )
     }
   }
 

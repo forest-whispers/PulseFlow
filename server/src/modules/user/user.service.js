@@ -60,10 +60,19 @@ export const getUserByIdService = async (id, currUser) =>
     }
     let profile = null;
     if (user.role === "doctor") {
-        profile = await DoctorProfile.findOne({ user: user._id, });
+        profile = await DoctorProfile.findOne({ user: user._id, }.select("bio clinicAddress consultationFee experience specialization"));
     }
     if (user.role === "patient") {
-        profile = await PatientProfile.findOne({ patient: user._id, });
+        profile = await PatientProfile.findOne({ patient: user._id, }).select("bloodGroup allergies medicalHistory emergencyContact");
     }
-    return { account: user, profile, };
+    return {
+        account: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            age: user.age,
+            gender: user.gender
+        },
+        profile, };
 };

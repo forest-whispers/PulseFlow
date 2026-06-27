@@ -24,6 +24,9 @@ import AdminDashboard from "../features/admin/pages/AdminDashboard"
 import AdminPlaceholder from "../features/admin/pages/AdminPlaceholder"
 import AdminAppointments from "../features/admin/pages/AdminAppointments"
 import AdminInvoices from "../features/admin/pages/AdminInvoices"
+import AdminMedicalRecords from "../features/admin/pages/AdminMedicalRecords"
+import AdminPrescriptions from "../features/admin/pages/AdminPrescriptions"
+import AdminLabResults from "../features/admin/pages/AdminLabResults"
 import CreateMedicalRecord from "../features/doctor/pages/CreateMedicalRecord"
 import CreatePrescription from "../features/doctor/pages/CreatePrescription"
 import CreateLabResult from "../features/doctor/pages/CreateLabResult"
@@ -350,6 +353,30 @@ export default function AppRoutes() {
             element={
               <ProtectedRoute allowedRoles={["admin"]}>
                 <AppointmentDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/medical-records"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminMedicalRecords />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/prescriptions"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminPrescriptions />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/lab-results"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminLabResults />
               </ProtectedRoute>
             }
           />

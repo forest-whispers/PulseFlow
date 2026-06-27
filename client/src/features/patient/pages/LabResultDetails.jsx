@@ -157,7 +157,13 @@ export default function LabResultDetails() {
     } else if (appointmentId) {
       navigate(`/${currentRole}/appointments/${appointmentId}`)
     } else {
-      navigate(currentRole === "doctor" ? "/doctor/appointments" : "/patient/lab-results")
+      navigate(
+        currentRole === "doctor"
+          ? "/doctor/appointments"
+          : currentRole === "admin"
+          ? "/admin/lab-results"
+          : "/patient/lab-results"
+      )
     }
   }
 
