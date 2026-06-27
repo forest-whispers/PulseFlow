@@ -13,7 +13,7 @@ const medicationSchema = z.object({
 });
 
 export const createPrescriptionSchema = z.object({
-    medicalRecord: z.string(),
+    appointment: z.string(),
     medications: z.array(medicationSchema).min(1),
     notes: z.string().trim().max(1000).optional(),
 });

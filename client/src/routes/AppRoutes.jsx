@@ -21,6 +21,10 @@ import DoctorAppointments from "../features/doctor/pages/DoctorAppointments"
 import DoctorProfile from "../features/doctor/pages/DoctorProfile"
 import Notifications from "../features/notifications/pages/Notifications"
 import AdminDashboard from "../features/admin/pages/AdminDashboard"
+import CreateMedicalRecord from "../features/doctor/pages/CreateMedicalRecord"
+import CreatePrescription from "../features/doctor/pages/CreatePrescription"
+import CreateLabResult from "../features/doctor/pages/CreateLabResult"
+import ResourceDetailsPlaceholder from "../features/doctor/pages/ResourceDetailsPlaceholder"
 
 export default function AppRoutes() {
   return (
@@ -106,6 +110,38 @@ export default function AppRoutes() {
             }
           />
           <Route
+            path="/patient/medical-records/:id"
+            element={
+              <ProtectedRoute allowedRoles={["patient"]}>
+                <ResourceDetailsPlaceholder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/patient/prescriptions/:id"
+            element={
+              <ProtectedRoute allowedRoles={["patient"]}>
+                <ResourceDetailsPlaceholder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/patient/lab-results/:id"
+            element={
+              <ProtectedRoute allowedRoles={["patient"]}>
+                <ResourceDetailsPlaceholder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/patient/invoices/:id"
+            element={
+              <ProtectedRoute allowedRoles={["patient"]}>
+                <ResourceDetailsPlaceholder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/doctor/dashboard"
             element={
               <ProtectedRoute allowedRoles={["doctor"]}>
@@ -158,6 +194,62 @@ export default function AppRoutes() {
             element={
               <ProtectedRoute allowedRoles={["doctor"]}>
                 <Notifications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/doctor/medical-records/create"
+            element={
+              <ProtectedRoute allowedRoles={["doctor"]}>
+                <CreateMedicalRecord />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/doctor/medical-records/:id"
+            element={
+              <ProtectedRoute allowedRoles={["doctor"]}>
+                <ResourceDetailsPlaceholder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/doctor/prescriptions/create"
+            element={
+              <ProtectedRoute allowedRoles={["doctor"]}>
+                <CreatePrescription />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/doctor/prescriptions/:id"
+            element={
+              <ProtectedRoute allowedRoles={["doctor"]}>
+                <ResourceDetailsPlaceholder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/doctor/lab-results/create"
+            element={
+              <ProtectedRoute allowedRoles={["doctor"]}>
+                <CreateLabResult />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/doctor/lab-results/:id"
+            element={
+              <ProtectedRoute allowedRoles={["doctor"]}>
+                <ResourceDetailsPlaceholder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/doctor/invoices/:id"
+            element={
+              <ProtectedRoute allowedRoles={["doctor"]}>
+                <ResourceDetailsPlaceholder />
               </ProtectedRoute>
             }
           />

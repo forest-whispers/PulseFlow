@@ -1,9 +1,7 @@
 import z from "zod";
 
 export const createMedicalRecordSchema = z.object({
-    patient: z.string(),
-
-    visitDate: z.iso.date(),
+    appointment: z.string(),
 
     chiefComplaint: z
         .string()

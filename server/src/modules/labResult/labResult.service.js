@@ -6,12 +6,16 @@ import { createAuditLogService } from "../auditLog/auditLog.service.js";
 import { NotFoundError, ForbiddenError } from "../../utils/error.js";
 
 export const createLabResultService = async (currUser, body, file) => {
-    const medicalRecord = await MedicalRecord.findById(body.medicalRecord);
+    const medicalRecord = await MedicalRecord.findOne({ appointment: body.appointment, });
     if (!medicalRecord) {
         throw new NotFoundError("Medical record not found");
     }
     if (medicalRecord.doctor.toString() !== currUser.id) {
         throw new ForbiddenError("You cannot create lab result for this medical record");
+    }
+    const existingLabResult = await LabResult.findOne({ medicalRecord: medicalRecord._id, });
+    if (existingLabResult) {
+        throw new ConflictError("Lab Result already exists");
     }
     let report;
     if (file) {
@@ -26,6 +30,7 @@ export const createLabResultService = async (currUser, body, file) => {
         ...body,
         patient: medicalRecord.patient,
         doctor: currUser.id,
+        medicalRecord: medicalRecord._id,
         report,
     });
     await createAuditLogService(currUser.id, "lab_result_created", "lab_result", labResult._id, {});
@@ -87,6 +92,13 @@ export const updateLabResultService = async (currUser, labResultId, body, file) 
     if (labResult.doctor.toString() !== currUser.id) {
         throw new ForbiddenError("You cannot update this lab result");
     }
+    const allowedUpdate = ["report", "resultSummary", "testName"];
+    let filteredBody = {};
+    allowedUpdate.forEach((field) => {
+        if (body[field] !== undefined) {
+            filteredBody[field] = body[field];
+        }
+    });
     if (file) {
         if (labResult.report?.publicId) {
             await deleteFile(labResult.report.publicId);
@@ -98,7 +110,7 @@ export const updateLabResultService = async (currUser, labResultId, body, file) 
             originalName: file.originalname,
         };
     }
-    Object.assign(labResult, body);
+    Object.assign(labResult, filteredBody);
     await labResult.save();
     await createAuditLogService(currUser.id, "lab_result_updated", "lab_result", labResult._id, {});
     return labResult;

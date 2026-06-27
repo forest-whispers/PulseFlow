@@ -8,7 +8,7 @@ export const createMedicalRecordController =async (req, res, next) => {
                 message: "record created",
                 data: { _id: medicalRecord._id },
             });
-        } catch {
+        } catch (error) {
             next(error);
         }
 };
@@ -20,7 +20,7 @@ export const getMedicalRecordController = async (req, res, next) => {
                 success: true,
                 data: medicalRecord,
             });
-        } catch {
+        } catch (error) {
             next(error);
         }
 };
@@ -32,7 +32,7 @@ export const getMyMedicalRecordsController = async (req, res, next) => {
                 success: true,
                 data: medicalRecords,
             });
-        } catch {
+        } catch (error) {
             next(error);
         }
 };
@@ -45,7 +45,7 @@ export const updateMedicalRecordController = async (req, res, next) => {
                 message: "record updated",
                 data: medicalRecord,
             });
-        } catch {
+        } catch (error) {
             next(error);
         }
 };
@@ -58,7 +58,7 @@ export const deleteMedicalRecordController = async (req, res, next) => {
                 message: "record deleted",
                 data: null
             });
-        } catch {
+        } catch (error) {
             next(error);
         }
 };

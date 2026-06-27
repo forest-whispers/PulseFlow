@@ -18,6 +18,12 @@ import {
   CheckCircle2,
   AlertTriangle,
   Sliders,
+  Pill,
+  Beaker,
+  Receipt,
+  Plus,
+  Eye,
+  Edit,
 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -101,6 +107,33 @@ function formatDateTime(dateTimeStr) {
   }
 }
 
+function ConsultationCard({ title, icon: Icon, exists, emptyMessage, summaryContent, actions }) {
+  return (
+    <Card className="border border-border/40 shadow-2xs bg-card hover:shadow-xs transition-all duration-300 flex flex-col justify-between h-full min-h-[170px] overflow-hidden rounded-2xl">
+      <CardHeader className="p-5 pb-3 border-b border-border/10 flex flex-row items-center justify-between gap-2 bg-muted/5">
+        <CardTitle className="text-sm font-bold flex items-center gap-2 text-foreground">
+          <Icon className="h-4.5 w-4.5 text-primary" />
+          {title}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="p-5 flex-1 flex flex-col justify-center">
+        {exists ? (
+          summaryContent
+        ) : (
+          <p className="text-xs text-muted-foreground italic leading-relaxed">
+            {emptyMessage}
+          </p>
+        )}
+      </CardContent>
+      {actions && (
+        <CardFooter className="p-5 pt-3 pb-4 flex justify-end gap-2 border-t border-border/10 bg-muted/10">
+          {actions}
+        </CardFooter>
+      )}
+    </Card>
+  )
+}
+
 export default function AppointmentDetails() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -125,7 +158,9 @@ export default function AppointmentDetails() {
     refetch: refetchDetails,
   } = useAppointmentDetails(id)
 
-  const appointment = detailsData?.data || {}
+  const appointmentData = detailsData?.data || {}
+  const appointment = appointmentData.appointment || {}
+  const related = appointmentData.related || {}
   const doctor = appointment.doctor || {}
   const doctorId = doctor._id
   const patient = appointment.patient || {}
@@ -249,6 +284,248 @@ export default function AppointmentDetails() {
   }
 
   const canAction = status !== "completed" && status !== "cancelled"
+
+  const medicalRecordExists = !!related?.medicalRecord
+  const prescriptionExists = !!related?.prescription
+  const labResultExists = !!related?.labResult
+  const invoiceExists = !!related?.invoice
+
+  const consultationItems = [
+    {
+      id: "medicalRecord",
+      title: "Medical Record",
+      icon: FileText,
+      exists: medicalRecordExists,
+      emptyMessage: currentRole === "doctor"
+        ? "No medical record created for this consultation."
+        : "No medical record has been created yet.",
+      summaryContent: medicalRecordExists && (
+        <div>
+          <span className="text-[10px] text-muted-foreground uppercase font-bold">Visit Date</span>
+          <p className="font-semibold text-foreground">{formatDate(related.medicalRecord.visitDate)}</p>
+        </div>
+      ),
+      actions: (() => {
+        const actions = []
+        if (medicalRecordExists) {
+          actions.push(
+            <Link
+              key="view"
+              to={`/${currentRole}/medical-records/${related.medicalRecord._id}`}
+            >
+              <Button variant="outline" size="sm" className="gap-1 cursor-pointer">
+                <Eye className="h-3.5 w-3.5" /> View
+              </Button>
+            </Link>
+          )
+          if (currentRole === "doctor") {
+            actions.push(
+              <Link
+                key="edit"
+                to={`/doctor/medical-records/${related.medicalRecord._id}`}
+                state={{ edit: true, appointmentId: id }}
+              >
+                <Button variant="ghost" size="sm" className="gap-1 cursor-pointer">
+                  <Edit className="h-3.5 w-3.5" /> Edit
+                </Button>
+              </Link>
+            )
+          }
+        } else if (currentRole === "doctor") {
+          actions.push(
+            <Link
+              key="create"
+              to="/doctor/medical-records/create"
+              state={{
+                appointmentId: id,
+                patientName: patient.name,
+                appointmentDate: appointment.appointmentDate,
+                bookedSlot: appointment.bookedSlot,
+              }}
+            >
+              <Button size="sm" className="gap-1 cursor-pointer">
+                <Plus className="h-3.5 w-3.5" /> Create Medical Record
+              </Button>
+            </Link>
+          )
+        }
+        return actions.length > 0 ? actions : null
+      })(),
+    },
+    {
+      id: "prescription",
+      title: "Prescription",
+      icon: Pill,
+      exists: prescriptionExists,
+      emptyMessage: currentRole === "doctor"
+        ? "No prescription created for this consultation."
+        : "No prescription has been issued yet.",
+      summaryContent: prescriptionExists && (
+        <div>
+          <span className="text-[10px] text-muted-foreground uppercase font-bold">Issued Date</span>
+          <p className="font-semibold text-foreground">{formatDate(related.prescription.issuedAt)}</p>
+        </div>
+      ),
+      actions: (() => {
+        const actions = []
+        if (prescriptionExists) {
+          actions.push(
+            <Link
+              key="view"
+              to={`/${currentRole}/prescriptions/${related.prescription._id}`}
+            >
+              <Button variant="outline" size="sm" className="gap-1 cursor-pointer">
+                <Eye className="h-3.5 w-3.5" /> View
+              </Button>
+            </Link>
+          )
+          if (currentRole === "doctor") {
+            actions.push(
+              <Link
+                key="edit"
+                to={`/doctor/prescriptions/${related.prescription._id}`}
+                state={{ edit: true, appointmentId: id }}
+              >
+                <Button variant="ghost" size="sm" className="gap-1 cursor-pointer">
+                  <Edit className="h-3.5 w-3.5" /> Edit
+                </Button>
+              </Link>
+            )
+          }
+        } else if (currentRole === "doctor") {
+          actions.push(
+            <Link
+              key="create"
+              to="/doctor/prescriptions/create"
+              state={{
+                appointmentId: id,
+                patientName: patient.name,
+                appointmentDate: appointment.appointmentDate,
+                bookedSlot: appointment.bookedSlot,
+              }}
+            >
+              <Button size="sm" className="gap-1 cursor-pointer">
+                <Plus className="h-3.5 w-3.5" /> Create Prescription
+              </Button>
+            </Link>
+          )
+        }
+        return actions.length > 0 ? actions : null
+      })(),
+    },
+    {
+      id: "labResult",
+      title: "Lab Result",
+      icon: Beaker,
+      exists: labResultExists,
+      emptyMessage: currentRole === "doctor"
+        ? "No lab results requested for this consultation."
+        : "No lab results have been requested.",
+      summaryContent: labResultExists && (
+        <div className="space-y-1.5">
+          <div>
+            <span className="text-[10px] text-muted-foreground uppercase font-bold">Test Name</span>
+            <p className="font-semibold text-foreground">{related.labResult.testName}</p>
+          </div>
+          <div>
+            <span className="text-[10px] text-muted-foreground uppercase font-bold">Result Summary</span>
+            <p className="text-muted-foreground">{related.labResult.resultSummary}</p>
+          </div>
+        </div>
+      ),
+      actions: (() => {
+        const actions = []
+        if (labResultExists) {
+          actions.push(
+            <Link
+              key="view"
+              to={`/${currentRole}/lab-results/${related.labResult._id}`}
+            >
+              <Button variant="outline" size="sm" className="gap-1 cursor-pointer">
+                <Eye className="h-3.5 w-3.5" /> View
+              </Button>
+            </Link>
+          )
+          if (currentRole === "doctor") {
+            actions.push(
+              <Link
+                key="edit"
+                to={`/doctor/lab-results/${related.labResult._id}`}
+                state={{ edit: true, appointmentId: id }}
+              >
+                <Button variant="ghost" size="sm" className="gap-1 cursor-pointer">
+                  <Edit className="h-3.5 w-3.5" /> Edit
+                </Button>
+              </Link>
+            )
+          }
+        } else if (currentRole === "doctor") {
+          actions.push(
+            <Link
+              key="create"
+              to="/doctor/lab-results/create"
+              state={{
+                appointmentId: id,
+                patientName: patient.name,
+                appointmentDate: appointment.appointmentDate,
+                bookedSlot: appointment.bookedSlot,
+              }}
+            >
+              <Button size="sm" className="gap-1 cursor-pointer">
+                <Plus className="h-3.5 w-3.5" /> Add Lab Result
+              </Button>
+            </Link>
+          )
+        }
+        return actions.length > 0 ? actions : null
+      })(),
+    },
+    {
+      id: "invoice",
+      title: "Invoice",
+      icon: Receipt,
+      exists: invoiceExists,
+      emptyMessage: "No invoice has been generated.",
+      summaryContent: invoiceExists && (
+        <div className="space-y-1.5">
+          <div>
+            <span className="text-[10px] text-muted-foreground uppercase font-bold">Amount</span>
+            <p className="font-semibold text-foreground">₹{related.invoice.amount}</p>
+          </div>
+          <div>
+            <span className="text-[10px] text-muted-foreground uppercase font-bold">Payment Status</span>
+            <div className="mt-1">
+              <Badge
+                className={
+                  related.invoice.status === "paid"
+                    ? "bg-emerald-500/10 text-emerald-600 border-emerald-200/35 font-bold"
+                    : "bg-amber-500/10 text-amber-600 border-amber-200/35 font-bold"
+                }
+              >
+                {related.invoice.status.toUpperCase()}
+              </Badge>
+            </div>
+          </div>
+        </div>
+      ),
+      actions: (() => {
+        const actions = []
+        if (invoiceExists) {
+          actions.push(
+            <Link
+              key="view"
+              to={`/${currentRole}/invoices/${related.invoice._id}`}
+            >
+              <Button variant="outline" size="sm" className="gap-1 cursor-pointer">
+                <Eye className="h-3.5 w-3.5" /> View
+              </Button>
+            </Link>
+          )
+        }
+        return actions.length > 0 ? actions : null
+      })(),
+    },
+  ]
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto p-4 sm:p-6">
@@ -462,6 +739,29 @@ export default function AppointmentDetails() {
             </CardFooter>
           )}
         </Card>
+
+        {/* Consultation Summary Workspace extension */}
+        <div className="space-y-4 pt-4">
+          <div className="flex flex-col gap-1">
+            <h3 className="text-lg font-extrabold text-foreground">Consultation Summary</h3>
+            <p className="text-xs text-muted-foreground">
+              Manage clinical records, prescriptions, lab tests, and billing invoices.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {consultationItems.map((item) => (
+              <ConsultationCard
+                key={item.id}
+                title={item.title}
+                icon={item.icon}
+                exists={item.exists}
+                emptyMessage={item.emptyMessage}
+                summaryContent={item.summaryContent}
+                actions={item.actions}
+              />
+            ))}
+          </div>
+        </div>
 
         {/* Collapsible Reschedule Panel (expanded only when requested) */}
         {isRescheduling && canAction && (

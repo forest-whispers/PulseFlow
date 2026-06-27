@@ -1,7 +1,7 @@
 import z from "zod";
 
 export const createLabResultSchema = z.object({
-    medicalRecord: z.string(),
+    appointment: z.string(),
 
     testName: z.string().trim().min(2).max(200),
 

@@ -33,4 +33,24 @@ export const doctorApi = {
     const response = await axiosInstance.patch("/doctor-profile/me", data)
     return response.data
   },
+  createMedicalRecord: async (formData) => {
+    const response = await axiosInstance.post("/medical-records", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    return response.data
+  },
+  createPrescription: async (data) => {
+    const response = await axiosInstance.post("/prescriptions", data)
+    return response.data
+  },
+  createLabResult: async (formData) => {
+    const response = await axiosInstance.post("/lab-results", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    return response.data
+  },
 }

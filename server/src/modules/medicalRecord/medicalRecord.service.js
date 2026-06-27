@@ -6,7 +6,7 @@ import Appointment from "../appointment/appointment.model.js";
 import { uploadFile } from "../../utils/uploadFile.js";
 import { deleteFile } from "../../utils/deleteFile.js";
 import { createAuditLogService } from "../auditLog/auditLog.service.js";
-import { NotFoundError, ConflictError, ForbiddenError, BadRequestError } from '../../utils/error.js'
+import { NotFoundError, ConflictError, ForbiddenError, UnauthorizedError, BadRequestError } from '../../utils/error.js'
 
 export const createMedicalRecordService = async ( currUser, body, files ) => {
     const existingRecord = await MedicalRecord.findOne({ appointment: body.appointment, });
@@ -18,7 +18,7 @@ export const createMedicalRecordService = async ( currUser, body, files ) => {
         throw new NotFoundError("Appointment not found");
     }
     if (appointment.doctor.toString() !== currUser.id) {
-        
+        throw new ForbiddenError("You cannot create medical record for this appointment");
     }
     const allowedStatuses = ["confirmed", "completed"];
     if(!allowedStatuses.includes(appointment.status))
@@ -36,7 +36,7 @@ export const createMedicalRecordService = async ( currUser, body, files ) => {
             });
         }
     }
-    const medicalRecord = await MedicalRecord.create({ ...body, doctor: currUser.id, patient: appointment.patient, appointment: appointment._id, attachments: uploadedAttachments, });
+    const medicalRecord = await MedicalRecord.create({ ...body, doctor: currUser.id, patient: appointment.patient, appointment: appointment._id, visitDate: appointment.appointmentDate, attachments: uploadedAttachments, });
     await createAuditLogService( currUser.id, "medical_record_created", "medical_record", medicalRecord._id, {}, );
     return medicalRecord;
 };

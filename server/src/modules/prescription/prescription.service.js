@@ -4,16 +4,14 @@ import { createAuditLogService } from "../auditLog/auditLog.service.js";
 import { NotFoundError, ForbiddenError, ConflictError } from "../../utils/error.js";
 
 export const createPrescriptionService = async (currUser, body) => {
-    const medicalRecord = await MedicalRecord.findById(body.medicalRecord);
+    const medicalRecord = await MedicalRecord.findOne({ appointment: body.appointment, });
     if (!medicalRecord) {
         throw new NotFoundError("Medical record not found");
     }
     if (medicalRecord.doctor.toString() !== currUser.id) {
         throw new ForbiddenError("You cannot create prescription for this medical record");
     }
-    const existingPrescription = await Prescription.findOne({
-        medicalRecord: medicalRecord._id,
-    });
+    const existingPrescription = await Prescription.findOne({ medicalRecord: medicalRecord._id, });
     if (existingPrescription) {
         throw new ConflictError("Prescription already exists");
     }
@@ -21,6 +19,7 @@ export const createPrescriptionService = async (currUser, body) => {
         ...body,
         patient: medicalRecord.patient,
         doctor: currUser.id,
+        medicalRecord: medicalRecord._id,
     });
     await createAuditLogService( currUser.id, "prescription_created", "prescription", prescription._id, {}, );
     return prescription;
@@ -74,7 +73,14 @@ export const updatePrescriptionService = async (currUser, prescriptionId, body) 
     if (prescription.doctor.toString() !== currUser.id) {
         throw new ForbiddenError("You cannot update this prescription");
     }
-    Object.assign(prescription, body);
+    const allowedUpdate = ["notes", "medications"];
+    let filteredBody = {};
+    allowedUpdate.forEach((field) => {
+        if (body[field] !== undefined) {
+            filteredBody[field] = body[field];
+        }
+    });
+    Object.assign(prescription, filteredBody);
     await prescription.save();
     await createAuditLogService( currUser.id, "prescription_updated", "prescription", prescription._id, {},
     );

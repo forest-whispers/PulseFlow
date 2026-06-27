@@ -1,5 +1,9 @@
 import Appointment from "./appointment.model.js";
 import DoctorAvailability from "../doctorAvailability/doctorAvailability.model.js";
+import MedicalRecord from "../medicalRecord/medicalRecord.model.js";
+import Prescription from "../prescription/prescription.model.js";
+import LabResult from "../labResult/labResult.model.js";
+import Invoice from "../invoice/invoice.model.js";
 import { createAuditLogService } from "../auditLog/auditLog.service.js";
 import { validateAppointmentSlot } from '../../utils/validateAppointmentSlot.js'
 import { BadRequestError, ConflictError, NotFoundError, UnauthorizedError, ForbiddenError } from '../../utils/error.js'
@@ -68,7 +72,7 @@ export const getAppointmentService = async (currUser, appointmentId) => {
     let invoice = null;
     if (medicalRecord) {
         [prescription, labResult, invoice] = await Promise.all([
-            Prescription.findOne({ medicalRecord: medicalRecord._id }).select("_id").lean(),
+            Prescription.findOne({ medicalRecord: medicalRecord._id }).select("_id createdAt").lean(),
             LabResult.findOne({ medicalRecord: medicalRecord._id }).select("_id testName resultSummary").lean(),
             Invoice.findOne({ medicalRecord: medicalRecord._id }).select("_id amount status").lean(),
         ]);
@@ -76,10 +80,10 @@ export const getAppointmentService = async (currUser, appointmentId) => {
     return {
         appointment,
         related: {
-            medicalRecord,
-            prescription,
-            labResult,
-            invoice,
+            medicalRecord: medicalRecord ? { _id: medicalRecord._id, visitDate: medicalRecord.visitDate, } : null,
+            prescription: prescription ? { _id: prescription._id, issuedAt: prescription.createdAt, } : null,
+            labResult: labResult ? { _id: labResult._id, testName: labResult.testName, resultSummary: labResult.resultSummary, } : null,
+            invoice: invoice ? { _id: invoice._id, amount: invoice.amount, status: invoice.status, } : null,
         },
     };
 };
