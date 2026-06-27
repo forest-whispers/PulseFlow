@@ -50,7 +50,12 @@ export default function NotificationBell() {
   const markReadMutation = useMarkNotificationRead()
 
   // Define route mapping for "View All" button based on role
-  const viewAllPath = user?.role === "doctor" ? "/doctor/notifications" : "/patient/notifications"
+  const viewAllPath =
+    user?.role === "doctor"
+      ? "/doctor/notifications"
+      : user?.role === "admin"
+      ? "/admin/notifications"
+      : "/patient/notifications"
 
   const handleNotificationClick = async (notification) => {
     if (!notification.isRead) {

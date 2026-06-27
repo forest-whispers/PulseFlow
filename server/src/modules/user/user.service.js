@@ -54,13 +54,13 @@ export const getUserByIdService = async (id, currUser) =>
     if (currUser.role === "doctor" && currUser.id !== id) {
         throw new ForbiddenError("Access Denied");
     }
-    const user = await User.findById(id).select("-password");
+    const user = await User.findById(id).select("-password").lean();
     if (!user) {
         throw new NotFoundError("User not found");
     }
     let profile = null;
     if (user.role === "doctor") {
-        profile = await DoctorProfile.findOne({ user: user._id, }.select("bio clinicAddress consultationFee experience specialization"));
+        profile = await DoctorProfile.findOne({ user: user._id, }).select("bio clinicAddress consultationFee experience specialization");
     }
     if (user.role === "patient") {
         profile = await PatientProfile.findOne({ patient: user._id, }).select("bloodGroup allergies medicalHistory emergencyContact");
@@ -75,4 +75,28 @@ export const getUserByIdService = async (id, currUser) =>
             gender: user.gender
         },
         profile, };
+};
+
+export const getUsersService = async (queryParams) => {
+    const query = {};
+    const page = Number(queryParams.page) || 1;
+    const limit = Number(queryParams.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    if (queryParams.role && ["doctor", "patient"].includes(queryParams.role)) {
+        query.role = queryParams.role;
+    }
+    const [users, totalUsers] = await Promise.all([
+        User.find(query).select("-password").sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+        User.countDocuments(query),
+    ]);
+    return {
+        users,
+        pagination: {
+            page,
+            limit,
+            total: totalUsers,
+            totalPages: Math.ceil(totalUsers / limit),
+        },
+    };
 };

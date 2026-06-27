@@ -24,6 +24,8 @@ import AdminDashboard from "../features/admin/pages/AdminDashboard"
 import AdminPlaceholder from "../features/admin/pages/AdminPlaceholder"
 import AdminAppointments from "../features/admin/pages/AdminAppointments"
 import AdminInvoices from "../features/admin/pages/AdminInvoices"
+import AdminUsers from "../features/admin/pages/AdminUsers"
+import AdminUserDetails from "../features/admin/pages/AdminUserDetails"
 import AdminMedicalRecords from "../features/admin/pages/AdminMedicalRecords"
 import AdminPrescriptions from "../features/admin/pages/AdminPrescriptions"
 import AdminLabResults from "../features/admin/pages/AdminLabResults"
@@ -336,7 +338,15 @@ export default function AppRoutes() {
             path="/admin/users"
             element={
               <ProtectedRoute allowedRoles={["admin"]}>
-                <AdminPlaceholder />
+                <AdminUsers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users/:id"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminUserDetails />
               </ProtectedRoute>
             }
           />
@@ -432,7 +442,7 @@ export default function AppRoutes() {
             path="/admin/notifications"
             element={
               <ProtectedRoute allowedRoles={["admin"]}>
-                <AdminPlaceholder />
+                <Notifications />
               </ProtectedRoute>
             }
           />

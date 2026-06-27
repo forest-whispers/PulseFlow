@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-import { createUserService, loginUserService, getUserByIdService, } from "./user.service.js";
+import { createUserService, loginUserService, getUserByIdService, getUsersService, } from "./user.service.js";
 
 export const registerUserController = async (req, res, next) =>
 {
@@ -91,6 +91,18 @@ export const getUserController = async (req, res, next) =>
         res.status(200).json({
             success: true,
             data: user,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getUsersController = async (req, res, next) => {
+    try {
+        const users = await getUsersService(req.query);
+        res.status(200).json({
+            success: true,
+            data: users,
         });
     } catch (error) {
         next(error);
