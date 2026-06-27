@@ -21,6 +21,7 @@ import DoctorAppointments from "../features/doctor/pages/DoctorAppointments"
 import DoctorProfile from "../features/doctor/pages/DoctorProfile"
 import Notifications from "../features/notifications/pages/Notifications"
 import AdminDashboard from "../features/admin/pages/AdminDashboard"
+import AdminPlaceholder from "../features/admin/pages/AdminPlaceholder"
 import CreateMedicalRecord from "../features/doctor/pages/CreateMedicalRecord"
 import CreatePrescription from "../features/doctor/pages/CreatePrescription"
 import CreateLabResult from "../features/doctor/pages/CreateLabResult"
@@ -307,6 +308,62 @@ export default function AppRoutes() {
             element={
               <ProtectedRoute allowedRoles={["admin"]}>
                 <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/doctors"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminPlaceholder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/patients"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminPlaceholder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminPlaceholder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/appointments"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminPlaceholder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/appointments/:id"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminPlaceholder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/notifications"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminPlaceholder />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/analytics"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminPlaceholder />
               </ProtectedRoute>
             }
           />
