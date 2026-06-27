@@ -68,10 +68,16 @@ export const getMedicalRecordService = async ( currUser, medicalRecordId ) => {
 };
 
 export const getMyMedicalRecordsService = async (currUser,queryParams,) => {
+    const query = {};
     const page = Number(queryParams.page) || 1;
     const limit = Number(queryParams.limit) || 10;
     const skip = (page - 1) * limit;
-    const query = { patient: currUser.id };
+    if (currUser.role === "patient") {
+        query.patient = currUser.id
+    }
+    else if (currUser.role === "doctor") {
+        query.doctor = currUser.id
+    }
     const [medicalRecords, totalMedicalRecords] = await Promise.all([
         MedicalRecord.find(query).select("appointment patient doctor visitDate chiefComplaint diagnosis treatment").populate("patient", "name").populate("doctor", "name").populate("appointment", "appointmentDate bookedSlot status").sort({ visitDate: -1, }).skip(skip).limit(limit).lean(),
             MedicalRecord.countDocuments(query),

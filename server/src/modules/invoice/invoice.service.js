@@ -35,24 +35,26 @@ export const getInvoiceService = async (currUser,invoiceId) => {
     if (!invoice) {
         throw new NotFoundError("Invoice not found");
     }
-    if (currUser.role === "doctor" &&invoice.doctor._id.toString() !== currUser.id) {
-        throw new ForbiddenError(
-            "You cannot access this invoice",
-        );
+    if (currUser.role === "doctor" && invoice.doctor._id.toString() !== currUser.id) {
+        throw new ForbiddenError("You cannot access this invoice",);
     }
-    if (currUser.role === "patient" &&invoice.patient._id.toString() !== currUser.id) {
-        throw new ForbiddenError(
-            "You cannot access this invoice",
-        );
+    if (currUser.role === "patient" && invoice.patient._id.toString() !== currUser.id) {
+        throw new ForbiddenError("You cannot access this invoice",);
     }
     return invoice;
 };
 
 export const getMyInvoicesService = async ( currUser, queryParams, ) => {
+    const query = {};
     const page = Number(queryParams.page) || 1;
     const limit = Number(queryParams.limit) || 10;
     const skip = (page - 1) * limit;
-    const query = currUser.role === "patient" ? { patient: currUser.id } : { doctor: currUser.id };
+    if (currUser.role === "patient") {
+        query.patient = currUser.id
+    }
+    else if (currUser.role === "doctor") {
+        query.doctor = currUser.id
+    }
     const [invoices, totalInvoices] = await Promise.all([
             Invoice.find(query).select( "appointment doctor patient amount status paymentMethod paidAt createdAt" ).populate({ path: "appointment", select: "appointmentDate bookedSlot status", }).populate("doctor", "name").populate("patient", "name").sort({ createdAt: -1, }).skip(skip).limit(limit).lean(),
             Invoice.countDocuments(query),
@@ -89,7 +91,18 @@ export const updateInvoiceService = async (currUser, invoiceId, body) => {
     }
     await invoice.save();
     await createAuditLogService(currUser.id, "invoice_updated", "invoice", invoice._id, {});
-    return invoice;
+    const invoiceDetails = {
+        appointment: invoice.appointment,
+        patient: invoice.patient,
+        doctor: invoice.doctor,
+        amount: invoice.amount,
+        description: invoice.description,
+        status: invoice.status,
+        paymentMethod: invoice.paymentMethod,
+        paidAt: invoice.paidAt,
+        createdAt: invoice.createdAt
+    }
+    return invoiceDetails;
 };
 
 export const deleteInvoiceService = async (currUser, invoiceId) => {

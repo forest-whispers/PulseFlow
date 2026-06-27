@@ -7,14 +7,14 @@ import { createInvoiceController, getInvoiceController, getMyInvoicesController,
 import { validate } from "../../middleware/validate.js";
 import { createInvoiceSchema, updateInvoiceSchema } from "./invoice.validation.js";
 
-router.post("/", requireAuth, requireRole("doctor"), validate(createInvoiceSchema), createInvoiceController);
+router.post("/", requireAuth, requireRole("doctor admin"), validate(createInvoiceSchema), createInvoiceController);
 
 router.get("/", requireAuth, getMyInvoicesController);
 
 router.get("/:id", requireAuth, getInvoiceController);
 
-router.patch("/:id", requireAuth, requireRole("doctor"), validate(updateInvoiceSchema), updateInvoiceController);
+router.patch("/:id", requireAuth, requireRole("doctor admin"), validate(updateInvoiceSchema), updateInvoiceController);
 
-router.delete("/:id", requireAuth, requireRole("doctor"), deleteInvoiceController);
+router.delete("/:id", requireAuth, requireRole("doctor admin"), deleteInvoiceController);
 
 export default router;

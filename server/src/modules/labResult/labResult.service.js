@@ -42,12 +42,12 @@ export const getLabResultService = async ( currUser, labResultId,) => {
     if (!labResult) {
         throw new NotFoundError("Lab result not found");
     }
-    if (currUser.role === "doctor" &&labResult.doctor._id.toString() !== currUser.id) {
+    if (currUser.role === "doctor" && labResult.doctor._id.toString() !== currUser.id) {
         throw new ForbiddenError(
             "You cannot access this lab result",
         );
     }
-    if (currUser.role === "patient" &&labResult.patient._id.toString() !== currUser.id) {
+    if (currUser.role === "patient" && labResult.patient._id.toString() !== currUser.id) {
         throw new ForbiddenError(
             "You cannot access this lab result",
         );
@@ -56,10 +56,16 @@ export const getLabResultService = async ( currUser, labResultId,) => {
 };
 
 export const getMyLabResultsService = async ( currUser, queryParams,) => {
+    const query = {};
     const page = Number(queryParams.page) || 1;
     const limit = Number(queryParams.limit) || 10;
     const skip = (page - 1) * limit;
-    const query = { patient: currUser.id };
+    if (currUser.role === "patient") {
+        query.patient = currUser.id
+    }
+    else if (currUser.role === "doctor") {
+        query.doctor = currUser.id
+    }
     const [labResults, totalLabResults] = await Promise.all([
         LabResult.find(query).select("doctor patient medicalRecord testName resultSummary report createdAt").populate("doctor", "name").populate("patient", "name").populate({ path: "medicalRecord", select: "visitDate chiefComplaint", }).sort({ createdAt: -1, }).skip(skip).limit(limit).lean(),
         LabResult.countDocuments(query),

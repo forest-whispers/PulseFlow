@@ -40,10 +40,16 @@ export const getPrescriptionService = async (currUser, prescriptionId) => {
 };
 
 export const getMyPrescriptionsService = async ( currUser, queryParams ) => {
+    const query = {};
     const page = Number(queryParams.page) || 1;
     const limit = Number(queryParams.limit) || 10;
     const skip = (page - 1) * limit;
-    const query = { patient: currUser.id };
+    if (currUser.role === "patient") {
+        query.patient = currUser.id
+    }
+    else if (currUser.role === "doctor") {
+        query.doctor = currUser.id
+    }
     const [prescriptions, totalPrescriptions] = await Promise.all([
         Prescription.find(query).select("patient doctor medicalRecord medications createdAt").populate("patient", "name").populate("doctor", "name").populate({ path: "medicalRecord", select: "visitDate chiefComplaint", }) .sort({ createdAt: -1, }).skip(skip).limit(limit).lean(),
             Prescription.countDocuments(query),

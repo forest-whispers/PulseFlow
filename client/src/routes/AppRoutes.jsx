@@ -31,6 +31,9 @@ import PatientPrescriptions from "../features/patient/pages/PatientPrescriptions
 import PrescriptionDetails from "../features/patient/pages/PrescriptionDetails"
 import PatientLabResults from "../features/patient/pages/PatientLabResults"
 import LabResultDetails from "../features/patient/pages/LabResultDetails"
+import CreateInvoice from "../features/doctor/pages/CreateInvoice"
+import PatientInvoices from "../features/patient/pages/PatientInvoices"
+import InvoiceDetails from "../features/patient/pages/InvoiceDetails"
 
 export default function AppRoutes() {
   return (
@@ -164,10 +167,18 @@ export default function AppRoutes() {
             }
           />
           <Route
+            path="/patient/invoices"
+            element={
+              <ProtectedRoute allowedRoles={["patient"]}>
+                <PatientInvoices />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/patient/invoices/:id"
             element={
               <ProtectedRoute allowedRoles={["patient"]}>
-                <ResourceDetailsPlaceholder />
+                <InvoiceDetails />
               </ProtectedRoute>
             }
           />
@@ -276,10 +287,18 @@ export default function AppRoutes() {
             }
           />
           <Route
+            path="/doctor/invoices/create"
+            element={
+              <ProtectedRoute allowedRoles={["doctor"]}>
+                <CreateInvoice />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/doctor/invoices/:id"
             element={
               <ProtectedRoute allowedRoles={["doctor"]}>
-                <ResourceDetailsPlaceholder />
+                <InvoiceDetails />
               </ProtectedRoute>
             }
           />
