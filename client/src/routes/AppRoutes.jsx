@@ -27,6 +27,10 @@ import CreateLabResult from "../features/doctor/pages/CreateLabResult"
 import ResourceDetailsPlaceholder from "../features/doctor/pages/ResourceDetailsPlaceholder"
 import PatientMedicalRecords from "../features/patient/pages/PatientMedicalRecords"
 import MedicalRecordDetails from "../features/patient/pages/MedicalRecordDetails"
+import PatientPrescriptions from "../features/patient/pages/PatientPrescriptions"
+import PrescriptionDetails from "../features/patient/pages/PrescriptionDetails"
+import PatientLabResults from "../features/patient/pages/PatientLabResults"
+import LabResultDetails from "../features/patient/pages/LabResultDetails"
 
 export default function AppRoutes() {
   return (
@@ -128,10 +132,26 @@ export default function AppRoutes() {
             }
           />
           <Route
+            path="/patient/prescriptions"
+            element={
+              <ProtectedRoute allowedRoles={["patient"]}>
+                <PatientPrescriptions />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/patient/prescriptions/:id"
             element={
               <ProtectedRoute allowedRoles={["patient"]}>
-                <ResourceDetailsPlaceholder />
+                <PrescriptionDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/patient/lab-results"
+            element={
+              <ProtectedRoute allowedRoles={["patient"]}>
+                <PatientLabResults />
               </ProtectedRoute>
             }
           />
@@ -139,7 +159,7 @@ export default function AppRoutes() {
             path="/patient/lab-results/:id"
             element={
               <ProtectedRoute allowedRoles={["patient"]}>
-                <ResourceDetailsPlaceholder />
+                <LabResultDetails />
               </ProtectedRoute>
             }
           />
@@ -235,7 +255,7 @@ export default function AppRoutes() {
             path="/doctor/prescriptions/:id"
             element={
               <ProtectedRoute allowedRoles={["doctor"]}>
-                <ResourceDetailsPlaceholder />
+                <PrescriptionDetails />
               </ProtectedRoute>
             }
           />
@@ -251,7 +271,7 @@ export default function AppRoutes() {
             path="/doctor/lab-results/:id"
             element={
               <ProtectedRoute allowedRoles={["doctor"]}>
-                <ResourceDetailsPlaceholder />
+                <LabResultDetails />
               </ProtectedRoute>
             }
           />
