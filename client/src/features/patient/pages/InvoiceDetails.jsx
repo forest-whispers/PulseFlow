@@ -74,6 +74,9 @@ export default function InvoiceDetails() {
   const { user } = useSelector((state) => state.auth)
   const currentRole = user?.role || "patient"
   const isDoctor = currentRole === "doctor"
+  const isAdmin = currentRole === "admin"
+  const isStaff = isDoctor || isAdmin
+  const isPatient = currentRole === "patient"
 
   // Component local states
   const [isEditing, setIsEditing] = useState(location.state?.edit || false)
@@ -144,9 +147,15 @@ export default function InvoiceDetails() {
         setShowDeleteConfirm(false)
         const appointmentId = location.state?.appointmentId || appointment._id || appointment
         if (appointmentId) {
-          navigate(`/doctor/appointments/${appointmentId}`)
+          navigate(`/${currentRole}/appointments/${appointmentId}`)
         } else {
-          navigate("/doctor/appointments")
+          navigate(
+            currentRole === "doctor"
+              ? "/doctor/appointments"
+              : currentRole === "admin"
+              ? "/admin/invoices"
+              : "/patient/invoices"
+          )
         }
       },
     })
@@ -168,7 +177,13 @@ export default function InvoiceDetails() {
     if (appointmentId) {
       navigate(`/${currentRole}/appointments/${appointmentId}`)
     } else {
-      navigate(currentRole === "doctor" ? "/doctor/appointments" : "/patient/invoices")
+      navigate(
+        currentRole === "doctor"
+          ? "/doctor/appointments"
+          : currentRole === "admin"
+          ? "/admin/invoices"
+          : "/patient/invoices"
+      )
     }
   }
 
@@ -431,8 +446,8 @@ export default function InvoiceDetails() {
                 </>
               ) : (
                 <>
-                  {/* Doctor actions in view mode (only if pending) */}
-                  {isDoctor && isPending && (
+                  {/* Staff actions in view mode (only if pending) */}
+                  {isStaff && isPending && (
                     <>
                       <Button
                         type="button"
@@ -457,7 +472,7 @@ export default function InvoiceDetails() {
                   )}
 
                   {/* Patient actions (Pay Now button if pending & stripe) */}
-                  {!isDoctor && isPending && invoice.paymentMethod === "stripe" && (
+                  {isPatient && isPending && invoice.paymentMethod === "stripe" && (
                     <Button
                       type="button"
                       disabled={checkoutMutation.isPending}
@@ -479,7 +494,7 @@ export default function InvoiceDetails() {
                   )}
 
                   {/* Patient Paid success badge state */}
-                  {!isDoctor && isPaid && (
+                  {isPatient && isPaid && (
                     <Badge className="bg-emerald-500/10 text-emerald-700 border-emerald-200/40 py-1.5 px-4 font-bold rounded-xl text-xs gap-1.5 mr-auto">
                       <CheckCircle2 className="h-4 w-4 text-emerald-600" /> Paid Statement
                     </Badge>
@@ -487,7 +502,7 @@ export default function InvoiceDetails() {
 
                   <Button
                     type="button"
-                    variant={isDoctor && isPending ? "ghost" : "default"}
+                    variant={isStaff && isPending ? "ghost" : "default"}
                     onClick={handleBackNavigation}
                     className="h-10 rounded-xl font-bold cursor-pointer"
                   >

@@ -22,6 +22,8 @@ import DoctorProfile from "../features/doctor/pages/DoctorProfile"
 import Notifications from "../features/notifications/pages/Notifications"
 import AdminDashboard from "../features/admin/pages/AdminDashboard"
 import AdminPlaceholder from "../features/admin/pages/AdminPlaceholder"
+import AdminAppointments from "../features/admin/pages/AdminAppointments"
+import AdminInvoices from "../features/admin/pages/AdminInvoices"
 import CreateMedicalRecord from "../features/doctor/pages/CreateMedicalRecord"
 import CreatePrescription from "../features/doctor/pages/CreatePrescription"
 import CreateLabResult from "../features/doctor/pages/CreateLabResult"
@@ -339,7 +341,7 @@ export default function AppRoutes() {
             path="/admin/appointments"
             element={
               <ProtectedRoute allowedRoles={["admin"]}>
-                <AdminPlaceholder />
+                <AdminAppointments />
               </ProtectedRoute>
             }
           />
@@ -347,7 +349,55 @@ export default function AppRoutes() {
             path="/admin/appointments/:id"
             element={
               <ProtectedRoute allowedRoles={["admin"]}>
-                <AdminPlaceholder />
+                <AppointmentDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/medical-records/:id"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <MedicalRecordDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/prescriptions/:id"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <PrescriptionDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/lab-results/:id"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <LabResultDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/invoices"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminInvoices />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/invoices/create"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <CreateInvoice />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/invoices/:id"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <InvoiceDetails />
               </ProtectedRoute>
             }
           />

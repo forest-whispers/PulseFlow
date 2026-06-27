@@ -17,6 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { useCreateInvoice } from "../../patient/hooks/useInvoices"
+import { useSelector } from "react-redux"
 
 const createInvoiceFormSchema = z.object({
   amount: z.coerce.number().positive("Amount must be a positive number"),
@@ -58,6 +59,9 @@ export default function CreateInvoice() {
   const location = useLocation()
   const navigate = useNavigate()
 
+  const { user: currentUser } = useSelector((state) => state.auth)
+  const currentRole = currentUser?.role || "doctor"
+
   const { appointmentId, patientName, appointmentDate, bookedSlot, status } = location.state || {}
 
   const createMutation = useCreateInvoice()
@@ -87,11 +91,11 @@ export default function CreateInvoice() {
     createMutation.mutate(payload, {
       onSuccess: (response) => {
         if (response.data?._id) {
-          navigate(`/doctor/invoices/${response.data._id}`, {
+          navigate(`/${currentRole}/invoices/${response.data._id}`, {
             state: { appointmentId },
           })
         } else {
-          navigate(`/doctor/appointments/${appointmentId}`)
+          navigate(`/${currentRole}/appointments/${appointmentId}`)
         }
       },
     })
@@ -99,6 +103,7 @@ export default function CreateInvoice() {
 
   // Check if we have the required context
   if (!appointmentId || !patientName) {
+    const backPath = currentRole === "admin" ? "/admin/appointments" : "/doctor/appointments"
     return (
       <div className="min-h-[50vh] flex flex-col items-center justify-center text-center p-6 space-y-4 max-w-md mx-auto animate-fade-in">
         <div className="h-14 w-14 rounded-full bg-destructive/10 text-destructive flex items-center justify-center shadow-2xs">
@@ -110,7 +115,7 @@ export default function CreateInvoice() {
             Invoice generation forms must be launched directly from the Appointment details Consultation Summary.
           </p>
         </div>
-        <Button onClick={() => navigate("/doctor/appointments")} className="w-full rounded-xl cursor-pointer">
+        <Button onClick={() => navigate(backPath)} className="w-full rounded-xl cursor-pointer">
           Go to Appointments
         </Button>
       </div>
@@ -132,7 +137,7 @@ export default function CreateInvoice() {
         </div>
         <Button 
           variant="outline"
-          onClick={() => navigate(`/doctor/appointments/${appointmentId}`)} 
+          onClick={() => navigate(`/${currentRole}/appointments/${appointmentId}`)} 
           className="w-full rounded-xl cursor-pointer"
         >
           Return to Appointment Details
@@ -146,7 +151,7 @@ export default function CreateInvoice() {
       {/* Return Navigation */}
       <Button
         variant="ghost"
-        onClick={() => navigate(`/doctor/appointments/${appointmentId}`)}
+        onClick={() => navigate(`/${currentRole}/appointments/${appointmentId}`)}
         className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer"
       >
         <ArrowLeft className="h-4 w-4" /> Cancel and Return
@@ -255,7 +260,7 @@ export default function CreateInvoice() {
               type="button"
               variant="outline"
               disabled={createMutation.isPending}
-              onClick={() => navigate(`/doctor/appointments/${appointmentId}`)}
+              onClick={() => navigate(`/${currentRole}/appointments/${appointmentId}`)}
               className="h-10 rounded-xl font-bold cursor-pointer"
             >
               Cancel

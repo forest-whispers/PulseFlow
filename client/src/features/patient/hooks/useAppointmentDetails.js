@@ -21,7 +21,11 @@ export function useCancelAppointment(appointmentId) {
       // Invalidate details, search history list, and dashboard cache
       queryClient.invalidateQueries({ queryKey: ["appointmentDetails", appointmentId] })
       queryClient.invalidateQueries({ queryKey: ["patientAppointments"] })
+      queryClient.invalidateQueries({ queryKey: ["doctorAppointments"] })
+      queryClient.invalidateQueries({ queryKey: ["adminAppointments"] })
       queryClient.invalidateQueries({ queryKey: ["patientDashboard"] })
+      queryClient.invalidateQueries({ queryKey: ["doctorDashboard"] })
+      queryClient.invalidateQueries({ queryKey: ["adminDashboard"] })
       toast.success(data.message || "Appointment cancelled successfully!")
     },
     onError: (error) => {
@@ -40,7 +44,11 @@ export function useRescheduleAppointment(appointmentId) {
       // Invalidate details, search history list, and dashboard cache
       queryClient.invalidateQueries({ queryKey: ["appointmentDetails", appointmentId] })
       queryClient.invalidateQueries({ queryKey: ["patientAppointments"] })
+      queryClient.invalidateQueries({ queryKey: ["doctorAppointments"] })
+      queryClient.invalidateQueries({ queryKey: ["adminAppointments"] })
       queryClient.invalidateQueries({ queryKey: ["patientDashboard"] })
+      queryClient.invalidateQueries({ queryKey: ["doctorDashboard"] })
+      queryClient.invalidateQueries({ queryKey: ["adminDashboard"] })
       toast.success("Appointment rescheduled successfully!")
     },
     onError: (error) => {
@@ -56,12 +64,14 @@ export function useUpdateAppointmentStatus(appointmentId) {
   return useMutation({
     mutationFn: (statusData) => patientApi.updateAppointmentStatus(appointmentId, statusData),
     onSuccess: (data) => {
-      // Invalidate details, history lists, and dashboard stats for both patients and doctors
+      // Invalidate details, history lists, and dashboard stats for patients, doctors, and admins
       queryClient.invalidateQueries({ queryKey: ["appointmentDetails", appointmentId] })
       queryClient.invalidateQueries({ queryKey: ["patientAppointments"] })
       queryClient.invalidateQueries({ queryKey: ["doctorAppointments"] })
+      queryClient.invalidateQueries({ queryKey: ["adminAppointments"] })
       queryClient.invalidateQueries({ queryKey: ["patientDashboard"] })
       queryClient.invalidateQueries({ queryKey: ["doctorDashboard"] })
+      queryClient.invalidateQueries({ queryKey: ["adminDashboard"] })
       toast.success(data.message || "Status updated successfully!")
     },
     onError: (error) => {

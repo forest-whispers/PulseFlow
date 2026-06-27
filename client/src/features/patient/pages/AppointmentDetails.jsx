@@ -239,7 +239,12 @@ export default function AppointmentDetails() {
   }
 
   // Derive back button route depending on user role
-  const backRoute = currentRole === "doctor" ? "/doctor/appointments" : "/patient/appointments"
+  const backRoute =
+    currentRole === "doctor"
+      ? "/doctor/appointments"
+      : currentRole === "admin"
+      ? "/admin/appointments"
+      : "/patient/appointments"
 
   // Loading skeleton
   if (isDetailsLoading) {
@@ -521,6 +526,24 @@ export default function AppointmentDetails() {
               </Button>
             </Link>
           )
+        } else if ((currentRole === "doctor" || currentRole === "admin") && status === "completed") {
+          actions.push(
+            <Link
+              key="create"
+              to={`/${currentRole}/invoices/create`}
+              state={{
+                appointmentId: id,
+                patientName: patient.name,
+                appointmentDate: appointment.appointmentDate,
+                bookedSlot: appointment.bookedSlot,
+                status: appointment.status,
+              }}
+            >
+              <Button size="sm" className="gap-1 cursor-pointer">
+                <Plus className="h-3.5 w-3.5" /> Create Invoice
+              </Button>
+            </Link>
+          )
         }
         return actions.length > 0 ? actions : null
       })(),
@@ -740,29 +763,6 @@ export default function AppointmentDetails() {
           )}
         </Card>
 
-        {/* Consultation Summary Workspace extension */}
-        <div className="space-y-4 pt-4">
-          <div className="flex flex-col gap-1">
-            <h3 className="text-lg font-extrabold text-foreground">Consultation Summary</h3>
-            <p className="text-xs text-muted-foreground">
-              Manage clinical records, prescriptions, lab tests, and billing invoices.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {consultationItems.map((item) => (
-              <ConsultationCard
-                key={item.id}
-                title={item.title}
-                icon={item.icon}
-                exists={item.exists}
-                emptyMessage={item.emptyMessage}
-                summaryContent={item.summaryContent}
-                actions={item.actions}
-              />
-            ))}
-          </div>
-        </div>
-
         {/* Collapsible Reschedule Panel (expanded only when requested) */}
         {isRescheduling && canAction && (
           <Card className="border shadow-2xs bg-card animate-fade-in">
@@ -820,6 +820,29 @@ export default function AppointmentDetails() {
             )}
           </Card>
         )}
+
+        {/* Consultation Summary Workspace extension */}
+        <div className="space-y-4 pt-4">
+          <div className="flex flex-col gap-1">
+            <h3 className="text-lg font-extrabold text-foreground">Consultation Summary</h3>
+            <p className="text-xs text-muted-foreground">
+              Manage clinical records, prescriptions, lab tests, and billing invoices.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {consultationItems.map((item) => (
+              <ConsultationCard
+                key={item.id}
+                title={item.title}
+                icon={item.icon}
+                exists={item.exists}
+                emptyMessage={item.emptyMessage}
+                summaryContent={item.summaryContent}
+                actions={item.actions}
+              />
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Cancellation confirmation modal dialog overlay */}

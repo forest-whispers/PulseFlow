@@ -58,6 +58,8 @@ function formatDate(dateStr) {
 
 export default function AppointmentCard({ appointment = {}, onViewDetails, primaryPerson = "doctor" }) {
   const isPatient = primaryPerson === "patient"
+  const isAdmin = primaryPerson === "admin"
+  
   const rawName = isPatient
     ? (appointment.patient?.name || "Consultation Patient")
     : (appointment.doctor?.name || "Medical Specialist")
@@ -67,7 +69,7 @@ export default function AppointmentCard({ appointment = {}, onViewDetails, prima
     : (rawName.startsWith("Dr.") ? rawName : `Dr. ${rawName}`)
 
   const roleLabel = isPatient ? "Patient Name" : "Healthcare Provider"
-  const IconComponent = isPatient ? User : Stethoscope
+  const IconComponent = isAdmin ? Clipboard : (isPatient ? User : Stethoscope)
 
   const dateLabel = formatDate(appointment.appointmentDate)
   const slotLabel = formatTime12Hour(appointment.bookedSlot)
@@ -98,12 +100,25 @@ export default function AppointmentCard({ appointment = {}, onViewDetails, prima
               <IconComponent className="h-5 w-5" />
             </div>
             <div className="min-w-0">
-              <h3 className="font-extrabold text-base text-foreground leading-snug group-hover:text-primary transition-colors truncate">
-                {displayName}
-              </h3>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">
-                {roleLabel}
-              </p>
+              {isAdmin ? (
+                <div className="space-y-0.5">
+                  <h3 className="font-extrabold text-sm text-foreground truncate">
+                    Patient: {appointment.patient?.name || "N/A"}
+                  </h3>
+                  <p className="text-[10px] text-muted-foreground font-bold truncate">
+                    Doctor: {appointment.doctor?.name?.startsWith("Dr.") ? appointment.doctor.name : `Dr. ${appointment.doctor?.name || "N/A"}`}
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <h3 className="font-extrabold text-base text-foreground leading-snug group-hover:text-primary transition-colors truncate">
+                    {displayName}
+                  </h3>
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">
+                    {roleLabel}
+                  </p>
+                </>
+              )}
             </div>
           </div>
           <Badge className={`shrink-0 text-xs px-2.5 py-0.5 rounded-md border transition-all ${statusConfig.className}`}>
