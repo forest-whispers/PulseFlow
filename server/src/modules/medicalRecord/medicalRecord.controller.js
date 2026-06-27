@@ -39,7 +39,7 @@ export const getMyMedicalRecordsController = async (req, res, next) => {
 
 export const updateMedicalRecordController = async (req, res, next) => {
         try {
-            const medicalRecord = await updateMedicalRecordService( req.user, req.params.id, req.body, );
+            const medicalRecord = await updateMedicalRecordService( req.user, req.params.id, req.body, req.files, );
             res.status(200).json({
                 success: true,
                 message: "record updated",

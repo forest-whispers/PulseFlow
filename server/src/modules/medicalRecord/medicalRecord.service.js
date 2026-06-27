@@ -9,7 +9,7 @@ import { NotFoundError, ForbiddenError } from '../../utils/error.js'
 
 export const createMedicalRecordService = async ( currUser, body, files ) => {
     const uploadedAttachments = [];
-    if (files?.length) {
+    if (files && files.length > 0) {
         for (const file of files) {
             const uploadedFile = await uploadFile( file, "medical-records", );
             uploadedAttachments.push({
@@ -25,7 +25,7 @@ export const createMedicalRecordService = async ( currUser, body, files ) => {
 };
 
 export const getMedicalRecordService = async ( currUser, medicalRecordId ) => {
-    const medicalRecord = await MedicalRecord.findById( medicalRecordId, ).populate("patient", "name").populate("doctor", "name").lean();
+    const medicalRecord = await MedicalRecord.findById( medicalRecordId ).populate("patient", "name").populate("doctor", "name").lean();
     const [prescription, labResult, invoice] = await Promise.all([
         Prescription.findOne({ medicalRecord: medicalRecordId, }).select("_id").lean(),
         LabResult.findOne({ medicalRecord: medicalRecordId, }).select("_id testName").lean(),
@@ -71,22 +71,37 @@ export const getMyMedicalRecordsService = async (currUser,queryParams,) => {
     };
 };
 
-export const updateMedicalRecordService = async ( currUser, medicalRecordId, body ) => {
-    const medicalRecord = await MedicalRecord.findById( medicalRecordId, );
+export const updateMedicalRecordService = async ( currUser, medicalRecordId, body, files ) => {
+    const medicalRecord = await MedicalRecord.findById( medicalRecordId );
     if (!medicalRecord) {
         throw new NotFoundError("Medical record not found");
     }
     if (medicalRecord.doctor.toString() !== currUser.id) {
         throw new ForbiddenError( "You cannot update this medical record", );
     }
-    Object.assign(medicalRecord, body);
+    let uploadedAttachments = [];
+    if (files && files.length > 0) {
+        for (const file of files) {
+            const uploadedFile = await uploadFile(file, "medical-records",);
+            uploadedAttachments.push({
+                url: uploadedFile.secure_url,
+                publicId: uploadedFile.public_id,
+                originalName: file.originalname,
+            });
+        }
+    }
+    if (medicalRecord.attachments && medicalRecord.attachments.length > 0)
+    {
+        uploadedAttachments = [...uploadedAttachments, ...medicalRecord.attachments];
+    }
+    Object.assign(medicalRecord, { ...body, attachments: uploadedAttachments });
     await medicalRecord.save();
     await createAuditLogService(currUser.id, "medical_record_updated", "medical_record", medicalRecord._id, {},);
     return medicalRecord;
 };
 
 export const deleteMedicalRecordService = async ( currUser, medicalRecordId ) => {
-    const medicalRecord = await MedicalRecord.findById( medicalRecordId, );
+    const medicalRecord = await MedicalRecord.findById( medicalRecordId );
     if (!medicalRecord) {
         throw new NotFoundError( "Medical record not found", );
     }

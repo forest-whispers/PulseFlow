@@ -15,7 +15,7 @@ router.get( "/me", requireAuth, requireRole("patient"), getMyMedicalRecordsContr
 
 router.get( "/:id", requireAuth, getMedicalRecordController );
 
-router.patch( "/:id", requireAuth, requireRole("doctor"), validate(updateMedicalRecordSchema), updateMedicalRecordController );
+router.patch("/:id", requireAuth, requireRole("doctor"), upload.array("attachments", 5), validate(updateMedicalRecordSchema), updateMedicalRecordController );
 
 router.delete( "/:id", requireAuth, requireRole("doctor"), deleteMedicalRecordController );
 
