@@ -8,6 +8,7 @@ import PublicOnlyRoute from "./PublicOnlyRoute"
 import LandingPage from "../features/auth/pages/LandingPage"
 import LoginPage from "../features/auth/pages/LoginPage"
 import RegisterPage from "../features/auth/pages/RegisterPage"
+import Settings from "../features/auth/pages/Settings"
 import PatientDashboard from "../features/patient/pages/PatientDashboard"
 import DoctorSearch from "../features/patient/pages/DoctorSearch"
 import DoctorBooking from "../features/patient/pages/DoctorBooking"
@@ -193,6 +194,14 @@ export default function AppRoutes() {
             }
           />
           <Route
+            path="/patient/settings"
+            element={
+              <ProtectedRoute allowedRoles={["patient"]}>
+                <Settings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/doctor/dashboard"
             element={
               <ProtectedRoute allowedRoles={["doctor"]}>
@@ -309,6 +318,14 @@ export default function AppRoutes() {
             element={
               <ProtectedRoute allowedRoles={["doctor"]}>
                 <InvoiceDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/doctor/settings"
+            element={
+              <ProtectedRoute allowedRoles={["doctor"]}>
+                <Settings />
               </ProtectedRoute>
             }
           />
@@ -445,6 +462,14 @@ export default function AppRoutes() {
             element={
               <ProtectedRoute allowedRoles={["admin"]}>
                 <AdminAnalytics />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/settings"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <Settings />
               </ProtectedRoute>
             }
           />

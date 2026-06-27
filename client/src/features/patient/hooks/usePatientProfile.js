@@ -14,6 +14,7 @@ export function usePatientProfile() {
     queryFn: patientApi.getProfile,
     staleTime: 5 * 60 * 1000, // 5 minutes stale time
     refetchOnWindowFocus: false,
+    enabled: !!user && user.role === "patient",
   })
 
   const updateMutation = useMutation({

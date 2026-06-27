@@ -10,6 +10,43 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     async function initializeAuth() {
       try {
+        const savedRole = localStorage.getItem("userRole")
+
+        if (savedRole === "admin") {
+          dispatch(setAuth({ name: "Admin User", role: "admin" }))
+          return
+        }
+
+        if (savedRole === "patient") {
+          try {
+            const profileRes = await authApi.getPatientProfile()
+            dispatch(setAuth({ ...profileRes.data, role: "patient" }))
+            return
+          } catch (error) {
+            const status = error.response?.status
+            const errMsg = error.response?.data?.message
+            if (status === 401 || errMsg === "Login required to access this resource") {
+              dispatch(clearAuth())
+              return
+            }
+          }
+        }
+
+        if (savedRole === "doctor") {
+          try {
+            const profileRes = await authApi.getDoctorProfile()
+            dispatch(setAuth({ ...profileRes.data, role: "doctor" }))
+            return
+          } catch (error) {
+            const status = error.response?.status
+            const errMsg = error.response?.data?.message
+            if (status === 401 || errMsg === "Login required to access this resource") {
+              dispatch(clearAuth())
+              return
+            }
+          }
+        }
+
         let isLoginRequired = false
 
         // 1. Try to fetch patient profile
@@ -18,8 +55,9 @@ export function AuthProvider({ children }) {
           dispatch(setAuth({ ...profileRes.data, role: "patient" }))
           return
         } catch (error) {
+          const status = error.response?.status
           const errMsg = error.response?.data?.message
-          if (errMsg === "Login required to access this resource") {
+          if (status === 401 || errMsg === "Login required to access this resource") {
             isLoginRequired = true
           }
         }
@@ -31,11 +69,12 @@ export function AuthProvider({ children }) {
             dispatch(setAuth({ ...profileRes.data, role: "doctor" }))
             return
           } catch (error) {
+            const status = error.response?.status
             const errMsg = error.response?.data?.message
-            if (errMsg === "Login required to access this resource") {
+            if (status === 401 || errMsg === "Login required to access this resource") {
               isLoginRequired = true
-            } else if (errMsg === "Access denied") {
-              // Both patient and doctor profiles returned "Access denied", meaning logged in as admin
+            } else if (status === 403 || errMsg === "Access denied") {
+              // Both patient and doctor profiles returned 403 Forbidden / Access denied, meaning logged in as admin
               dispatch(setAuth({ name: "Admin User", role: "admin" }))
               return
             }

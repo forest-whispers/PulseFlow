@@ -12,7 +12,7 @@ export const authApi = {
   },
 
   logout: async () => {
-    const response = await axiosInstance.post("/users/logout")
+    const response = await axiosInstance.get("/users/logout")
     return response.data
   },
 

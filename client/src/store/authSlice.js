@@ -14,11 +14,15 @@ const authSlice = createSlice({
       state.user = action.payload
       state.isAuthenticated = true
       state.isInitialized = true
+      if (action.payload?.role) {
+        localStorage.setItem("userRole", action.payload.role)
+      }
     },
     clearAuth: (state) => {
       state.user = null
       state.isAuthenticated = false
       state.isInitialized = true
+      localStorage.removeItem("userRole")
     },
     setInitialized: (state, action) => {
       state.isInitialized = action.payload
