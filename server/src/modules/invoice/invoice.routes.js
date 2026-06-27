@@ -9,7 +9,7 @@ import { createInvoiceSchema, updateInvoiceSchema } from "./invoice.validation.j
 
 router.post("/", requireAuth, requireRole("doctor"), validate(createInvoiceSchema), createInvoiceController);
 
-router.get("/me", requireAuth, getMyInvoicesController);
+router.get("/", requireAuth, getMyInvoicesController);
 
 router.get("/:id", requireAuth, getInvoiceController);
 

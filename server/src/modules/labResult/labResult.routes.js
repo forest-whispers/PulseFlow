@@ -10,7 +10,7 @@ import { createLabResultSchema, updateLabResultSchema } from "./labResult.valida
 
 router.post("/", requireAuth, requireRole("doctor"), upload.single("report"), validate(createLabResultSchema), createLabResultController);
 
-router.get("/me", requireAuth, requireRole("patient"), getMyLabResultsController);
+router.get("/", requireAuth, requireRole("patient"), getMyLabResultsController);
 
 router.get("/:id", requireAuth, getLabResultController);
 

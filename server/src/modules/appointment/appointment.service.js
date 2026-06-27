@@ -62,7 +62,26 @@ export const getAppointmentService = async (currUser, appointmentId) => {
     if (currUser.role === "doctor" && currUser.id.toString() !== appointment.doctor._id.toString()) {
         throw new ForbiddenError("You cannot access this appointment details");
     }
-    return appointment;
+    const medicalRecord = await MedicalRecord.findOne({ appointment: appointmentId, }).select("_id visitDate").lean();
+    let prescription = null;
+    let labResult = null;
+    let invoice = null;
+    if (medicalRecord) {
+        [prescription, labResult, invoice] = await Promise.all([
+            Prescription.findOne({ medicalRecord: medicalRecord._id }).select("_id").lean(),
+            LabResult.findOne({ medicalRecord: medicalRecord._id }).select("_id testName resultSummary").lean(),
+            Invoice.findOne({ medicalRecord: medicalRecord._id }).select("_id amount status").lean(),
+        ]);
+    }
+    return {
+        appointment,
+        related: {
+            medicalRecord,
+            prescription,
+            labResult,
+            invoice,
+        },
+    };
 };
 
 export const updateAppointmentStatusService=async (currUser, appointmentId, newstatus)=>

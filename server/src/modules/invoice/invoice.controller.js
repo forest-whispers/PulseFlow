@@ -6,7 +6,7 @@ export const createInvoiceController = async (req, res, next) => {
         res.status(201).json({
             success: true,
             message: "invoice generated",
-            data: invoice._id,
+            data: { _id: invoice._id },
         });
     } catch (error) {
         next(error);

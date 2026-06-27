@@ -9,7 +9,7 @@ import { createPrescriptionSchema, updatePrescriptionSchema } from "./prescripti
 
 router.post("/", requireAuth, requireRole("doctor"), validate(createPrescriptionSchema), createPrescriptionController);
 
-router.get("/me", requireAuth, requireRole("patient"), getMyPrescriptionsController);
+router.get("/", requireAuth, requireRole("patient"), getMyPrescriptionsController);
 
 router.get("/:id", requireAuth, getPrescriptionController);
 

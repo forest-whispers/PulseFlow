@@ -6,7 +6,7 @@ export const createMedicalRecordController =async (req, res, next) => {
             res.status(201).json({
                 success: true,
                 message: "record created",
-                data: medicalRecord._id,
+                data: { _id: medicalRecord._id },
             });
         } catch {
             next(error);

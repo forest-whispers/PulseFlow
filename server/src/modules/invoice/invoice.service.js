@@ -54,7 +54,7 @@ export const getMyInvoicesService = async ( currUser, queryParams, ) => {
     const skip = (page - 1) * limit;
     const query = currUser.role === "patient" ? { patient: currUser.id } : { doctor: currUser.id };
     const [invoices, totalInvoices] = await Promise.all([
-            Invoice.find(query).select( "appointment amount status paymentMethod paidAt createdAt" ).populate({ path: "appointment", select: "appointmentDate bookedSlot status", }).populate("doctor", "name").populate("patient", "name").sort({ createdAt: -1, }).skip(skip).limit(limit).lean(),
+            Invoice.find(query).select( "appointment doctor patient amount status paymentMethod paidAt createdAt" ).populate({ path: "appointment", select: "appointmentDate bookedSlot status", }).populate("doctor", "name").populate("patient", "name").sort({ createdAt: -1, }).skip(skip).limit(limit).lean(),
             Invoice.countDocuments(query),
         ]);
     return {

@@ -6,7 +6,7 @@ export const createPrescriptionController = async (req, res, next) => {
         res.status(201).json({
             success: true,
             message: "prescription designed",
-            data: prescription._id,
+            data: { _id: prescription._id },
         });
     } catch (error) {
         next(error);

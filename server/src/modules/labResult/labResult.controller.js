@@ -6,7 +6,7 @@ export const createLabResultController = async (req, res, next) => {
         res.status(201).json({
             success: true,
             message: "lab result generated",
-            data: labResult._id,
+            data: { _id: labResult._id },
         });
     } catch (error) {
         next(error);

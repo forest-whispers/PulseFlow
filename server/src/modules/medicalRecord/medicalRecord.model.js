@@ -36,6 +36,13 @@ const medicalRecordSchema = new mongoose.Schema(
             required: true,
         },
 
+        appointment: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Appointment",
+            required: true,
+            unique: true
+        },
+
         visitDate: {
             type: String,
             required: true,
