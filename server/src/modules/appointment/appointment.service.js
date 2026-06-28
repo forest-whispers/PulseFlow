@@ -6,6 +6,7 @@ import LabResult from "../labResult/labResult.model.js";
 import Invoice from "../invoice/invoice.model.js";
 import { createAuditLogService } from "../auditLog/auditLog.service.js";
 import { validateAppointmentSlot } from '../../utils/validateAppointmentSlot.js'
+import { buildSearchQuery } from '../../utils/search.js'
 import { BadRequestError, ConflictError, NotFoundError, UnauthorizedError, ForbiddenError } from '../../utils/error.js'
 
 export const createAppointmentService = async (currUser, {doctor, appointmentDate, bookedSlot, reason, notes,}) =>
@@ -33,9 +34,12 @@ export const getAppointmentsService = async (currUser, queryParams) =>
     {
         query.doctor = currUser.id
     }
-    if (queryParams.status) {
-        query.status = queryParams.status;
-    }
+    Object.assign(
+        query,
+        buildSearchQuery(queryParams.search, [
+            "reason", "status"
+        ])
+    );
     const page = Number(queryParams.page) || 1;
     const limit = Number(queryParams.limit) || 10;
     const skip = (page - 1) * limit;

@@ -1,6 +1,7 @@
 import Prescription from "./prescription.model.js";
 import MedicalRecord from "../medicalRecord/medicalRecord.model.js";
 import { createAuditLogService } from "../auditLog/auditLog.service.js";
+import { buildSearchQuery } from '../../utils/search.js';
 import { NotFoundError, ForbiddenError, ConflictError } from "../../utils/error.js";
 
 export const createPrescriptionService = async (currUser, body) => {
@@ -50,6 +51,12 @@ export const getMyPrescriptionsService = async ( currUser, queryParams ) => {
     else if (currUser.role === "doctor") {
         query.doctor = currUser.id
     }
+    Object.assign(
+        query,
+        buildSearchQuery(queryParams.search, [
+            "medications.medicineName",
+        ])
+    );
     const [prescriptions, totalPrescriptions] = await Promise.all([
         Prescription.find(query).select("patient doctor medicalRecord medications createdAt").populate("patient", "name").populate("doctor", "name").populate({ path: "medicalRecord", select: "visitDate chiefComplaint", }) .sort({ createdAt: -1, }).skip(skip).limit(limit).lean(),
             Prescription.countDocuments(query),

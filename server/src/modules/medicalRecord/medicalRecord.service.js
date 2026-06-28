@@ -6,6 +6,7 @@ import Appointment from "../appointment/appointment.model.js";
 import { uploadFile } from "../../utils/uploadFile.js";
 import { deleteFile } from "../../utils/deleteFile.js";
 import { createAuditLogService } from "../auditLog/auditLog.service.js";
+import { buildSearchQuery } from '../../utils/search.js';
 import { NotFoundError, ConflictError, ForbiddenError, UnauthorizedError, BadRequestError } from '../../utils/error.js'
 
 export const createMedicalRecordService = async ( currUser, body, files ) => {
@@ -78,6 +79,12 @@ export const getMyMedicalRecordsService = async (currUser,queryParams,) => {
     else if (currUser.role === "doctor") {
         query.doctor = currUser.id
     }
+    Object.assign(
+        query,
+        buildSearchQuery(queryParams.search, [
+            "chiefComplaint", "diagnosis", "treatment"
+        ])
+    );
     const [medicalRecords, totalMedicalRecords] = await Promise.all([
         MedicalRecord.find(query).select("appointment patient doctor visitDate chiefComplaint diagnosis treatment").populate("patient", "name").populate("doctor", "name").populate("appointment", "appointmentDate bookedSlot status").sort({ visitDate: -1, }).skip(skip).limit(limit).lean(),
             MedicalRecord.countDocuments(query),

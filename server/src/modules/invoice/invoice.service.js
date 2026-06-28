@@ -1,6 +1,7 @@
 import Invoice from "./invoice.model.js";
 import Appointment from "../appointment/appointment.model.js";
 import { createAuditLogService } from "../auditLog/auditLog.service.js";
+import { buildSearchQuery } from '../../utils/search.js';
 import { NotFoundError, ForbiddenError, ConflictError, BadRequestError } from "../../utils/error.js";
 
 export const createInvoiceService = async (currUser, body) => {
@@ -55,6 +56,12 @@ export const getMyInvoicesService = async ( currUser, queryParams, ) => {
     else if (currUser.role === "doctor") {
         query.doctor = currUser.id
     }
+    Object.assign(
+        query,
+        buildSearchQuery(queryParams.search, [
+            "paymentMethod", "description", "status"
+        ])
+    );
     const [invoices, totalInvoices] = await Promise.all([
             Invoice.find(query).select( "appointment doctor patient amount status paymentMethod paidAt createdAt" ).populate({ path: "appointment", select: "appointmentDate bookedSlot status", }).populate("doctor", "name").populate("patient", "name").sort({ createdAt: -1, }).skip(skip).limit(limit).lean(),
             Invoice.countDocuments(query),

@@ -3,6 +3,7 @@ import MedicalRecord from "../medicalRecord/medicalRecord.model.js";
 import { uploadFile } from "../../utils/uploadFile.js";
 import { deleteFile } from "../../utils/deleteFile.js";
 import { createAuditLogService } from "../auditLog/auditLog.service.js";
+import { buildSearchQuery } from '../../utils/search.js';
 import { NotFoundError, ForbiddenError } from "../../utils/error.js";
 
 export const createLabResultService = async (currUser, body, file) => {
@@ -66,6 +67,12 @@ export const getMyLabResultsService = async ( currUser, queryParams,) => {
     else if (currUser.role === "doctor") {
         query.doctor = currUser.id
     }
+    Object.assign(
+        query,
+        buildSearchQuery(queryParams.search, [
+            "testName", "resultSummary",
+        ])
+    );
     const [labResults, totalLabResults] = await Promise.all([
         LabResult.find(query).select("doctor patient medicalRecord testName resultSummary report createdAt").populate("doctor", "name").populate("patient", "name").populate({ path: "medicalRecord", select: "visitDate chiefComplaint", }).sort({ createdAt: -1, }).skip(skip).limit(limit).lean(),
         LabResult.countDocuments(query),
