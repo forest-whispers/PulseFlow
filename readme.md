@@ -54,7 +54,7 @@ A consultation can evolve from a scheduled appointment into a complete treatment
 
 ## Landing Page
 
-<!-- ![landing-page](/assets/product-preview/landingPage.gif) -->
+![landing-page](/assets/product-preview/landingPage.gif)
 
 ---
 
