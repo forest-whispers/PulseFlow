@@ -54,37 +54,92 @@ A consultation can evolve from a scheduled appointment into a complete treatment
 
 ## Landing Page
 
-<!-- Add Landing Page Screenshots -->
+<!-- ![landing-page](/assets/product-preview/landingPage.gif) -->
 
 ---
 
-## 👤 Patient Dashboard
+## 👤 Role Aware Dashboards
 
-<!-- Add Patient Dashboard Screenshot -->
+<!-- <table>
+  <tr>
+    <td colspan="2" align="center">
+      <strong>Patient Dashboard</strong>
+    </td>
+  </tr>
+  <tr>
+    <td><img src="./assets/product-preview/dashboard.patient-1.png" alt="dashboard-patient" width="100%"></td>
+    <td><img src="./assets/product-preview/dashboard.patient-2.png" alt="dashboard-patient" width="100%"></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <strong>Doctor Dashboard</strong>
+    </td>
+  </tr>
+  <tr>
+    <td><img src="./assets/product-preview/dashboard.doctor-1.png" alt="dashboard-doctor" width="100%"></td>
+    <td><img src="./assets/product-preview/dashboard.doctor-2.png" alt="dashboard-doctor" width="100%"></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center">
+      <strong>Admin Dashboard</strong>
+    </td>
+  </tr>
+  <tr>
+    <td><img src="./assets/product-preview/dashboard.admin-1.png" alt="dashboard-admin" width="100%"></td>
+    <td><img src="./assets/product-preview/dashboard.admin-2.png" alt="dashboard-admin" width="100%"></td>
+  </tr>
+</table> -->
 
----
-
-## 👨‍⚕️ Doctor Workspace
-
-<!-- Add Doctor Dashboard Screenshot -->
+<table>
+  <tr>
+    <td align="center"><strong>Patient Dashboard</strong></td>
+    <td align="center"><strong>Doctor Dashboard</strong></td>
+    <td align="center"><strong>Admin Dashboard</strong></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/product-preview/dashboard.patient-1.png" alt="dashboard-patient" width="100%"></td>
+    <td><img src="./assets/product-preview/dashboard.doctor-1.png" alt="dashboard-doctor" width="100%"></td>
+    <td><img src="./assets/product-preview/dashboard.admin-1.png" alt="dashboard-admin" width="100%"></td>
+  </tr>
+</table>
 
 ---
 
 ## 🩺 Consultation Workspace
 
-<!-- Appointment Details + Consultation Summary -->
+<table>
+  <tr>
+    <td align="center"><strong>Appointment</strong></td>
+    <td align="center"><strong>Reschedule Window</strong></td>
+    <td align="center"><strong>Prescriptions(medical module)</strong></td>
+  </tr>
+  <tr>
+    <td><img src="./assets/product-preview/section.appointment.details.png" alt="appointment detail" width="100%"></td>
+    <td><img src="./assets/product-preview/section.appointment.reschedule.png" alt="appointment reschedule" width="100%"></td>
+    <td><img src="./assets/product-preview/section.prescription.png" alt="prescription" width="100%"></td>
+  </tr>
+</table>
 
 ---
 
-## 👨‍💼 Administrator Console
+## 📊 Analytics and Audit Logs
 
-<!-- Add Admin Dashboard Screenshot -->
-
----
-
-## 📊 Analytics
-
-<!-- Analytics Screenshot -->
+<table>
+  <tr>
+    <td colspan="3" align="center">
+      <strong>Analytics</strong>
+    </td>
+        <td colspan="1" align="center">
+      <strong>Audit Logs</strong>
+    </td>
+  </tr>
+  <tr>
+    <td><img src="./assets/product-preview/analytics-1.png" alt="Preview 10" width="100%"></td>
+    <td><img src="./assets/product-preview/analytics-2.png" alt="Preview 11" width="100%"></td>
+    <td><img src="./assets/product-preview/analytics-3.png" alt="Preview 12" width="100%"></td>
+    <td><img src="./assets/product-preview/audit-logs.png" alt="Preview 13" width="100%"></td>
+  </tr>
+</table>
 
 ---
 
