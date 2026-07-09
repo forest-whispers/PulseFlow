@@ -93,7 +93,7 @@ export default function RegisterPage() {
   return (
     <AuthLayout
       title="Create Account"
-      subtitle="Register a new account to get started with HMS"
+      subtitle="Register a new account to get started with PulseFlow"
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Role Selector Segmented Control */}

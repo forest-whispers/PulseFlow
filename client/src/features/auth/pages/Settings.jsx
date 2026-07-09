@@ -118,7 +118,7 @@ export default function Settings() {
               Interface Appearance
             </CardTitle>
             <CardDescription className="text-[10px]">
-              Customize the look and animation styles of your HMS portal.
+              Customize the look and animation styles of your PulseFlow portal.
             </CardDescription>
           </CardHeader>
           <CardContent className="p-5 space-y-4">
@@ -365,17 +365,17 @@ export default function Settings() {
           <CardHeader className="p-5 pb-3 border-b border-border/10 bg-muted/5">
             <CardTitle className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
               <Info className="h-4.5 w-4.5 text-primary" />
-              About HMS Portal
+              About PulseFlow Portal
             </CardTitle>
             <CardDescription className="text-[10px]">
-              Metadata and legal disclosures of the Hospital Management Portal.
+              Metadata and legal disclosures of the PulseFlow Portal.
             </CardDescription>
           </CardHeader>
           <CardContent className="p-5 flex flex-col justify-between h-[255px]">
             {/* Version Info Grid */}
             <div className="grid grid-cols-2 gap-3 text-xs">
               {[
-                { label: "Application Name", val: "HMS Portal" },
+                { label: "Application Name", val: "PulseFlow Portal" },
                 { label: "Portal Version", val: "v1.2.0-beta" },
                 { label: "Environment Mode", val: import.meta.env.MODE },
                 { label: "Portal Build Date", val: "2026-06-27" },

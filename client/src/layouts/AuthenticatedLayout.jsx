@@ -17,7 +17,6 @@ import {
   Clock,
   LogOut,
   Loader2,
-  Activity,
   Menu,
   X,
   Sun,
@@ -31,6 +30,7 @@ import { authApi } from "../features/auth/api/authApi"
 import { clearAuth } from "../store/authSlice"
 import { toast } from "sonner"
 import NotificationBell from "../features/notifications/components/NotificationBell"
+import Logo from "@/components/ui/Logo"
 
 // Centralized navigation configurations by Role
 const NAV_CONFIG = {
@@ -177,9 +177,8 @@ export default function AuthenticatedLayout() {
         }`}
       >
         <div className="h-16 px-6 border-b flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-2">
-            <Activity className="h-6 w-6 text-primary" />
-            <span className="font-bold text-lg tracking-tight">HMS Portal</span>
+          <div className="flex items-center">
+            <Logo className="h-9 w-auto" />
           </div>
           <Button
             variant="ghost"

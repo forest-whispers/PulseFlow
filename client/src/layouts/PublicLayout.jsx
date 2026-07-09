@@ -3,7 +3,8 @@ import { Outlet, Link, useLocation, useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useTheme } from "../providers/ThemeProvider"
 import { Button } from "@/components/ui/button"
-import { Sun, Moon, Activity, Menu, X } from "lucide-react"
+import { Sun, Moon, Menu, X } from "lucide-react"
+import Logo from "@/components/ui/Logo"
 
 export default function PublicLayout() {
   const { theme, setTheme } = useTheme()
@@ -32,9 +33,8 @@ export default function PublicLayout() {
       {/* Header */}
       <header className="sticky top-0 z-50 border-b bg-card/90 backdrop-blur-md py-3 px-4 md:px-6 flex items-center justify-between shadow-xs">
         <div className="flex items-center gap-6">
-          <Link to="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
-            <Activity className="h-6 w-6 text-primary" />
-            <span className="font-bold text-lg tracking-tight">HMS Portal</span>
+          <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
+            <Logo className="h-9 w-auto" />
           </Link>
 
           {/* Desktop Navigation Links - Only displayed on Landing Page */}

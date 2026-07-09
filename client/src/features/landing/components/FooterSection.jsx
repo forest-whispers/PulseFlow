@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
-import { Activity, Phone, Mail, MapPin } from "lucide-react"
+import { Phone, Mail, MapPin } from "lucide-react"
+import Logo from "@/components/ui/Logo"
 
 export default function FooterSection() {
   return (
@@ -9,9 +10,8 @@ export default function FooterSection() {
           
           {/* Logo & Description */}
           <div className="space-y-4">
-            <Link to="/" className="flex items-center gap-2 text-foreground font-bold text-lg tracking-tight">
-              <Activity className="h-6 w-6 text-primary" />
-              <span>HMS Portal</span>
+            <Link to="/" className="flex items-center">
+              <Logo className="h-9 w-auto" />
             </Link>
             <p className="text-sm leading-relaxed max-w-sm">
               A premium, secure digital healthcare platform connecting patients, specialized doctors, and administrators for seamless clinical management.
@@ -72,7 +72,7 @@ export default function FooterSection() {
 
         {/* Bottom copyright */}
         <div className="flex flex-col sm:flex-row items-center justify-between text-xs gap-4">
-          <p>© {new Date().getFullYear()} HMS Portal. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} PulseFlow. All rights reserved.</p>
           <div className="flex gap-4">
             <a href="#" className="hover:text-primary">Privacy Policy</a>
             <a href="#" className="hover:text-primary">Terms of Service</a>

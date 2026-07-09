@@ -84,7 +84,7 @@ export default function LoginPage() {
   return (
     <AuthLayout
       title="Welcome Back"
-      subtitle="Sign in to your HMS account to access your dashboard"
+      subtitle="Sign in to your PulseFlow account to access your dashboard"
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
@@ -139,7 +139,7 @@ export default function LoginPage() {
       </form>
 
       <div className="mt-6 text-center text-sm">
-        <span className="text-muted-foreground">New to HMS?</span>{" "}
+        <span className="text-muted-foreground">New to PulseFlow?</span>{" "}
         <Link to="/register" className="font-medium text-primary hover:underline">
           Create an account
         </Link>

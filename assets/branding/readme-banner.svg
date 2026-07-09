@@ -1,0 +1,202 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 500" width="100%" height="100%">
+  <defs>
+    <!-- Soft Premium SaaS Gradient -->
+    <linearGradient id="brand-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1E40AF" />    <!-- Navy Blue -->
+      <stop offset="35%" stop-color="#2563EB" />   <!-- Royal Blue -->
+      <stop offset="75%" stop-color="#0EA5E9" />   <!-- Sky Blue -->
+      <stop offset="100%" stop-color="#38BDF8" />  <!-- Soft Sky/Cyan -->
+    </linearGradient>
+
+    <!-- Ambient Glow behind the Network Graph -->
+    <radialGradient id="radial-glow" cx="80%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#1E3A8A" stop-opacity="0.3" />
+      <stop offset="45%" stop-color="#0E7490" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#06080F" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Dot Grid Pattern -->
+    <pattern id="dot-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="0.75" fill="#38BDF8" opacity="0.08" />
+    </pattern>
+
+    <!-- Soft Glow Filter for Network Nodes -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <!-- Transparent Mask for Interlocking Crossover in Logo -->
+    <mask id="banner-crossover-mask">
+      <rect x="-150" y="-150" width="300" height="300" fill="white" />
+      <path d="M -30 15 C -20 12, -10 6, 0 0 C 10 -6, 20 -12, 30 -15" stroke="black" stroke-width="18" stroke-linecap="round" fill="none" />
+    </mask>
+  </defs>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap');
+    .font-primary {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+  </style>
+
+  <!-- Background Base -->
+  <rect width="1600" height="500" fill="#06080F" />
+  
+  <!-- Ambient glow backdrop -->
+  <rect width="1600" height="500" fill="url(#radial-glow)" />
+
+  <!-- Grid overlay -->
+  <rect width="1600" height="500" fill="url(#dot-grid)" />
+
+
+  <!-- ==================== LEFT COLUMN (BRANDING & TEXT) ==================== -->
+  
+  <!-- 01 / Final Logo (Top Left) -->
+  <g transform="translate(120, 50) scale(0.55)">
+    <g transform="translate(48, 40) scale(0.7)">
+      <path d="M -57.5 45 L -57.5 -45" stroke="url(#brand-grad)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      <path d="M -57.5 -22.5 C -35 -22.5, -15 -10, 0 0 C -15 10, -35 22.5, -57.5 22.5" stroke="url(#brand-grad)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      <path d="M 0 0 C 15 10, 35 22.5, 35 22.5 C 50 22.5, 57.5 15, 57.5 0 C 57.5 -15, 50 -22.5, 35 -22.5" stroke="url(#brand-grad)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none" mask="url(#banner-crossover-mask)" />
+      <path d="M -57.5 22.5 C -35 22.5, -20 12, 0 0 C 20 -12, 35 -22.5, 35 -22.5 L 65 -22.5" stroke="url(#brand-grad)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      <path d="M 15 0 L 45 0" stroke="url(#brand-grad)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    </g>
+    <text x="108" y="49" class="font-primary" font-size="30" font-weight="800" letter-spacing="-0.03em" fill="#FFFFFF">
+      Pulse<tspan fill="url(#brand-grad)">Flow</tspan>
+    </text>
+  </g>
+
+  <!-- 02 / Hero Content (Titles & Description) -->
+  <g class="font-primary" transform="translate(120, 195)">
+    <text x="0" y="0" font-size="52" font-weight="800" fill="#FFFFFF" letter-spacing="-0.04em">PulseFlow</text>
+    <text x="0" y="46" font-size="19" font-weight="600" fill="#E2E8F0" letter-spacing="-0.02em">A modern, role-based healthcare ecosystem.</text>
+    
+    <!-- Paragraph description with generous line heights -->
+    <text x="0" y="88" font-size="13.5" font-weight="400" fill="#94A3B8" letter-spacing="0.01em">
+      <tspan x="0" dy="0">Built around real clinical workflows, PulseFlow unifies appointments,</tspan>
+      <tspan x="0" dy="20">consultations, prescriptions, laboratory operations, medical records, billing,</tspan>
+      <tspan x="0" dy="20">analytics, and administration into one seamless platform.</tspan>
+    </text>
+  </g>
+
+  <!-- 03 / Technology Chips -->
+  <g class="font-primary" font-size="9.5" font-weight="700" fill="#E2E8F0" letter-spacing="0.05em">
+    <!-- Chip 1: React -->
+    <g transform="translate(120, 365)">
+      <rect width="60" height="24" rx="12" fill="#1E293B" fill-opacity="0.4" stroke="#334155" stroke-opacity="0.8" stroke-width="1" />
+      <text x="30" y="15" text-anchor="middle">React</text>
+    </g>
+    <!-- Chip 2: Node.js -->
+    <g transform="translate(188, 365)">
+      <rect width="70" height="24" rx="12" fill="#1E293B" fill-opacity="0.4" stroke="#334155" stroke-opacity="0.8" stroke-width="1" />
+      <text x="35" y="15" text-anchor="middle">Node.js</text>
+    </g>
+    <!-- Chip 3: Express -->
+    <g transform="translate(266, 365)">
+      <rect width="72" height="24" rx="12" fill="#1E293B" fill-opacity="0.4" stroke="#334155" stroke-opacity="0.8" stroke-width="1" />
+      <text x="36" y="15" text-anchor="middle">Express</text>
+    </g>
+    <!-- Chip 4: MongoDB -->
+    <g transform="translate(346, 365)">
+      <rect width="80" height="24" rx="12" fill="#1E293B" fill-opacity="0.4" stroke="#334155" stroke-opacity="0.8" stroke-width="1" />
+      <text x="40" y="15" text-anchor="middle">MongoDB</text>
+    </g>
+    <!-- Chip 5: Redis -->
+    <g transform="translate(434, 365)">
+      <rect width="60" height="24" rx="12" fill="#1E293B" fill-opacity="0.4" stroke="#334155" stroke-opacity="0.8" stroke-width="1" />
+      <text x="30" y="15" text-anchor="middle">Redis</text>
+    </g>
+    <!-- Chip 6: Socket.IO -->
+    <g transform="translate(502, 365)">
+      <rect width="84" height="24" rx="12" fill="#1E293B" fill-opacity="0.4" stroke="#334155" stroke-opacity="0.8" stroke-width="1" />
+      <text x="42" y="15" text-anchor="middle">Socket.IO</text>
+    </g>
+    <!-- Chip 7: Stripe -->
+    <g transform="translate(594, 365)">
+      <rect width="60" height="24" rx="12" fill="#1E293B" fill-opacity="0.4" stroke="#334155" stroke-opacity="0.8" stroke-width="1" />
+      <text x="30" y="15" text-anchor="middle">Stripe</text>
+    </g>
+  </g>
+
+
+  <!-- ==================== RIGHT COLUMN (ABSTRACT ORCHESTRATION GRAPH) ==================== -->
+  <g transform="translate(100, 0)">
+    <!-- Connected geometric grid background line guides (Drafting layout) -->
+    <line x1="880" y1="260" x2="1350" y2="260" stroke="#334155" stroke-width="0.75" stroke-dasharray="3 3" opacity="0.25" />
+    <line x1="1220" y1="100" x2="1220" y2="380" stroke="#334155" stroke-width="0.75" stroke-dasharray="3 3" opacity="0.25" />
+    
+    <!-- Connection workflow curves -->
+    <!-- Curve 1 -->
+    <path d="M 980 260 C 1070 200, 1170 170, 1280 130" stroke="url(#brand-grad)" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.7" />
+    
+    <!-- Curve 2 -->
+    <path d="M 1280 130 C 1260 190, 1240 260, 1220 330" stroke="url(#brand-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.6" />
+    
+    <!-- Curve 3 -->
+    <path d="M 1220 330 C 1140 340, 1060 300, 980 260" stroke="url(#brand-grad)" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.6" />
+    
+    <!-- Additional intersecting vector flows representing orchestration -->
+    <path d="M 900 180 C 1050 140, 1130 330, 1360 210" stroke="url(#brand-grad)" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.45" />
+    <path d="M 1040 120 C 1140 220, 1200 80, 1300 370" stroke="url(#brand-grad)" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.35" />
+
+    <!-- Orbital ellipse path indicating synchronization loop -->
+    <ellipse cx="1140" cy="230" rx="160" ry="70" stroke="url(#brand-grad)" stroke-width="1.5" stroke-dasharray="5 5" fill="none" opacity="0.25" transform="rotate(-12, 1140, 230)" />
+
+    <!-- Subtle geometric connection points (+ crosshairs and hollow squares) -->
+    <!-- Crosshair 1 -->
+    <path d="M 1120 185 L 1130 185 M 1125 180 L 1125 190" stroke="#38BDF8" stroke-width="1.2" opacity="0.6" />
+    <circle cx="1125" cy="185" r="8" fill="none" stroke="#38BDF8" stroke-width="0.75" stroke-dasharray="2 2" opacity="0.4" />
+    
+    <!-- Crosshair 2 -->
+    <path d="M 1080 305 L 1090 305 M 1085 300 L 1085 310" stroke="#22D3EE" stroke-width="1.2" opacity="0.6" />
+
+    <!-- Hollow square 1 -->
+    <rect x="1275" y="215" width="8" height="8" fill="none" stroke="#60A5FA" stroke-width="1.5" opacity="0.7" transform="rotate(45, 1279, 219)" />
+    
+    <!-- Hollow square 2 -->
+    <rect x="1195" y="145" width="6" height="6" fill="none" stroke="#818CF8" stroke-width="1.2" opacity="0.5" transform="rotate(45, 1198, 148)" />
+
+    <!-- Glowing data flow packets -->
+    <circle cx="1060" cy="225" r="4.5" fill="#38BDF8" filter="url(#glow)" />
+    <circle cx="1205" cy="162" r="4.5" fill="#60A5FA" filter="url(#glow)" />
+    <circle cx="1245" cy="245" r="4.5" fill="#818CF8" filter="url(#glow)" />
+    <circle cx="1100" cy="315" r="4.5" fill="#22D3EE" filter="url(#glow)" />
+    
+    <circle cx="910" cy="190" r="3" fill="#2563EB" />
+    <circle cx="1320" cy="143" r="3" fill="#0EA5E9" />
+    <circle cx="1140" cy="225" r="3.5" fill="#38BDF8" />
+
+    <!-- Dynamic Unlabeled Node 1 -->
+    <g transform="translate(980, 260)">
+      <circle r="36" fill="none" stroke="#06B6D4" stroke-width="1" stroke-dasharray="3 3" opacity="0.2" />
+      <circle r="20" fill="#06B6D4" fill-opacity="0.05" stroke="#06B6D4" stroke-opacity="0.3" stroke-width="1.2" />
+      <circle r="7" fill="#06B6D4" filter="url(#glow)" />
+    </g>
+
+    <!-- Dynamic Unlabeled Node 2 -->
+    <g transform="translate(1280, 130)">
+      <circle r="36" fill="none" stroke="#2563EB" stroke-width="1" stroke-dasharray="3 3" opacity="0.2" />
+      <circle r="20" fill="#2563EB" fill-opacity="0.05" stroke="#2563EB" stroke-opacity="0.3" stroke-width="1.2" />
+      <circle r="7" fill="#2563EB" filter="url(#glow)" />
+    </g>
+
+    <!-- Dynamic Unlabeled Node 3 -->
+    <g transform="translate(1220, 330)">
+      <circle r="36" fill="none" stroke="#818CF8" stroke-width="1" stroke-dasharray="3 3" opacity="0.2" />
+      <circle r="20" fill="#818CF8" fill-opacity="0.05" stroke="#818CF8" stroke-opacity="0.3" stroke-width="1.2" />
+      <circle r="7" fill="#818CF8" filter="url(#glow)" />
+    </g>
+  </g>
+
+
+  <!-- ==================== FOOTER SECTION ==================== -->
+  <g transform="translate(120, 445)">
+    <!-- Thin Divider -->
+    <line x1="0" y1="0" x2="1360" y2="0" stroke="#1E293B" stroke-width="1" opacity="0.4" />
+    
+    <!-- Footer Labels -->
+    <text x="0" y="27" class="font-primary" font-size="9.5" font-weight="700" fill="#64748B" letter-spacing="0.25em">Patients • Doctors • Administrators • Connected Workflows</text>
+    <text x="1360" y="27" class="font-primary" font-size="9" font-weight="500" fill="#475569" letter-spacing="0.08em" text-anchor="end">PULSEFLOW OPEN-SOURCE PROJECT</text>
+  </g>
+
+</svg>
