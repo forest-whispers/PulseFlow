@@ -28,9 +28,9 @@ PulseFlow is an end-to-end platform that seamlessly synchronizes workflows betwe
 <p align="center">
 
 <a href="#">🌐 Live Demo</a> •
-<a href="./docs/ARCHITECTURE.md">🏗 Architecture</a> •
-<a href="./docs/API.md">📚 API</a> •
-<a href="./docs/FLOWS.md">🔄 Workflows</a>
+<a href="./docs/architecture.md">🏗 Architecture</a> •
+<a href="./docs/api.md">📚 API</a> •
+<a href="./docs/flows.md">🔄 Workflows</a>
 
 </p>
 
@@ -286,7 +286,7 @@ A consultation can evolve from a scheduled appointment into a complete treatment
 
 Application architecture, request lifecycle, authentication, module organization, and deployment.
 
-→ **docs/ARCHITECTURE.md**
+→ <a href="./docs/architecture.md">**docs/ARCHITECTURE.md**</a>
 
 ---
 
@@ -294,7 +294,7 @@ Application architecture, request lifecycle, authentication, module organization
 
 Collections, relationships, aggregation design, and indexing strategy.
 
-→ **docs/DATABASE.md**
+→ <a href="./docs/database.md">**docs/DATABASE.md**</a>
 
 ---
 
@@ -302,9 +302,9 @@ Collections, relationships, aggregation design, and indexing strategy.
 
 Complete backend API documentation organized by module.
 
-→ **docs/API.md**
+→ <a href="./docs/api.md">**docs/API.md**</a>
 
-→ **docs/APIcontracts.md**
+→ <a href="./docs/apiContracts.md">**docs/APIcontracts.md**</a>
 
 ---
 
@@ -312,7 +312,7 @@ Complete backend API documentation organized by module.
 
 Authentication, appointments, consultations, prescriptions, laboratory reports, invoicing, payments, and administration.
 
-→ **docs/FLOWS.md**
+→ <a href="./docs/flows.md">**docs/FLOWS.md**</a>
 
 ---
 
@@ -320,7 +320,7 @@ Authentication, appointments, consultations, prescriptions, laboratory reports, 
 
 Current architecture, future enhancements, scalability considerations, and planned engineering improvements.
 
-→ **docs/SCALING.md**
+→ <a href="./docs/scaling.md">**docs/SCALING.md**</a>
 
 ---
 
