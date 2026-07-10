@@ -1,10 +1,13 @@
 import Redis from "ioredis";
 
-const redisClient = new Redis({
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT,
-    maxRetriesPerRequest: null,
-});
+let redisClient;
+redisClient = (process.env.NODE_ENV === "production") ?
+              new Redis(process.env.REDIS_URL) :
+              new Redis({
+                    host: process.env.REDIS_HOST,
+                    port: process.env.REDIS_PORT,
+                    maxRetriesPerRequest: null,
+              });
 
 redisClient.on("connect", () => {
     console.log("Redis Connected");

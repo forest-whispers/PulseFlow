@@ -50,8 +50,6 @@ A consultation can evolve from a scheduled appointment into a complete treatment
 
 # 📸 Product Preview
 
-> Replace the placeholders below with screenshots or GIFs before publishing.
-
 ## Landing Page
 
 ![landing-page](/assets/product-preview/landingPage.gif)
@@ -160,8 +158,6 @@ A consultation can evolve from a scheduled appointment into a complete treatment
 
 # 🔄 Clinical Workflow
 
-> Replace this diagram with an SVG later.
-
 ```text
                         CONSULTATION LIFECYCLE
                                
@@ -208,8 +204,6 @@ A consultation can evolve from a scheduled appointment into a complete treatment
 ---
 
 # 🏗 System Architecture
-
-> Replace this diagram with architecture.svg later.
 
 ```text
                          React Application
@@ -367,20 +361,25 @@ MONGO_URI=
 
 JWT_SECRET=
 
-CLIENT_URL=
-
 CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET=
 
 STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
+
+REDIS_HOST=
+REDIS_PORT=
+REDIS_URL=
+
+CLIENT_URL=
+CLIENT_LOCAL_URL=
 ```
 
 ### Frontend
 
 ```env
-VITE_API_URL=
+VITE_AXIOS_BASE_URL=
 
 VITE_STRIPE_PUBLISHABLE_KEY=
 ```

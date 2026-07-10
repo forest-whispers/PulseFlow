@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 
 import { createUserService, loginUserService, getUserByIdService, getUsersService, } from "./user.service.js";
+import { cookieOptions } from "../../utils/cookies.js"
 
 export const registerUserController = async (req, res, next) =>
 {
@@ -26,13 +27,7 @@ export const registerUserController = async (req, res, next) =>
         //     data: user,
         // });
 
-        res.cookie("token", token,
-            {
-                httpOnly: true,
-                secure: false,
-                sameSite: "lax",
-                maxAge: 7 * 24 * 60 * 60 * 1000,
-            }).status(201).json({
+        res.cookie("token", token, cookieOptions(7 * 24 * 60 * 60 * 1000)).status(201).json({
             success: true,
             message: "registeration successful",
             data: { role: user.role },
@@ -65,13 +60,7 @@ export const loginUserController = async (req, res, next) => {
         //     data: user,
         // });
 
-        res.cookie("token", token,
-            {
-                httpOnly: true,
-                secure: false,
-                sameSite: "lax",
-                maxAge: 7 * 24 * 60 * 60 * 1000,
-            }).status(200).json(
+        res.cookie("token", token, cookieOptions(7 * 24 * 60 * 60 * 1000)).status(200).json(
             {
                 success: true,
                 message: "login successful",
@@ -112,11 +101,7 @@ export const getUsersController = async (req, res, next) => {
 export const logoutUserController = async (req, res, next) =>
 {
     try {
-        res.clearCookie("token", {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "strict",
-        }).status(200).json({
+        res.clearCookie("token", cookieOptions(0)).status(200).json({
             success: true,
             message: "signed out successful",
             data: null

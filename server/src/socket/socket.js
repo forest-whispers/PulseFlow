@@ -3,10 +3,14 @@ import { Server } from "socket.io";
 let io;
 const connectedUsers = new Map();
 
+const allowedOrigins = [
+    process.env.CLIENT_URL,
+];
+
 export const initSocket = (server) => {
     io = new Server(server, {
         cors: {
-            origin: "*",
+            origin: allowedOrigins,
         },
     });
 

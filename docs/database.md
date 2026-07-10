@@ -23,8 +23,6 @@ This approach keeps documents small, reusable, and easy to query while supportin
 
 # Entity Relationship Overview
 
-> Replace with `database.svg`
-
 ![Database Design](../assets/docs/database.svg)
 
 ---

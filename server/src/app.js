@@ -12,6 +12,10 @@ import paymentWebhookRouter from "./modules/payment/payment.webhook.routes.js";
 
 const app = express();
 
+const allowedOrigins = [
+    process.env.CLIENT_URL,
+];
+
 app.use(globalRateLimiter);
 
 app.use("/api/payments/webhook", paymentWebhookRouter);
@@ -22,7 +26,7 @@ app.use(cookieParser());
 
 app.use(
     cors({
-        origin: process.env.CLIENT_URL,
+        origin: allowedOrigins,
         credentials: true
     }),
 );

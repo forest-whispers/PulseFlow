@@ -25,8 +25,6 @@ Every feature is implemented as an independent module while still participating 
 
 # High-Level Architecture
 
-> Replace with `architecture.svg`
-
 ![Architecture](../assets/docs/architecture.svg)
 
 ---
