@@ -14,8 +14,8 @@ const app = express();
 
 const allowedOrigins = [
     process.env.CLIENT_URL,
-    "pulse-flow-gq08vl3mu-forest-whispers-projects.vercel.app",
-    "pulse-flow-two.vercel.app"
+    "https://pulse-flow-gq08vl3mu-forest-whispers-projects.vercel.app",
+    "https://pulse-flow-two.vercel.app"
 ];
 
 app.use(globalRateLimiter);
