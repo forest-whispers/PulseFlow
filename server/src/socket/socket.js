@@ -4,15 +4,15 @@ let io;
 const connectedUsers = new Map();
 
 const allowedOrigins = [
-    process.env.CLIENT_URL,
-    "https://pulse-flow-gq08vl3mu-forest-whispers-projects.vercel.app",
+    "http://localhost:5173",
+    "https://pulse-flow-6tvh981sk-forest-whispers-projects.vercel.app",
     "https://pulse-flow-two.vercel.app"
 ];
 
 export const initSocket = (server) => {
     io = new Server(server, {
         cors: {
-            origin: process.env.CLIENT_ORIGINS || allowedOrigins,
+            origin: allowedOrigins,
         },
     });
 

@@ -13,8 +13,8 @@ import paymentWebhookRouter from "./modules/payment/payment.webhook.routes.js";
 const app = express();
 
 const allowedOrigins = [
-    process.env.CLIENT_URL,
-    "https://pulse-flow-gq08vl3mu-forest-whispers-projects.vercel.app",
+    "http://localhost:5173",
+    "https://pulse-flow-6tvh981sk-forest-whispers-projects.vercel.app",
     "https://pulse-flow-two.vercel.app"
 ];
 
@@ -28,7 +28,7 @@ app.use(cookieParser());
 
 app.use(
     cors({
-        origin: process.env.CLIENT_ORIGINS || allowedOrigins,
+        origin: allowedOrigins,
         credentials: true
     }),
 );
