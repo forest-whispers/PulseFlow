@@ -14,6 +14,8 @@ const app = express();
 
 const allowedOrigins = [
     process.env.CLIENT_URL,
+    "pulse-flow-gq08vl3mu-forest-whispers-projects.vercel.app",
+    "pulse-flow-two.vercel.app"
 ];
 
 app.use(globalRateLimiter);
@@ -26,7 +28,7 @@ app.use(cookieParser());
 
 app.use(
     cors({
-        origin: allowedOrigins,
+        origin: process.env.CLIENT_ORIGINS || allowedOrigins,
         credentials: true
     }),
 );
