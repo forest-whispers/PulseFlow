@@ -30,13 +30,13 @@ export const getPatientDashboardService = async (patientId) => {
     };
     appointmentStats.forEach((stat) => {
         switch (stat._id) {
-            case "completed":
+            case "completed": { break; }
             case "pending_reschedule":
                 {
                 stats.pendingReschedules = stat.count;
                 break;
                 }
-            case "pending":
+            case "pending": { break; }
             case "confirmed":
                 {
                 stats.upcomingAppointments += stat.count;
