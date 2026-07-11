@@ -27,7 +27,7 @@ PulseFlow is an end-to-end platform that seamlessly synchronizes workflows betwe
 
 <p align="center">
 
-<a href="#">🌐 Live Demo</a> •
+<a href="https://pulse-flow-two.vercel.app">🌐 Live Demo</a> •
 <a href="./docs/architecture.md">🏗 Architecture</a> •
 <a href="./docs/api.md">📚 API</a> •
 <a href="./docs/flows.md">🔄 Workflows</a>
@@ -141,6 +141,18 @@ A consultation can evolve from a scheduled appointment into a complete treatment
 
 ---
 
+# 🔐 Demo Credentials
+
+To explore the live application without creating a new account, you can use the following role-based testing credentials:
+
+| Role | Email Address | Password | Access Privileges |
+| :--- | :--- | :--- | :--- |
+| **👨‍💼 Administrator** | `aditya@administrator.com` | `admin@123` | Full analytics, user management, global audit logs, and invoice oversight. |
+| **👨‍⚕️ Doctor** | `aditya@doctor.com` | `admin@123` | Consultation workspace, digital prescriptions, lab orders, and availability slots. |
+| **👤 Patient** | `aditya@patient.com` | `admin@123` | Appointment booking, Stripe payment portal, medical history, and downloadable invoices. |
+
+> 💡 **Note:** The demo environment resets data periodically. Please do not store real medical or personal information during your testing.
+
 # ✨ Core Modules
 
 | 👤 Patient Experience | 👨‍⚕️ Doctor Workspace | 👨‍💼 Administration |
@@ -206,34 +218,30 @@ A consultation can evolve from a scheduled appointment into a complete treatment
 # 🏗 System Architecture
 
 ```text
-                         React Application
-                                │
-         ┌──────────────────────┼──────────────────────┐
-         ▼                      ▼                      ▼
-   Patient Portal         Admin Portal          Doctor Portal
-         │                      │                      │
-         └──────────────────────┼──────────────────────┘
-                                │
-                           React Router
-                                │
-                          TanStack Query
-                                │
-                         Axios API Layer
-                                │
-                        Express REST API
-                                │
-                    Authentication Middleware
-                                │
-                               RBAC
-                                |
-                           Controllers
-                                │
-                            Services
-                                │
-                     MongoDB Atlas Database
-                            │       │
-                            ▼       ▼
-                        Cloudinary  Stripe API
+                            React Application
+                                   │
+              ┌────────────────────┼────────────────────┐
+              ▼                    ▼                    ▼
+        Patient Portal       Admin Portal         Doctor Portal
+              │                    │                    │
+              └────────────────────┼────────────────────┘
+                                   │
+                              React Router
+                                   │
+                             TanStack Query
+                                   │
+                            Axios API Layer
+                                   │ (HTTP)
+                            Express REST API ◄───► Socket.io (Real-time)
+                                   │
+                       Auth & RBAC Middleware
+                                   │
+                        Controllers & Services
+                                   │
+              ┌────────────────────┼────────────────────┐
+              ▼                    ▼                    ▼
+     MongoDB Atlas (Data)    Redis (Caching)     External APIs
+                                             (Stripe, Cloudinary)
 ```
 
 ---
