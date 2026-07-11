@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit"
 
+const savedRole = typeof window !== "undefined" ? localStorage.getItem("userRole") : null
+
 const initialState = {
-  user: null,
-  isAuthenticated: false,
+  user: savedRole ? { role: savedRole } : null,
+  isAuthenticated: !!savedRole,
   isInitialized: false,
 }
 

@@ -83,9 +83,9 @@ export default function PublicLayout() {
             className="h-9 w-9"
           >
             {theme === "dark" ? (
-              <Sun className="h-[18px] w-[18px] text-yellow-500" />
+              <Sun className="h-4.5 w-4.5 text-yellow-500" />
             ) : (
-              <Moon className="h-[18px] w-[18px] text-primary" />
+              <Moon className="h-4.5 w-4.5 text-primary" />
             )}
           </Button>
 

@@ -16,6 +16,11 @@ export const authApi = {
     return response.data
   },
 
+  getAdminProfile: async () => {
+    const response = await axiosInstance.get("/users/me")
+    return response.data
+  },
+
   getPatientProfile: async () => {
     const response = await axiosInstance.get("/patients/me")
     return response.data

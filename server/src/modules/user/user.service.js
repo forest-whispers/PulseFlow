@@ -4,7 +4,7 @@ import User from "./user.model.js";
 import PatientProfile from '../patientProfile/patientProfile.model.js'
 import DoctorProfile from '../doctorProfile/doctorProfile.model.js'
 import DoctorAvailability from '../doctorAvailability/doctorAvailability.model.js';
-import { ConflictError, UnauthorizedError, ForbiddenError } from '../../utils/error.js'
+import { ConflictError, UnauthorizedError, ForbiddenError, NotFoundError } from '../../utils/error.js'
 
 export const createUserService = async ({ name, email, password, role="patient", age, gender,}) =>
 {
@@ -75,6 +75,15 @@ export const getUserByIdService = async (id, currUser) =>
             gender: user.gender
         },
         profile, };
+};
+
+export const getAdminProfileService = async (currUser) => {
+    const profile = await User.findOne({ _id: currUser.id, role: "admin", }).select("name age gender");
+    if(!profile)
+    {
+        throw new NotFoundError("Failed to authenticate details");
+    }
+    return profile;
 };
 
 export const getUsersService = async (queryParams) => {

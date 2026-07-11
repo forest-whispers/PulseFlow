@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-import { createUserService, loginUserService, getUserByIdService, getUsersService, } from "./user.service.js";
+import { createUserService, loginUserService, getUserByIdService, getAdminProfileService, getUsersService, } from "./user.service.js";
 import { cookieOptions } from "../../utils/cookies.js"
 
 export const registerUserController = async (req, res, next) =>
@@ -80,6 +80,18 @@ export const getUserController = async (req, res, next) =>
         res.status(200).json({
             success: true,
             data: user,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getAdminProfileController = async (req, res, next) => {
+    try {
+        const profile = await getAdminProfileService(req.user);
+        res.status(200).json({
+            success: true,
+            data: profile,
         });
     } catch (error) {
         next(error);

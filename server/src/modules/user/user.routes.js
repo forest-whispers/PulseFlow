@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import { registerUserController, loginUserController, getUserController, getUsersController, logoutUserController, } from "./user.controller.js";
+import { registerUserController, loginUserController, getUserController, getAdminProfileController, getUsersController, logoutUserController, } from "./user.controller.js";
 import requireAuth from '../../middleware/requireAuth.js';
 import requireRole from '../../middleware/requireRole.js';
 import { validate } from "../../middleware/validate.js";
@@ -12,6 +12,7 @@ router.post("/register", authRateLimiter, validate(registerSchema), registerUser
 router.post("/login", authRateLimiter, validate(loginSchema), loginUserController);
 router.get("/logout", requireAuth, logoutUserController);
 router.get("/", requireAuth, requireRole("admin"), getUsersController,);
+router.get("/me", requireAuth, requireRole("admin"), getAdminProfileController);
 router.get("/:id", requireAuth, requireRole("admin"), getUserController);
 
 export default router;
