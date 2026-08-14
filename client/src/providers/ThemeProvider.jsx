@@ -5,7 +5,7 @@ const ThemeContext = createContext({
   setTheme: () => null,
 })
 
-export function ThemeProvider({ children, defaultTheme = "light", storageKey = "hms-ui-theme" }) {
+export function ThemeProvider({ children, defaultTheme = "dark", storageKey = "hms-ui-theme" }) {
   const [theme, setTheme] = useState(
     () => localStorage.getItem(storageKey) || defaultTheme
   )
