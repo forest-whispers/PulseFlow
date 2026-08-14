@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
 import { useDispatch } from "react-redux"
@@ -10,6 +10,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+import { Select } from "@/components/ui/select"
 import AuthLayout from "../components/AuthLayout"
 import { registerSchema } from "../schemas/authSchemas"
 import { authApi } from "../api/authApi"
@@ -25,6 +26,7 @@ export default function RegisterPage() {
     handleSubmit,
     setValue,
     watch,
+    control,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(registerSchema),
@@ -196,17 +198,22 @@ export default function RegisterPage() {
           <div>
             <Label htmlFor="gender">Gender</Label>
             <div className="mt-1">
-              <select
-                id="gender"
-                {...register("gender")}
-                className={`flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 ${
-                  errors.gender ? "border-destructive focus-visible:ring-destructive" : ""
-                }`}
-              >
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
+              <Controller
+                name="gender"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    id="gender"
+                    value={field.value}
+                    onChange={field.onChange}
+                    className={errors.gender ? "border-destructive focus-visible:ring-destructive" : ""}
+                  >
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </Select>
+                )}
+              />
             </div>
             {errors.gender && (
               <p className="mt-1 text-xs text-destructive">{errors.gender.message}</p>

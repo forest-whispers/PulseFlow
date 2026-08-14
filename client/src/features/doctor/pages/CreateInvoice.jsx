@@ -16,6 +16,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Select } from "@/components/ui/select"
 import { useCreateInvoice } from "../../patient/hooks/useInvoices"
 import { useSelector } from "react-redux"
 
@@ -220,15 +221,15 @@ export default function CreateInvoice() {
                   control={control}
                   name="paymentMethod"
                   render={({ field }) => (
-                    <select
-                      disabled={createMutation.isPending}
+                    <Select
+                      id="paymentMethod"
                       value={field.value}
                       onChange={field.onChange}
-                      className="w-full h-11 rounded-xl border border-input px-3 bg-background text-sm outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+                      className="w-full"
                     >
                       <option value="stripe">Stripe (Online Card)</option>
                       <option value="cash">Cash (Over the counter)</option>
-                    </select>
+                    </Select>
                   )}
                 />
               </div>

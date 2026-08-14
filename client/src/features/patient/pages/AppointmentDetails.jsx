@@ -28,6 +28,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Select } from "@/components/ui/select"
 import { patientApi } from "../api/patientApi"
 import {
   useAppointmentDetails,
@@ -595,19 +596,18 @@ export default function AppointmentDetails() {
                     <span className="text-[10px] text-muted-foreground uppercase font-bold">
                       Current Status: <span className="text-foreground font-semibold uppercase">{status}</span>
                     </span>
-                    <select
-                      name="status"
+                    <Select
+                      id="status"
                       value={selectedStatus}
                       onChange={(e) => setSelectedStatus(e.target.value)}
-                      disabled={updateStatusMutation.isPending}
-                      className="h-10 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:opacity-50 disabled:bg-muted/40 cursor-pointer"
+                      className="w-full"
                     >
                       <option value="pending">Pending Approval</option>
                       <option value="pending_reschedule">Reschedule Pending</option>
                       <option value="confirmed">Confirmed</option>
                       <option value="completed">Completed</option>
                       <option value="cancelled">Cancelled</option>
-                    </select>
+                    </Select>
                   </div>
 
                   {/* Save Status Button */}

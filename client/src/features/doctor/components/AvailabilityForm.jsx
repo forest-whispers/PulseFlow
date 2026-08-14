@@ -1,11 +1,12 @@
 import { useEffect } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { Calendar, Clock, Settings, Save, RotateCcw, Loader2, AlertTriangle, Check } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+import { Select } from "@/components/ui/select"
 
 // Define client-side validation schema with time refinement
 const availabilityFormSchema = z.object({
@@ -42,6 +43,7 @@ export default function AvailabilityForm({ initialData, onSubmit, isLoading }) {
     setValue,
     watch,
     reset,
+    control,
     formState: { isDirty, errors, isValid },
   } = useForm({
     resolver: zodResolver(availabilityFormSchema),
@@ -206,18 +208,23 @@ export default function AvailabilityForm({ initialData, onSubmit, isLoading }) {
               <p className="text-muted-foreground text-xs">
                 Select the duration allocated for each patient appointment.
               </p>
-              <select
-                id="slotDuration"
+              <Controller
                 name="slotDuration"
-                {...register("slotDuration", { valueAsNumber: true })}
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1 cursor-pointer"
-              >
-                <option value={15}>15 Minutes</option>
-                <option value={20}>20 Minutes</option>
-                <option value={30}>30 Minutes</option>
-                <option value={45}>45 Minutes</option>
-                <option value={60}>60 Minutes</option>
-              </select>
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    id="slotDuration"
+                    value={field.value}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  >
+                    <option value={15}>15 Minutes</option>
+                    <option value={20}>20 Minutes</option>
+                    <option value={30}>30 Minutes</option>
+                    <option value={45}>45 Minutes</option>
+                    <option value={60}>60 Minutes</option>
+                  </Select>
+                )}
+              />
               {errors.slotDuration && (
                 <p className="text-xs text-destructive font-medium">{errors.slotDuration.message}</p>
               )}
