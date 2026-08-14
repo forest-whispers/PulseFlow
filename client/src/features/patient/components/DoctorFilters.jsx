@@ -2,6 +2,7 @@ import { Search, FilterX, ArrowUpDown, ChevronDown } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+import { Select } from "@/components/ui/select"
 
 const SPECIALIZATIONS = [
   "Cardiology",
@@ -65,11 +66,11 @@ export default function DoctorFilters({
           <Label htmlFor="specialization" className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
             Specialization
           </Label>
-          <select
+          <Select
             id="specialization"
             value={filters.specialization || ""}
             onChange={handleSpecializationChange}
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer"
+            className="w-full"
           >
             <option value="">All Specializations</option>
             {SPECIALIZATIONS.map((spec) => (
@@ -77,7 +78,7 @@ export default function DoctorFilters({
                 {spec}
               </option>
             ))}
-          </select>
+          </Select>
         </div>
 
         {/* Min Fee Filter */}
@@ -118,16 +119,16 @@ export default function DoctorFilters({
             Sort By
           </Label>
           <div className="flex gap-2">
-            <select
+            <Select
               id="sortBy"
               value={filters.sortBy || ""}
               onChange={handleSortByChange}
-              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer flex-1"
+              className="flex-1"
             >
               <option value="">Default Sort</option>
               <option value="consultationFee">Fee</option>
               <option value="experience">Experience</option>
-            </select>
+            </Select>
             {filters.sortBy && (
               <Button
                 type="button"

@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+import { Select } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { usePatientProfile } from "../hooks/usePatientProfile"
 import AllergiesInput from "../components/AllergiesInput"
@@ -264,19 +265,22 @@ export default function PatientProfile() {
                   {/* Gender Select Input */}
                   <div className="space-y-2">
                     <Label htmlFor="gender">Gender</Label>
-                    <select
-                      id="gender"
+                    <Controller
                       name="gender"
-                      disabled={isUpdating}
-                      {...register("gender")}
-                      className={`flex h-9 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-base transition-colors placeholder:text-muted-foreground outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-input/50 md:text-sm dark:bg-input/30 ${
-                        errors.gender ? "border-destructive focus-visible:ring-destructive" : ""
-                      }`}
-                    >
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                    </select>
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          id="gender"
+                          value={field.value}
+                          onChange={field.onChange}
+                          className={errors.gender ? "border-destructive focus-visible:ring-destructive" : ""}
+                        >
+                          <option value="male">Male</option>
+                          <option value="female">Female</option>
+                          <option value="other">Other</option>
+                        </Select>
+                      )}
+                    />
                     {errors.gender && (
                       <p className="text-xs text-destructive">{errors.gender.message}</p>
                     )}
@@ -295,24 +299,27 @@ export default function PatientProfile() {
                   {/* Blood Group Select Input */}
                   <div className="space-y-2">
                     <Label htmlFor="bloodGroup">Blood Group</Label>
-                    <select
-                      id="bloodGroup"
+                    <Controller
                       name="bloodGroup"
-                      disabled={isUpdating}
-                      {...register("bloodGroup")}
-                      className={`flex h-9 w-full rounded-lg border border-input bg-transparent px-3 py-1 text-base transition-colors placeholder:text-muted-foreground outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-input/50 md:text-sm dark:bg-input/30 ${
-                        errors.bloodGroup ? "border-destructive focus-visible:ring-destructive" : ""
-                      }`}
-                    >
-                      <option value="A+">A+</option>
-                      <option value="A-">A-</option>
-                      <option value="B+">B+</option>
-                      <option value="B-">B-</option>
-                      <option value="AB+">AB+</option>
-                      <option value="AB-">AB-</option>
-                      <option value="O+">O+</option>
-                      <option value="O-">O-</option>
-                    </select>
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          id="bloodGroup"
+                          value={field.value}
+                          onChange={field.onChange}
+                          className={errors.bloodGroup ? "border-destructive focus-visible:ring-destructive" : ""}
+                        >
+                          <option value="A+">A+</option>
+                          <option value="A-">A-</option>
+                          <option value="B+">B+</option>
+                          <option value="B-">B-</option>
+                          <option value="AB+">AB+</option>
+                          <option value="AB-">AB-</option>
+                          <option value="O+">O+</option>
+                          <option value="O-">O-</option>
+                        </Select>
+                      )}
+                    />
                     {errors.bloodGroup && (
                       <p className="text-xs text-destructive">{errors.bloodGroup.message}</p>
                     )}
