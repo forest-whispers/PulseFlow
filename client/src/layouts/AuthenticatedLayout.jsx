@@ -301,7 +301,7 @@ export default function AuthenticatedLayout() {
                     <Link
                       to={`/${currentRole}/settings`}
                       onClick={() => setDropdownOpen(false)}
-                      className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-bold text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
+                      className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-bold text-muted-foreground hover:text-primary hover:bg-primary/10 transition-all duration-200"
                     >
                       <SettingsIcon className="h-4 w-4 shrink-0" />
                       <span>Settings</span>
@@ -312,7 +312,7 @@ export default function AuthenticatedLayout() {
                         logoutMutation.mutate()
                       }}
                       disabled={logoutMutation.isPending}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-bold text-destructive hover:bg-destructive/10 transition-colors cursor-pointer text-left"
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-bold text-destructive hover:bg-destructive/10 transition-all duration-200 cursor-pointer text-left"
                     >
                       {logoutMutation.isPending ? (
                         <Loader2 className="h-4 w-4 animate-spin shrink-0" />
