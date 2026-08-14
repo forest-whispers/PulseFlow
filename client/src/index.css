@@ -277,6 +277,12 @@
     height: 10px !important;
   }
 
+  /* Prevent toast content from colliding with absolute-positioned close button */
+  [data-sonner-toast][data-type="success"] [data-content],
+  [data-sonner-toast][data-type="error"] [data-content] {
+    padding-right: 28px !important;
+  }
+
   /* Progress bar implementation ONLY for Success & Error types */
   [data-sonner-toast][data-type="success"]::after,
   [data-sonner-toast][data-type="error"]::after {
@@ -284,11 +290,9 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    right: 0;
     height: 3px;
     border-bottom-left-radius: 12px !important;
     border-bottom-right-radius: 12px !important;
-    transform-origin: left;
     animation: toast-progress-shrink 4s linear forwards;
   }
 
@@ -305,13 +309,13 @@
     animation-play-state: paused !important;
   }
 
-  /* Animation Keyframes */
+  /* Animation Keyframes animating width instead of scaleX to preserve right-side corner rounding */
   @keyframes toast-progress-shrink {
     from {
-      transform: scaleX(1);
+      width: 100%;
     }
     to {
-      transform: scaleX(0);
+      width: 0%;
     }
   }
 }
