@@ -12,9 +12,7 @@ import {
   Info,
   Sliders,
   Sparkles,
-  HelpCircle,
   ArrowLeft,
-  ChevronRight,
   ExternalLink,
 } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -122,35 +120,6 @@ export default function Settings() {
             </CardDescription>
           </CardHeader>
           <CardContent className="p-5 space-y-4">
-            <div className="space-y-2">
-              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">
-                Theme Preset
-              </span>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { id: "light", label: "Light", icon: Sun },
-                  { id: "dark", label: "Dark", icon: Moon },
-                  { id: "system", label: "System", icon: Monitor },
-                ].map((item) => {
-                  const Icon = item.icon
-                  const active = themePref === item.id
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => setThemePref(item.id)}
-                      className={`flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl border text-xs font-bold transition-all duration-300 ${
-                        active
-                          ? "bg-primary/5 border-primary text-primary"
-                          : "border-border/60 hover:bg-muted/40 text-muted-foreground"
-                      }`}
-                    >
-                      <Icon className="h-4.5 w-4.5" />
-                      <span>{item.label}</span>
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
 
             <div className="space-y-3 pt-2">
               <Switch
@@ -371,7 +340,7 @@ export default function Settings() {
               Metadata and legal disclosures of the PulseFlow Portal.
             </CardDescription>
           </CardHeader>
-          <CardContent className="p-5 flex flex-col justify-between h-[255px]">
+          <CardContent className="p-5 flex flex-col justify-between h-63.75">
             {/* Version Info Grid */}
             <div className="grid grid-cols-2 gap-3 text-xs">
               {[

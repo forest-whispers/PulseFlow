@@ -88,11 +88,11 @@ export default function TestimonialsCarousel() {
         {/* Row 1: Scrolling Left */}
         <div className="relative flex w-full overflow-hidden py-2">
           {/* Marquee container with CSS translation animation */}
-          <div className="flex gap-6 animate-marquee-left hover:[animation-play-state:paused]">
+          <div className="flex gap-6 animate-marquee-left hover:paused">
             {rowOneItems.map((item, index) => (
               <div
                 key={`r1-${index}`}
-                className="w-[300px] sm:w-[350px] shrink-0 border bg-card rounded-xl p-5 shadow-xs flex flex-col justify-between hover:border-primary/30 transition-colors"
+                className="w-75 sm:w-87.5 shrink-0 border bg-card rounded-xl p-5 shadow-xs flex flex-col justify-between hover:border-primary/30 transition-colors"
               >
                 <div className="space-y-3">
                   {/* Rating Stars */}
@@ -124,11 +124,11 @@ export default function TestimonialsCarousel() {
         {/* Row 2: Scrolling Right */}
         <div className="relative flex w-full overflow-hidden py-2">
           {/* Marquee container with CSS translation animation */}
-          <div className="flex gap-6 animate-marquee-right hover:[animation-play-state:paused]">
+          <div className="flex gap-6 animate-marquee-right hover:paused">
             {rowTwoItems.map((item, index) => (
               <div
                 key={`r2-${index}`}
-                className="w-[300px] sm:w-[350px] shrink-0 border bg-card rounded-xl p-5 shadow-xs flex flex-col justify-between hover:border-primary/30 transition-colors"
+                className="w-75 sm:w-87.5 shrink-0 border bg-card rounded-xl p-5 shadow-xs flex flex-col justify-between hover:border-primary/30 transition-colors"
               >
                 <div className="space-y-3">
                   {/* Rating Stars */}

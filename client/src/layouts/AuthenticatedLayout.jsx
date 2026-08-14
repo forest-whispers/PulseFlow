@@ -19,8 +19,6 @@ import {
   Loader2,
   Menu,
   X,
-  Sun,
-  Moon,
   TrendingUp,
   Users,
   History,
@@ -268,21 +266,6 @@ export default function AuthenticatedLayout() {
           </div>
 
           <div className="flex items-center gap-4">
-            {/* Theme Toggle */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              title="Toggle theme"
-              className="cursor-pointer"
-            >
-              {theme === "dark" ? (
-                <Sun className="h-5 w-5 text-yellow-500" />
-              ) : (
-                <Moon className="h-5 w-5 text-primary" />
-              )}
-            </Button>
-
             {/* Notification Bell Dropdown */}
             <NotificationBell />
 

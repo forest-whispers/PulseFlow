@@ -3,7 +3,7 @@ import { Outlet, Link, useLocation, useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { useTheme } from "../providers/ThemeProvider"
 import { Button } from "@/components/ui/button"
-import { Sun, Moon, Menu, X } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import Logo from "@/components/ui/Logo"
 
 export default function PublicLayout() {
@@ -73,21 +73,6 @@ export default function PublicLayout() {
               </>
             )}
           </div>
-
-          {/* Theme Toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            title="Toggle theme"
-            className="h-9 w-9"
-          >
-            {theme === "dark" ? (
-              <Sun className="h-4.5 w-4.5 text-yellow-500" />
-            ) : (
-              <Moon className="h-4.5 w-4.5 text-primary" />
-            )}
-          </Button>
 
           {/* Mobile Menu Toggle Button */}
           <Button

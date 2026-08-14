@@ -10,7 +10,7 @@ export function AppProviders({ children }) {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider defaultTheme="light" storageKey="hms-ui-theme">
+        <ThemeProvider defaultTheme="dark" storageKey="hms-ui-theme">
           <AuthProvider>
             {children}
           </AuthProvider>

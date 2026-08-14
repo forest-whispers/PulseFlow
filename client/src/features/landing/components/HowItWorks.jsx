@@ -51,13 +51,13 @@ export default function HowItWorks() {
             return (
               <div key={index} className="relative mb-16 last:mb-0 group">
                 {/* Timeline Circle Marker */}
-                <div className="absolute top-1.5 -left-[25px] md:left-1/2 md:-translate-x-1/2 h-12 w-12 rounded-full border border-border/60 bg-card text-primary flex items-center justify-center shadow-xs z-10 transition-all duration-300 group-hover:scale-110 group-hover:border-primary/45 group-hover:bg-primary/5">
+                <div className="absolute top-1.5 -left-6.25 md:left-1/2 md:-translate-x-1/2 h-12 w-12 rounded-full border border-border/60 bg-card text-primary flex items-center justify-center shadow-xs z-10 transition-all duration-300 group-hover:scale-110 group-hover:border-primary/45 group-hover:bg-primary/5">
                   <Icon className="h-5 w-5" />
                 </div>
 
                 {/* Downward connecting arrow (replaces the solid line) */}
                 {index < STEPS.length - 1 && (
-                  <div className="absolute top-14 -left-[25px] md:left-1/2 md:-translate-x-1/2 w-12 h-10 flex items-center justify-center text-primary/30 z-0">
+                  <div className="absolute top-14 -left-6.25 md:left-1/2 md:-translate-x-1/2 w-12 h-10 flex items-center justify-center text-primary/30 z-0">
                     <ArrowDown className="h-4.5 w-4.5 animate-bounce" />
                   </div>
                 )}
@@ -65,7 +65,7 @@ export default function HowItWorks() {
                 {/* Content Box (alternating on desktop) */}
                 <div
                   className={`w-full md:w-[45%] md:relative pl-8 md:pl-0 ${
-                    isEven ? "md:mr-auto md:text-right md:-left-[5%] md:pr-8" : "md:ml-auto md:text-left md:left-[5%] md:pl-8"
+                    isEven ? "md:mr-auto md:text-right md:left-[5%] md:pr-8" : "md:ml-auto md:text-left md:left-[5%] md:pl-8"
                   }`}
                 >
                   <div className="p-6 rounded-2xl border border-border/40 bg-card shadow-2xs hover:shadow-xs hover:-translate-y-0.5 hover:border-primary/15 transition-all duration-300">

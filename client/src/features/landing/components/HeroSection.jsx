@@ -37,7 +37,7 @@ export default function HeroSection() {
             
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-foreground">
               Your Health, <br />
-              <span className="text-primary bg-linear-to-r from-primary to-blue-500 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-primary to-blue-500 bg-clip-text text-transparent">
                 Managed Digitally
               </span>{" "}
               and Securely.
@@ -94,7 +94,7 @@ export default function HeroSection() {
 
           {/* Right Column - Premium SVG Illustration */}
           <div className="lg:col-span-5 relative flex justify-center">
-            <div className="relative w-full max-w-[450px] aspect-square rounded-2xl bg-card border shadow-xl p-4 flex items-center justify-center overflow-hidden group hover:shadow-2xl transition-all duration-300">
+            <div className="relative w-full max-w-112.5 aspect-square rounded-2xl bg-card border shadow-xl p-4 flex items-center justify-center overflow-hidden group hover:shadow-2xl transition-all duration-300">
               
               {/* Dynamic SVG composition representing modern healthcare SaaS */}
               <svg
