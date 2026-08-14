@@ -155,7 +155,7 @@ export default function PatientMedicalRecords() {
                 </CardContent>
 
                 <CardFooter className="p-5 pt-3 pb-4 border-t border-border/10 bg-muted/10 flex justify-end">
-                  <Link to={window.location.pathname.startsWith("/doctor") ? `/doctor/medical-records/${record._id}` : `/patient/medical-records/${record._id}`}>
+                  <Link to={`/patient/medical-records/${record._id}`}>
                     <Button size="sm" className="gap-1.5 rounded-xl font-bold cursor-pointer">
                       <Eye className="h-3.5 w-3.5" /> View Details
                     </Button>

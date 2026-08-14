@@ -51,10 +51,6 @@ const NAV_CONFIG = {
     main: [
       { label: "Dashboard", path: "/doctor/dashboard", icon: LayoutDashboard },
       { label: "Appointments", path: "/doctor/appointments", icon: Calendar },
-      { label: "Medical Records", path: "/doctor/medical-records", icon: FileText },
-      { label: "Prescriptions", path: "/doctor/prescriptions", icon: Pill },
-      { label: "Lab Results", path: "/doctor/lab-results", icon: Beaker },
-      { label: "Invoices", path: "/doctor/invoices", icon: Receipt },
       { label: "Notifications", path: "/doctor/notifications", icon: Bell },
     ],
     bottom: [
