@@ -168,10 +168,10 @@ export default function Notifications() {
           {items.map((notification) => (
             <Card 
               key={notification._id}
-              className={`transition-all duration-300 border hover:border-muted-foreground/20 hover:shadow-xs ${
+              className={`transition-all duration-300 border hover:shadow-xs hover:border-primary/30 ${
                 notification.isRead 
-                  ? "bg-card opacity-85" 
-                  : "bg-primary/5 border-primary/20 hover:border-primary/30 shadow-2xs"
+                  ? "bg-card opacity-85 hover:bg-primary/5" 
+                  : "bg-primary/5 border-primary/20 hover:bg-primary/10 shadow-2xs"
               }`}
             >
               <CardContent className="p-4 sm:p-5 flex items-start justify-between gap-4">

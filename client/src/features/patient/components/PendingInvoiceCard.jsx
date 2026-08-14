@@ -37,19 +37,19 @@ export default function PendingInvoiceCard({ invoice }) {
   }
 
   return (
-    <Card className="border-amber-200/80 dark:border-amber-900/35 bg-amber-500/[0.015] shadow-2xs hover:shadow-xs transition-shadow duration-200 h-full flex flex-col justify-between p-6 min-h-[260px]">
+    <Card className="border-indigo-200/80 dark:border-indigo-900/35 bg-indigo-500/[0.015] shadow-2xs hover:shadow-xs transition-shadow duration-200 h-full flex flex-col justify-between p-6 min-h-[260px]">
       <div className="space-y-5">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0 border border-amber-500/20">
+            <div className="h-10 w-10 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 border border-indigo-500/20">
               <Receipt className="h-5 w-5" />
             </div>
             <div>
               <h3 className="font-bold text-base text-foreground">Pending Payment</h3>
-              <p className="text-amber-600 dark:text-amber-500 text-xs font-semibold uppercase tracking-wider">Requires Attention</p>
+              <p className="text-indigo-600 dark:text-indigo-400 text-xs font-semibold uppercase tracking-wider">Requires Attention</p>
             </div>
           </div>
-          <Badge className="bg-amber-500/15 text-amber-700 border-amber-300/25 px-2.5 py-0.5 font-semibold text-xs rounded-full uppercase">
+          <Badge className="bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border-indigo-300/25 px-2.5 py-0.5 font-semibold text-xs rounded-full uppercase">
             Pending
           </Badge>
         </div>
@@ -63,7 +63,7 @@ export default function PendingInvoiceCard({ invoice }) {
             <span className="text-xs text-muted-foreground font-semibold">outstanding balance</span>
           </div>
           <div className="flex items-start gap-2 text-sm text-foreground/80 leading-relaxed min-h-[40px]">
-            <AlertCircle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+            <AlertCircle className="h-4 w-4 text-indigo-500 dark:text-indigo-400 shrink-0 mt-0.5" />
             <span className="truncate-2-lines">
               {invoice.description || "Consultation Fee"}
             </span>
@@ -73,7 +73,7 @@ export default function PendingInvoiceCard({ invoice }) {
 
       <Button
         onClick={() => navigate(`/patient/invoices/${invoice._id}`)}
-        className="w-full gap-2 cursor-pointer mt-6 bg-amber-500 hover:bg-amber-600 text-white border-none"
+        className="w-full gap-2 cursor-pointer mt-6 bg-indigo-600 hover:bg-indigo-700 text-white border-none transition-all duration-200"
       >
         <CreditCard className="h-4 w-4" /> Pay Invoice <ArrowRight className="h-4 w-4" />
       </Button>

@@ -167,7 +167,7 @@ export default function AdminDashboard() {
     { label: "Pending Appointments", value: stats.pending, icon: Clock, color: "text-amber-500" },
     { label: "Completed Appointments", value: stats.completed, icon: CheckCircle2, color: "text-sky-500" },
     { label: "Pending Reschedules", value: stats.pendingReschedule, icon: RefreshCw, color: "text-violet-500" },
-    { label: "Pending Invoices", value: stats.pendingInvoices, icon: Receipt, color: "text-rose-500" },
+    { label: "Pending Invoices", value: stats.pendingInvoices, icon: Receipt, color: "text-indigo-500" },
     { label: "Total Revenue", value: `₹${stats.revenue}`, icon: IndianRupee, color: "text-teal-500" },
   ]
 

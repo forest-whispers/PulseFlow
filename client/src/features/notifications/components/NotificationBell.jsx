@@ -110,7 +110,7 @@ export default function NotificationBell() {
         aria-haspopup="true"
         aria-expanded={isOpen}
         aria-label="View notifications"
-        className="relative hover:bg-muted/60 transition-colors cursor-pointer h-9 w-9"
+        className="relative hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer h-9 w-9"
       >
         <Bell className="h-5 w-5 text-muted-foreground" />
         {unreadCount > 0 && (
@@ -161,7 +161,7 @@ export default function NotificationBell() {
                   onClick={() => handleNotificationClick(notification)}
                   className={`p-4 transition-colors duration-200 cursor-pointer flex gap-3 text-left ${
                     notification.isRead 
-                      ? "bg-card hover:bg-muted/40" 
+                      ? "bg-card hover:bg-primary/5" 
                       : "bg-primary/5 hover:bg-primary/10"
                   }`}
                 >
@@ -192,7 +192,7 @@ export default function NotificationBell() {
                 setIsOpen(false)
                 navigate(viewAllPath)
               }}
-              className="w-full text-center py-2.5 text-xs font-semibold text-primary hover:bg-muted/50 hover:text-primary/90 transition-colors border-none bg-transparent cursor-pointer"
+              className="w-full text-center py-2.5 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors border-none bg-transparent cursor-pointer"
             >
               View All Notifications
             </button>

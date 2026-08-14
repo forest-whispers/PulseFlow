@@ -120,7 +120,7 @@ export default function PatientInvoices() {
                       className={
                         isPaid
                           ? "bg-emerald-500/10 text-emerald-600 border-emerald-200/35 font-bold text-[10px] rounded-md shadow-2xs"
-                          : "bg-amber-500/10 text-amber-600 border-amber-200/35 font-bold text-[10px] rounded-md shadow-2xs"
+                          : "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-200/35 font-bold text-[10px] rounded-md shadow-2xs"
                       }
                     >
                       {invoice.status.toUpperCase()}

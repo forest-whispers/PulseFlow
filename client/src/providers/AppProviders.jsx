@@ -14,7 +14,7 @@ export function AppProviders({ children }) {
           <AuthProvider>
             {children}
           </AuthProvider>
-          <Toaster richColors position="top-right" closeButton />
+          <Toaster richColors position="top-right" closeButton visibleToasts={1} />
         </ThemeProvider>
       </QueryClientProvider>
     </Provider>

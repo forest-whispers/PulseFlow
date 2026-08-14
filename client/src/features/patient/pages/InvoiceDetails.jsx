@@ -270,7 +270,7 @@ export default function InvoiceDetails() {
                       className={
                         isPaid
                           ? "bg-emerald-500/15 text-emerald-700 border-emerald-300/40 font-extrabold text-xs rounded-lg py-1 px-3 shadow-2xs"
-                          : "bg-amber-500/15 text-amber-700 border-amber-300/40 font-extrabold text-xs rounded-lg py-1 px-3 shadow-2xs"
+                          : "bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border-indigo-300/40 font-extrabold text-xs rounded-lg py-1 px-3 shadow-2xs"
                       }
                     >
                       {invoice.status?.toUpperCase()}

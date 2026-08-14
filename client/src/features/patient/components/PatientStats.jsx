@@ -28,7 +28,7 @@ export default function PatientStats({ stats = {} }) {
       value: stats.pendingInvoices ?? 0,
       path: "/patient/invoices",
       icon: Receipt,
-      colorClass: "bg-rose-500/10 text-rose-500",
+      colorClass: "bg-indigo-500/10 text-indigo-500",
     },
   ]
 
