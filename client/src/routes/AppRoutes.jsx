@@ -258,6 +258,14 @@ export default function AppRoutes() {
             }
           />
           <Route
+            path="/doctor/medical-records"
+            element={
+              <ProtectedRoute allowedRoles={["doctor"]}>
+                <PatientMedicalRecords />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/doctor/medical-records/create"
             element={
               <ProtectedRoute allowedRoles={["doctor"]}>
@@ -270,6 +278,14 @@ export default function AppRoutes() {
             element={
               <ProtectedRoute allowedRoles={["doctor"]}>
                 <MedicalRecordDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/doctor/prescriptions"
+            element={
+              <ProtectedRoute allowedRoles={["doctor"]}>
+                <PatientPrescriptions />
               </ProtectedRoute>
             }
           />
@@ -290,6 +306,14 @@ export default function AppRoutes() {
             }
           />
           <Route
+            path="/doctor/lab-results"
+            element={
+              <ProtectedRoute allowedRoles={["doctor"]}>
+                <PatientLabResults />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/doctor/lab-results/create"
             element={
               <ProtectedRoute allowedRoles={["doctor"]}>
@@ -302,6 +326,14 @@ export default function AppRoutes() {
             element={
               <ProtectedRoute allowedRoles={["doctor"]}>
                 <LabResultDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/doctor/invoices"
+            element={
+              <ProtectedRoute allowedRoles={["doctor"]}>
+                <PatientInvoices />
               </ProtectedRoute>
             }
           />
