@@ -138,17 +138,25 @@ A consultation can evolve from a scheduled appointment into a complete treatment
 
 ---
 
-# 🔐 Demo Credentials
+### 🔐 Demo Accounts & Quick Login
 
-To explore the live application without creating a new account, you can use the following role-based testing credentials:
+> 💡 **Quick Demo Fill:** The Login page includes a **"Demo account"** dropdown selector that automatically populates credentials and signs you in with a single click.
 
-| Role | Email Address | Password | Access Privileges |
+All seeded development accounts share the same password: **`admin@123`**
+
+| Role | Name / Specialization | Email | Privileges / Scope |
 | :--- | :--- | :--- | :--- |
-| **👨‍💼 Administrator** | `aditya@administrator.com` | `admin@123` | Full analytics, user management, global audit logs, and invoice oversight. |
-| **👨‍⚕️ Doctor** | `aditya@doctor.com` | `admin@123` | Consultation workspace, digital prescriptions, lab orders, and availability slots. |
-| **👤 Patient** | `aditya@patient.com` | `admin@123` | Appointment booking, Stripe payment portal, medical history, and downloadable invoices. |
+| **Admin** | Admin User | `admin@admin.com` | Analytics KPIs, global audit logs, user management & invoice controls |
+| **Doctor** | Dr. Arjun Mehta *(Cardiology)* | `doctor1@doctor.com` | Patient consultation history, clinical records, prescriptions & slots |
+| **Doctor** | Dr. Priya Sharma *(Dermatology)* | `doctor2@doctor.com` | Consultation records, topical prescriptions & availability schedule |
+| **Doctor** | Dr. Rahul Verma *(Neurology)* | `doctor3@doctor.com` | Today's appointment schedules, migraine regimens & consult logs |
+| **Doctor** | Dr. Neha Kapoor *(Pediatrics)* | `doctor4@doctor.com` | Pediatric wellness advisory, schedule & reschedule handling |
+| **Doctor** | Dr. Vikram Singh *(Orthopedics)* | `doctor5@doctor.com` | Active clinic queues, physical therapy regimens & invoice generation |
+| **Doctor** | Dr. Ananya Rao *(General Medicine)* | `doctor6@doctor.com` | General health examinations, lab result evaluations & consultations |
+| **Patient** | Rohan Malhotra | `patient1@patient.com` | Doctor search, slot booking, medical records, invoices & prescriptions |
+| **Patient** | Sneha Gupta | `patient2@patient.com` | Appointment history, Stripe billing statements & clinical summary |
 
-> 💡 **Note:** The demo environment resets data periodically. Please do not store real medical or personal information during your testing.
+*Note: All data can be reset anytime to a clean, predictable state by running `npm run seed` in the `server` directory.*
 
 # ✨ Core Modules
 
