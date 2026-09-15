@@ -60,22 +60,20 @@ A consultation can evolve from a scheduled appointment into a complete treatment
 
 <!-- <table>
   <tr>
-    <td colspan="2" align="center">
+    <td colspan="1" align="center">
       <strong>Patient Dashboard</strong>
     </td>
   </tr>
   <tr>
-    <td><img src="./assets/product-preview/dashboard.patient-1.png" alt="dashboard-patient" width="100%"></td>
-    <td><img src="./assets/product-preview/dashboard.patient-2.png" alt="dashboard-patient" width="100%"></td>
+    <td><img src="./assets/product-preview/dashboard.patient.png" alt="dashboard-patient" width="100%"></td>
   </tr>
   <tr>
-    <td colspan="2" align="center">
+    <td colspan="1" align="center">
       <strong>Doctor Dashboard</strong>
     </td>
   </tr>
   <tr>
-    <td><img src="./assets/product-preview/dashboard.doctor-1.png" alt="dashboard-doctor" width="100%"></td>
-    <td><img src="./assets/product-preview/dashboard.doctor-2.png" alt="dashboard-doctor" width="100%"></td>
+    <td><img src="./assets/product-preview/dashboard.doctor.png" alt="dashboard-doctor" width="100%"></td>
   </tr>
   <tr>
     <td colspan="2" align="center">
@@ -95,9 +93,9 @@ A consultation can evolve from a scheduled appointment into a complete treatment
     <td align="center"><strong>Admin Dashboard</strong></td>
   </tr>
   <tr>
-    <td><img src="./assets/product-preview/dashboard.patient-1.png" alt="dashboard-patient" width="100%"></td>
-    <td><img src="./assets/product-preview/dashboard.doctor-1.png" alt="dashboard-doctor" width="100%"></td>
-    <td><img src="./assets/product-preview/dashboard.admin-1.png" alt="dashboard-admin" width="100%"></td>
+    <td><img src="./assets/product-preview/dashboard.patient.png" alt="dashboard-patient" width="100%"></td>
+    <td><img src="./assets/product-preview/dashboard.doctor.png" alt="dashboard-doctor" width="100%"></td>
+    <td><img src="./assets/product-preview/dashboard.admin.png" alt="dashboard-admin" width="100%"></td>
   </tr>
 </table>
 
