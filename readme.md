@@ -95,7 +95,7 @@ A consultation can evolve from a scheduled appointment into a complete treatment
   <tr>
     <td><img src="./assets/product-preview/dashboard.patient.png" alt="dashboard-patient" width="100%"></td>
     <td><img src="./assets/product-preview/dashboard.doctor.png" alt="dashboard-doctor" width="100%"></td>
-    <td><img src="./assets/product-preview/dashboard.admin.png" alt="dashboard-admin" width="100%"></td>
+    <td><img src="./assets/product-preview/dashboard.admin-1.png" alt="dashboard-admin" width="100%"></td>
   </tr>
 </table>
 
@@ -122,7 +122,7 @@ A consultation can evolve from a scheduled appointment into a complete treatment
 
 <table>
   <tr>
-    <td colspan="3" align="center">
+    <td colspan="2" align="center">
       <strong>Analytics</strong>
     </td>
         <td colspan="1" align="center">
@@ -132,7 +132,6 @@ A consultation can evolve from a scheduled appointment into a complete treatment
   <tr>
     <td><img src="./assets/product-preview/analytics-1.png" alt="Preview 10" width="100%"></td>
     <td><img src="./assets/product-preview/analytics-2.png" alt="Preview 11" width="100%"></td>
-    <td><img src="./assets/product-preview/analytics-3.png" alt="Preview 12" width="100%"></td>
     <td><img src="./assets/product-preview/audit-logs.png" alt="Preview 13" width="100%"></td>
   </tr>
 </table>
