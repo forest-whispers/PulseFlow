@@ -63,7 +63,7 @@ export const getUserByIdService = async (id, currUser) =>
         profile = await DoctorProfile.findOne({ user: user._id, }).select("bio clinicAddress consultationFee experience specialization");
     }
     if (user.role === "patient") {
-        profile = await PatientProfile.findOne({ patient: user._id, }).select("bloodGroup allergies medicalHistory emergencyContact");
+        profile = await PatientProfile.findOne({ $or: [{ user: user._id }, { patient: user._id }] }).select("bloodGroup allergies medicalHistory emergencyContact");
     }
     return {
         account: {
