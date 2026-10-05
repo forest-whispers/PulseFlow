@@ -42,7 +42,7 @@ PulseFlow is an end-to-end platform that seamlessly synchronizes workflows betwe
 
 PulseFlow is designed around **real-world healthcare workflows**, not isolated CRUD operations.
 
-Instead of treating appointments, medical records, prescriptions, laboratory reports, invoices, and payments as independent modules, the platform models how clinical information naturally flows throughout a healthcare ecosystem.
+Instead of treating appointments, medical records, prescriptions, laboratory reports, invoices, and payments isolated CRUD features, the platform models how clinical information naturally flows throughout a healthcare ecosystem.
 
 A consultation can evolve from a scheduled appointment into a complete treatment lifecycle—producing medical records, prescriptions, laboratory reports, invoices, payment sessions, audit logs, analytics, and administrative insights while maintaining strict role-based authorization across every interaction.
 
@@ -241,7 +241,12 @@ All seeded development accounts share the same password: **`admin@123`**
                                    │
                        Auth & RBAC Middleware
                                    │
-                        Controllers & Services
+                           Feature Modules
+                      ┌────────────┼────────────┐
+                      ▼            ▼            ▼
+                Controllers    Services      Models
+                      │            │            │
+                      └────────────┼────────────┘
                                    │
               ┌────────────────────┼────────────────────┐
               ▼                    ▼                    ▼
@@ -291,7 +296,7 @@ All seeded development accounts share the same password: **`admin@123`**
 
 ### 🏗 Architecture
 
-Application architecture, request lifecycle, authentication, module organization, and deployment.
+Application architecture, request lifecycle, authentication, feature organization, and deployment.
 
 → <a href="./docs/architecture.md">**docs/ARCHITECTURE.md**</a>
 

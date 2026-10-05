@@ -1,6 +1,6 @@
 # 🏗 PulseFlow Architecture
 
-PulseFlow is designed as a **feature-oriented, role-aware full-stack application** that models real healthcare workflows rather than isolated CRUD modules.
+PulseFlow is designed as a **feature-oriented, role-aware full-stack application** that models real healthcare workflows rather than isolated CRUD operations.
 
 The application separates routing, business logic, persistence, validation, and presentation into independent layers to maximize maintainability, scalability, and extensibility.
 
@@ -19,8 +19,7 @@ PulseFlow follows a few core engineering principles:
 - Frontend state synchronization using TanStack Query
 - Clear ownership boundaries between Patient, Doctor, and Administrator workflows
 
-Every feature is implemented as an independent module while still participating in larger clinical workflows.
-
+Every feature is implemented as an independent domain area while still participating in larger clinical workflows.
 ---
 
 # High-Level Architecture
@@ -36,31 +35,31 @@ Every feature is implemented as an independent module while still participating 
 ```text
 server/
 └── src/
+    ├── app/
     ├── config/
     ├── cron/
-    ├── jobs/
-    ├── middleware/
-    ├── modules/
+    ├── features/
     │   ├── analytics/
     │   ├── appointment/
-    │   ├── auditLog/
-    │   ├── availabilityException/
+    │   ├── audit-log/
+    │   ├── availability-exception/
     │   ├── dashboard/
-    │   ├── doctorAvailability/
-    │   ├── doctorProfile/
-    │   ├── doctorSearch/
+    │   ├── doctor-availability/
+    │   ├── doctor-profile/
+    │   ├── doctor-search/
     │   ├── invoice/
-    │   ├── labResult/
-    │   ├── medicalRecord/
+    │   ├── lab-result/
+    │   ├── medical-record/
     │   ├── notification/
-    │   ├── patientProfile/
+    │   ├── patient-profile/
     │   ├── payment/
     │   ├── prescription/
     │   ├── search/
     │   └── user/
+    ├── jobs/
+    ├── middleware/
     ├── queues/
-    ├── routes/
-    ├── socket/
+    ├── realtime/
     ├── utils/
     └── workers/
 ```
@@ -161,14 +160,14 @@ Examples include:
 
 ## Utilities
 
-Shared utilities provide reusable functionality across modules.
+Shared utilities provide reusable functionality across features.
 
 Examples:
 
-- Cloudinary helpers
-- Error classes
-- Response helpers
-- Formatting utilities
+- File and Cloudinary helpers
+- Error handling
+- Cookie helpers
+- Formatting and logging utilities
 
 ---
 
@@ -183,16 +182,16 @@ Every request follows the same execution pipeline.
                         Express Route
                               │
                               ▼
-                        Authentication
+                    Authentication / Authorization
                               │
                               ▼
-                        Authorization
+                       Feature Controller
                               │
                               ▼
-                          Controller
+                       Feature Service
                               │
                               ▼
-                        Service Layer
+                     Feature Model / Data Layer
                               │
                               ▼
                            MongoDB
@@ -268,7 +267,7 @@ Request flow:
 
 ---
 
-# Core Business Modules
+# Core Business Features
 
 | Module | Responsibility |
 |---------|----------------|
@@ -302,7 +301,7 @@ Several capabilities are shared across the platform.
 - Audit logging
 - Aggregation-based analytics
 
-These concerns remain independent from feature modules to encourage reuse.
+These concerns remain independent from individual features to encourage reuse.
 
 ---
 
@@ -321,4 +320,4 @@ Planned additions include:
 - Monitoring and observability
 - Reporting services
 
-The existing service-oriented architecture allows these capabilities to be introduced incrementally while minimizing changes to existing modules.
+The existing feature-oriented, service-driven architecture allows these capabilities to be introduced incrementally while minimizing changes to existing features.

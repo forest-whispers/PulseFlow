@@ -2,18 +2,18 @@ import "./config/env.js";
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 
-import User from "./modules/user/user.model.js";
-import DoctorProfile from "./modules/doctorProfile/doctorProfile.model.js";
-import PatientProfile from "./modules/patientProfile/patientProfile.model.js";
-import DoctorAvailability from "./modules/doctorAvailability/doctorAvailability.model.js";
-import AvailabilityException from "./modules/availabilityException/availabilityException.model.js";
-import Appointment from "./modules/appointment/appointment.model.js";
-import MedicalRecord from "./modules/medicalRecord/medicalRecord.model.js";
-import Prescription from "./modules/prescription/prescription.model.js";
-import Invoice from "./modules/invoice/invoice.model.js";
-import Notification from "./modules/notification/notification.model.js";
-import AuditLog from "./modules/auditLog/auditLog.model.js";
-import LabResult from "./modules/labResult/labResult.model.js";
+import User from "./features/user/model.js";
+import DoctorProfile from "./features/doctor-profile/model.js";
+import PatientProfile from "./features/patient-profile/model.js";
+import DoctorAvailability from "./features/doctor-availability/model.js";
+import AvailabilityException from "./features/availability-exception/model.js";
+import Appointment from "./features/appointment/model.js";
+import MedicalRecord from "./features/medical-record/model.js";
+import Prescription from "./features/prescription/model.js";
+import Invoice from "./features/invoice/model.js";
+import Notification from "./features/notification/model.js";
+import AuditLog from "./features/audit-log/model.js";
+import LabResult from "./features/lab-result/model.js";
 
 // Helper to safely format a Date to YYYY-MM-DD
 const formatDateStr = (dateObj) => {
