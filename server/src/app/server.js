@@ -1,11 +1,11 @@
-import "./config/env.js";
+import "../config/env.js";
 
 import http from "http";
 
 import app from "./app.js";
 import connectDB from "../config/db.js";
 import redisConnection from "../config/redis.js";
-import "./workers/index.js";
+import "../workers/index.js";
 import { initSocket } from "../realtime/socket.js";
 import { initializeCronJobs } from "../cron/index.js";
 import logger from "../utils/logger.js";
